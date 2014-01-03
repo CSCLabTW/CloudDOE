@@ -3,7 +3,7 @@
 echo "---- [3.1] Install Java environment  ----"
 
 echo "---- [3.1.1] Update JAVA_HOME config ----"
-sed -i -e 's/JAVA_HOME.*/JAVA_HOME=\/usr\/lib\/jvm\/java-6-oracle/' ../config/common/hadoop-env.sh
+sed -i -e 's/JAVA_HOME.*/JAVA_HOME=\"\/usr\/lib\/jvm\/java-6-oracle\"/' ../config/common/hadoop-env.sh
 
 if [ ! -x /usr/bin/java ]; then
 	echo "---- [3.1.2] Update system software settings. This may take a long time... ----"
@@ -20,5 +20,5 @@ EOF
 	update-java-alternatives -s java-6-oracle
 else
 	JVER=`java -version 2>&1 | awk 'NR==1{gsub(/"/,""); print $3}'`
-	echo "---- [3.1.2] Java $JVER is installed. Skip. ----"; exit
+	echo "---- [3.1.2] Java $JVER installed. Skip. ----"; exit
 fi
