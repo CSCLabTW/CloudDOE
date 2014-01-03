@@ -50,6 +50,13 @@ echo $$ > $PID_FILE
 NN_IP=$(cat $NNFILE | awk '{ print $1 }')
 DN_IP=$(cat $DNFILE | awk '{ print $1 }')
 
+### Check NN IP ###
+VALIDIP=`/sbin/ifconfig | grep "inet addr" | sed -e 's/ .*inet addr://' -e 's/ .*//' | grep "$NN_IP"`
+if [ ! $VALIDIP ]; then
+	echo "---- [ERROR] We cannot verify your IP address, Please correct this issue first. ----"
+	rm $PID_FILE; exit
+fi
+
 ### Prepare for installation ###
 chmod +x -R .
 chmod 600 $KEYFILE
