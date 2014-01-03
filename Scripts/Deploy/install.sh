@@ -53,7 +53,9 @@ DN_IP=$(cat $DNFILE | awk '{ print $1 }')
 ### Check NN IP ###
 VALIDIP=`/sbin/ifconfig | grep "inet addr" | sed -e 's/ .*inet addr://' -e 's/ .*//' | grep "$NN_IP"`
 if [ ! $VALIDIP ]; then
-	echo "---- [ERROR] We cannot verify your IP address, Please correct this issue first. ----"
+	echo "---- [ERROR] We cannot verify the network address of your PCs. ----"
+	echo "---- [ERROR] Your network environment may have special settings. ----"
+	echo "---- [ERROR] Please contact to your MIS manager for this issue. ----"
 	rm $PID_FILE; exit
 fi
 
