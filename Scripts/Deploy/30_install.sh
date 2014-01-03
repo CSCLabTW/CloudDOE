@@ -9,7 +9,7 @@ else
 
 	echo "---- [3.0] Start Stage 3 ----";
 	./sudo_hack.sh "$3"
-	./os_speficy_install.sh "./31_install_java"
+	./os_specify_install.sh "./31_install_java"
 	./32_install_hadoop.sh $1 $2
 	./33_config_hadoop.sh $1 $2
 	./34_start_hadoop.sh $1 $2
