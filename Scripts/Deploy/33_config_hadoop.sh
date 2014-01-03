@@ -31,6 +31,8 @@ else
 
 	echo "---- [3.3] Config Hadoop ----";
 	updateFile "$1/conf" "common" "hadoop-env.sh" false
+	updateFile "$1/conf" "common" "masters" true
+	updateFile "$1/conf" "common" "slaves" true
 	updateFile "$1/conf" "$2" "core-site.xml" true
 	updateFile "$1/conf" "$2" "hdfs-site.xml" true
 	updateFile "$1/conf" "$2" "mapred-site.xml" true
