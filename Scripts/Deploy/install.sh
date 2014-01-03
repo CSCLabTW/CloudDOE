@@ -87,7 +87,7 @@ for dn_ip in $DN_IP; do
 	ssh -i $KEYFILE $SSHOPTIONS -t "`userName $dn_ip $DNFILE`@$dn_ip" "cd ~/workspace/bin; ./20_install.sh `hostName $dn_ip` \"`userPass $dn_ip $DNFILE`\""
 done
 
-### Stage 3: Install hadoop and start it ###
+### Stage 3: Install Hadoop ###
 echo "---- [Stage 3] ----"
 echo "---- [Stage 3 at $NN_IP] ----";
 ./30_install.sh "$HADOOP_DIR" "NN" "`userPass $NN_IP $NNFILE`"
@@ -97,11 +97,12 @@ for dn_ip in $DN_IP; do
 	ssh -i $KEYFILE $SSHOPTIONS -t "`userName $dn_ip $DNFILE`@$dn_ip" "cd ~/workspace/bin; ./30_install.sh $HADOOP_DIR DN \"`userPass $dn_ip $DNFILE`\""
 done
 
-### Congrats ###
-rm $PID_FILE
+### Stage 4: Start Hadoop cluster ###
+echo "---- [Stage 4] ----"
+./40_start_hadoop.sh "$HADOOP_DIR"
 echo "---- [Congrats] Please check http://$NN_IP:50070 and http://$NN_IP:50030 for cluster status ----"
 
-### Logout ###
-exit
+### Finish Installation ###
+rm $PID_FILE; exit
 
 # vim: ai ts=2 sw=2 et sts=2 ft=sh

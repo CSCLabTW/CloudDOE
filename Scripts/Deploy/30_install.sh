@@ -12,7 +12,6 @@ else
 	./os_specify_install.sh "./31_install_java"
 	./32_install_hadoop.sh $1 $2
 	./33_config_hadoop.sh $1 $2
-	./34_start_hadoop.sh $1 $2
 fi
 
 # vim: ai ts=2 sw=2 et sts=2 ft=sh
