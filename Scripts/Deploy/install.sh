@@ -13,6 +13,7 @@ WORKSPACE=../../workspace
 CONFIGDIR=../config/common
 NNFILE=$CONFIGDIR/NN
 DNFILE=$CONFIGDIR/DN
+NPFILE=$CONFIGDIR/NP
 KEYFILE=$CONFIGDIR/hadoop
 HOSTFILE=$CONFIGDIR/hosts
 
@@ -49,6 +50,12 @@ echo $$ > $PID_FILE
 ### Cluster node list ###
 NN_IP=$(cat $NNFILE | awk '{ print $1 }')
 DN_IP=$(cat $DNFILE | awk '{ print $1 }')
+
+### Configuration of public NN IP ###
+NN_PUB=$NN_IP
+if [ -f $NPFILE ]; then
+	NN_PUB=$(cat $NPFILE | awk '{ print $1 }')
+fi
 
 ### Check NN IP ###
 VALIDIP=`/sbin/ifconfig | grep "inet addr" | sed -e 's/ .*inet addr://' -e 's/ .*//' | grep "$NN_IP"`
@@ -102,7 +109,7 @@ done
 ### Stage 4: Start Hadoop cluster ###
 echo "---- [Stage 4] ----"
 ./40_start_hadoop.sh "$HADOOP_DIR"
-echo "---- [Congrats] Please check http://$NN_IP:50070 and http://$NN_IP:50030 for cluster status ----"
+echo "---- [Congrats] Please check http://$NN_PUB:50070 and http://$NN_PUB:50030 for cluster status ----"
 
 ### Finish Installation ###
 rm $PID_FILE; exit
