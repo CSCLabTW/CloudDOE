@@ -70,7 +70,7 @@ fi
 chmod +x -R .
 chmod 600 $KEYFILE
 ./sudo_hack.sh "`userPass $NN_IP $NNFILE`"
-./os_speficy_install.sh "./00_perl_modules"
+./os_specify_install.sh "./00_perl_modules"
 
 ### Stage 0: SSH Key Exchange ###
 echo "---- [Stage 0] ----"
