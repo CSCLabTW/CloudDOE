@@ -1,0 +1,20 @@
+CloudDOE
+=====
+
+CloudDOE is a user friendly software to Deploy-Operate-Extend Hadoop clouds and
+bioinformatics tools for big NGS (Next-Generation-Sequencing) data analysis.
+Users are guided by three graphical Java wizards: 
+
+1. Depoly wizard provides an easier way to help users configure and deploy their
+own Hadoop MapReduce cloud computing framework. This program will install Java
+run-time environment and Hadoop platform within 3 steps, and start the Hadoop
+services automatically.
+
+2. Operate wizard is a simple, clean and user-friendly User Interface. This
+program aims to provide an easier way to help users to run CloudBrush, a de novo
+genome assembler using MapRedue framework, with your Hadoop cluster. Users can
+use the straight-forward operations to handle your experiments.
+
+3. Extend wizard provides an easier way to help users extend the functionalities
+of their own cloud computing framework. This program allow users to select and
+install recommend applications automatically.
