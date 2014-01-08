@@ -1,0 +1,4 @@
+CloudDOE Hadoop Install Scripts
+=====
+
+This is a part of CloudDOE project that handles the deploy procedures at server side and the interactions between GUI and master node.
