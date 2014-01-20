@@ -3,10 +3,11 @@
 # Author: Wei-Chun Chung <wcchung@iis.sinica.edu.tw>
 #
 # v0.1: 2012-12-28 for CloudBrush Hadoop Installation
+# v1.0: 2013-10-01 for CloudDOE Deploy
 #
-# modified from the installation script written by 
+# This script is modified from the installation script written by 
 # Jazz Yao-Tsung Wang <jazzwang.tw@gmail.com>.
-# Check the following site for detail:
+# For more information, please check:
 # https://github.com/jazzwang/hicloud-hadoop
 
 WORKSPACE=../../workspace
