@@ -15,10 +15,10 @@ public class Utils {
 	public static String configPath = "workspace" + File.separator + "config"
 			+ File.separator;
 
-	public static void genXMLDN() {
+	public static void genXMLDN(final int DNs) {
 		genPartialEnv();
 		genDNcore();
-		genDNhdfs();
+		genDNhdfs(DNs);
 		genDNmapred();
 	}
 
@@ -92,7 +92,7 @@ public class Utils {
 		return true;
 	}
 
-	private static boolean genDNhdfs() {
+	private static boolean genDNhdfs(final int DNs) {
 		try {
 			String filePath = genFilePath("DN", "hdfs-site.xml");
 
@@ -106,7 +106,7 @@ public class Utils {
 			bw.write("<configuration>" + ENDLINE);
 			bw.write("  <property>" + ENDLINE);
 			bw.write("    <name>dfs.replication</name>" + ENDLINE);
-			bw.write("    <value>1</value>" + ENDLINE);
+			bw.write("    <value>" + DNs + "</value>" + ENDLINE);
 			bw.write("  </property>" + ENDLINE);
 			bw.write("</configuration>" + ENDLINE);
 			bw.close();
