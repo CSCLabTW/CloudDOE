@@ -19,7 +19,7 @@ else
 
         echo "---- [4.2] Starting DFS... ----"
         $1/bin/start-dfs.sh
-        echo "---- [4.1] Starting MapReduce Framework... ----"
+        echo "---- [4.3] Starting MapReduce Framework... ----"
         $1/bin/start-mapred.sh	
 fi
 
