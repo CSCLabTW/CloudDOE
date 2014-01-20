@@ -20,7 +20,7 @@ public class AboutPanel extends JPanel {
 
 	private static final long serialVersionUID = 2846384582123517L;
 
-	private static final String versionStr = "CloudDOE - Deploy Wizard (v1.1.20131001)";
+	private static final String versionStr = "CloudDOE - Deploy Wizard (v1.2.20140120)";
 	
 	public int default_w = 580;
 	public int default_h = 230;
@@ -49,7 +49,7 @@ public class AboutPanel extends JPanel {
 
 		JLabel logoLabel = new JLabel();
 		try {
-			ImageIcon img = new ImageIcon(getClass().getResource("logo.png"));
+			ImageIcon img = new ImageIcon(getClass().getResource("/assets/logo.png"));
 			logoLabel = new JLabel(img);
 			logoLabel.setBounds(paddingLeft - 10, 40, img.getIconWidth(),
 					img.getIconHeight());
