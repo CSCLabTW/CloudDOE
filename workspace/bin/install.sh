@@ -3,7 +3,7 @@
 # Author: Wei-Chun Chung <wcchung@iis.sinica.edu.tw>
 #
 # v0.1: 2012-12-28 for CloudBrush Hadoop Installation
-# v1.0: 2013-10-01 for CloudDOE Deploy
+# v1.0: 2014-01-20 for CloudDOE Deploy
 #
 # This script is modified from the installation script written by 
 # Jazz Yao-Tsung Wang <jazzwang.tw@gmail.com>.
@@ -36,17 +36,19 @@ userPass() {
 	echo `grep "$1" $2 | awk -F '\t' '{ print $3 }'`
 }
 
+### Start Installation ###
+echo $$ > $PID_FILE
+
 ### Check for configuration files ###
 if [ ! -f $NNFILE ] || [ ! -f $DNFILE ]; then
-  echo "---- [ERROR] Missing configuration files ----"; exit
+  echo "---- [ERROR] Missing configuration files ----"
+  rm $PID_FILE; exit
 fi
 
 if [ ! -f $KEYFILE ]; then
-  echo "---- [ERROR] Missing ssh key files ----"; exit
+  echo "---- [ERROR] Missing ssh key files ----"
+  rm $PID_FILE; exit
 fi
-
-### Store progress pid ###
-echo $$ > $PID_FILE
 
 ### Cluster node list ###
 NN_IP=$(cat $NNFILE | awk '{ print $1 }')
