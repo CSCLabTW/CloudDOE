@@ -1,8 +1,10 @@
 #!/bin/bash
 
-PID_FILE=~/ociinstall.pid
+if [ $# -lt 1 ]; then
+	echo "Using:" $0 "{pidFilePath}"; exit
+fi
 
-if [ ! -f $PID_FILE ]; then 
+if [ ! -f $1 ]; then 
 	echo "end"
 else
 	echo "run"

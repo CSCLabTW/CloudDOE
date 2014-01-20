@@ -81,6 +81,7 @@ public class HadoopInstall extends JFrame {
 
 	private static final String BINLOCATION = "~/workspace/bin";
 	private static final String LOGFILENAME = "~/OCIinstall.log";
+	private static final String PIDFILENAME = "~/ociinstall.pid";
 
 	// -1:setting 0:started 1~3:step1~3
 	private int InstallState = -1;
@@ -283,7 +284,7 @@ public class HadoopInstall extends JFrame {
 	}
 
 	public boolean checkFinish() {
-		String testCmd = HadoopCmd.OCIStatus("checkpid.sh");
+		String testCmd = HadoopCmd.OCIStatus("checkpid.sh", PIDFILENAME);
 		Callable<String> channel = new SSHExec(HadoopSession.getSession(),
 				testCmd);
 
