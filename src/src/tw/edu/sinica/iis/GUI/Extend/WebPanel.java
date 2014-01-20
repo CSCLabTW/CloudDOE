@@ -167,7 +167,7 @@ public class WebPanel extends JPanel {
 	public void loadURL() {
         Platform.runLater(new Runnable() {
             @Override public void run() {
-            	we.load(getClass().getResource("index.html").toString());
+            	we.load(getClass().getResource("/assets/index.html").toString());
             }
         });
 	}
