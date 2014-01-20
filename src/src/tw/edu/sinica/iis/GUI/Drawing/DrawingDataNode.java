@@ -1,8 +1,5 @@
 package tw.edu.sinica.iis.GUI.Drawing;
 
-import java.io.File;
-import java.net.URL;
-
 import javax.imageio.ImageIO;
 
 import zxaustin.game.shooting.core.SAnimation;
@@ -18,10 +15,7 @@ public class DrawingDataNode extends DrawingUnit {
 	public SAnimation loadActivatedPic() {
 		// TODO Auto-generated method stub
 		try {
-			String root = this
-			.getClass().getResource("/").toString()
-			 + "Asset" + File.separator + "DataNode.png";
-			SAnimation tmp = new SAnimation(ImageIO.read(new URL(root)),
+			SAnimation tmp = new SAnimation(ImageIO.read(getClass().getResource("/assets/DataNode.png")),
 					new long[] { 1000,300,200,300 }, 4, 0, 0, 48, 48, 2, 2, null);
 			return tmp;
 		} catch (Exception e) {
@@ -35,10 +29,7 @@ public class DrawingDataNode extends DrawingUnit {
 	public SAnimation loadNormalPic() {
 		// TODO Auto-generated method stub
 		try {
-			String root = this
-			.getClass().getResource("/").toString()
-			 + "Asset" + File.separator + "DataNode.png";
-			SAnimation tmp = new SAnimation(ImageIO.read(new URL(root)),
+			SAnimation tmp = new SAnimation(ImageIO.read(getClass().getResource("/assets/DataNode.png")),
 					new long[] { 1000 }, 1, 0, 0, 48, 48, 1, 1, null);
 			return tmp;
 		} catch (Exception e) {

@@ -3,8 +3,6 @@ package tw.edu.sinica.iis.GUI.Drawing;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.net.URL;
 
 import javax.imageio.ImageIO;
 
@@ -22,10 +20,7 @@ public class DrawingLine extends SGameUnit{
 		StartObj = s;
 		EndObj = e;
 		try {
-			String root = this
-			.getClass().getResource("/").toString()
-			 + "Asset" + File.separator + "line.png";
-			LinePic = ImageIO.read(new URL(root));
+			LinePic = ImageIO.read(getClass().getResource("/assets/line.png"));
 		} catch (Exception e2) {
 			// TODO: handle exception
 			e2.printStackTrace();

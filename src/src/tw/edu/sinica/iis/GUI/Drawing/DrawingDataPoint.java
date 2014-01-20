@@ -1,9 +1,6 @@
 package tw.edu.sinica.iis.GUI.Drawing;
 
 import java.awt.Rectangle;
-import java.io.File;
-import java.net.URL;
-
 import javax.imageio.ImageIO;
 
 import zxaustin.game.shooting.core.SAnimation;
@@ -40,10 +37,7 @@ public class DrawingDataPoint extends DrawingUnit{
 	public SAnimation loadActivatedPic() {
 		// TODO Auto-generated method stub
 		try {
-			String root = this
-			.getClass().getResource("/").toString()
-			 + "Asset" + File.separator + "point.png";
-			SAnimation tmp = new SAnimation(ImageIO.read(new URL(root)),
+			SAnimation tmp = new SAnimation(ImageIO.read(getClass().getResource("/assets/point.png")),
 					new long[] { 500, 500 }, 2, 0, 0, 16, 16, 1, 2, null);
 			return tmp;
 		} catch (Exception e) {
@@ -57,10 +51,7 @@ public class DrawingDataPoint extends DrawingUnit{
 	public SAnimation loadNormalPic() {
 		// TODO Auto-generated method stub
 		try {
-			String root = this
-			.getClass().getResource("/").toString()
-			 + "Asset" + File.separator + "point.png";
-			SAnimation tmp = new SAnimation(ImageIO.read(new URL(root)),
+			SAnimation tmp = new SAnimation(ImageIO.read(getClass().getResource("/assets/point.png")),
 					new long[] { 100000 }, 1, 32, 0, 16, 16, 1, 1, null);
 			return tmp;
 		} catch (Exception e) {

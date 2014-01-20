@@ -4,9 +4,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.net.URL;
-
 import javax.imageio.ImageIO;
 
 import zxaustin.game.shooting.interfaces.SBackGround;
@@ -26,10 +23,7 @@ public class BGCloud extends SBackGround{
 	
 	public BGCloud(){
 		try {
-			String root = this
-			.getClass().getResource("/").toString()
-			 + "Asset" + File.separator + "background00.png";
-			bgImg = ImageIO.read(new URL(root));
+			bgImg = ImageIO.read(getClass().getResource("/assets/background00.png"));
 			getCloud1();
 			getCloud2();
 			getCloud3();
@@ -62,10 +56,7 @@ public class BGCloud extends SBackGround{
 	
 	public BufferedImage getCloud1(){
 		try {
-			String root = this
-			.getClass().getResource("/").toString()
-			 + "Asset" + File.separator + "cloud1.png";
-			cloud1 = ImageIO.read(new URL(root));
+			cloud1 = ImageIO.read(getClass().getResource("/assets/cloud1.png"));
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -76,10 +67,7 @@ public class BGCloud extends SBackGround{
 	
 	public BufferedImage getCloud2(){
 		try {
-			String root = this
-			.getClass().getResource("/").toString()
-			 + "Asset" + File.separator + "cloud2.png";
-			cloud2 = ImageIO.read(new URL(root));
+			cloud2 = ImageIO.read(getClass().getResource("/assets/cloud2.png"));
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -90,10 +78,7 @@ public class BGCloud extends SBackGround{
 	
 	public BufferedImage getCloud3(){
 		try {
-			String root = this
-			.getClass().getResource("/").toString()
-			 + "Asset" + File.separator + "cloud3.png";
-			cloud3 = ImageIO.read(new URL(root));
+			cloud3 = ImageIO.read(getClass().getResource("/assets/cloud3.png"));
 
 		} catch (Exception e) {
 			e.printStackTrace();
