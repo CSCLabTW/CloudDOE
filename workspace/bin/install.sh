@@ -115,6 +115,8 @@ echo "---- [Stage 4] ----"
 
 ### Finish Installation ###
 echo "---- [Congrats] Please check http://$NN_PUB:50070 and http://$NN_PUB:50030 for cluster status ----"
+sleep 5
+
 rm $PID_FILE; exit
 
 # vim: ai ts=2 sw=2 et sts=2 ft=sh
