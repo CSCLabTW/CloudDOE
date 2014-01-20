@@ -112,9 +112,9 @@ done
 ### Stage 4: Start Hadoop cluster ###
 echo "---- [Stage 4] ----"
 ./40_start_hadoop.sh "$HADOOP_DIR"
-echo "---- [Congrats] Please check http://$NN_PUB:50070 and http://$NN_PUB:50030 for cluster status ----"
 
 ### Finish Installation ###
+echo "---- [Congrats] Please check http://$NN_PUB:50070 and http://$NN_PUB:50030 for cluster status ----"
 rm $PID_FILE; exit
 
 # vim: ai ts=2 sw=2 et sts=2 ft=sh
