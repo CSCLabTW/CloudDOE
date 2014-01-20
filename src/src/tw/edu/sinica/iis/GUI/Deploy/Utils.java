@@ -378,7 +378,19 @@ public class Utils {
 
 	public static LinkedList<NodeStructure> loadHostFiles() {
 		LinkedList<NodeStructure> res = loadNodeFiles("NN", true);
-		if(res.size() == 0) res = loadNodeFiles("NP", true);
+		if(res.size() == 0) {
+			res = loadNodeFiles("NP", true);
+		}
+		else {
+			LinkedList<NodeStructure> resNP = loadNodeFiles("NP", true);
+			
+			if(resNP.size() > 0) {
+				res.get(0).User = resNP.get(0).User;
+				res.get(0).Password = resNP.get(0).Password;
+			}
+			
+			resNP.clear();
+		}
 		
 		res.addAll(loadNodeFiles("DN", false));
 		
