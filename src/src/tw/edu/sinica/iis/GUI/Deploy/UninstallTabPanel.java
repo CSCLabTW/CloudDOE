@@ -214,8 +214,7 @@ public class UninstallTabPanel extends JPanel implements ActionListener {
 	public BridgeConfigPanel getBPanel() {
 		if (BPanel == null) {
 			BPanel = new BridgeConfigPanel();
-			BPanel.desLabel
-					.setText("Please provide access information of NameNode as follows:");
+			BPanel.setLabelText("Please provide access information of Name Node as follows:");
 		}
 		return BPanel;
 	}
@@ -258,14 +257,15 @@ public class UninstallTabPanel extends JPanel implements ActionListener {
 			jep.setBackground(RPanel.getBackground());
 			jep.setContentType("text/html");
 			jep.setText("<HTML><B>"
-					+ "CloudDOE undeplyment tool helps you to undeploy a Hadoop cloud. This tool will perform following actions:<BR>"
+					+ "CloudDOE undeplyment tool helps you to undeploy a Hadoop cloud. This tool will perform following actions:"
 					+ "<UL><LI>Stop Hadoop services</LI>"
-					+ "<LI>Uninstall Hadoop distribution</LI>"
+					+ "<LI>Uninstall Hadoop platform</LI>"
 					+ "<LI>Restore configurations</LI>"
 					+ "</UL><BR>"
 					+ "Note that"
-					+ "<UL><LI>This tool is only used to rollback procedures performed by CloudDOE, or there will be errors during undeplyoing</LI>"
+					+ "<UL><LI>This tool is only used for Hadoop cloud deployed by CloudDOE, or there will be errors during uninstallation</LI>"
 					+ "<LI>This tool will read configurations stored during last deployment as default settings</LI>"
+					+ "<LI>The uninsttallation procedures cannot be undone, cancel or stop</LI>"
 					+ "</UL>" + "</B></HTML>");
 			RPanel.add(jep);
 		}
