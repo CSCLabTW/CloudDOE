@@ -160,6 +160,10 @@ public class SSHadoopCmd {
 				+ cmd.tail + count;
 	}
 	
+	public String OCIClenup(final String location) {
+		return cmd.rm + " -rf " + location; 
+	}
+	
 	public String PPIRun(final String installCmd, final String shellFile, final String logFile) {
 		return cmd.cd + binaryLocation + "; " +
 				cmd.rm + "plugins/* ;" +
