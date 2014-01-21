@@ -21,6 +21,8 @@ public class BridgeConfigPanel extends JPanel{
 	 * 
 	 */
 	private static final long serialVersionUID = 9831534876L;
+	public JLabel desLabel = null;
+	
 	public JTextField tIP;
 	public JTextField tUser;
 	public JTextField tPassword;
@@ -51,9 +53,9 @@ public class BridgeConfigPanel extends JPanel{
 //		pubNN.setBorder(BorderFactory.createLineBorder(Color.RED));
 		pubNN.setLayout(new GridLayout(4, 1));
 		
-		
-		String des = "<HTML><Font size = '3'>Please provide access information of the controller for the wizard running on THE PC.</Font></HTML>";
-		pubNN.add(new JLabel(des));
+		desLabel = new JLabel();
+		setLabelText("Please provide access information of the controller for the wizard running on THE PC.");
+		pubNN.add(desLabel);
 		
 		JPanel pIP = new JPanel();
 		pIP.setLayout(new BorderLayout());
@@ -174,6 +176,12 @@ public class BridgeConfigPanel extends JPanel{
 		LinkedList<NodeStructure> tmp = new LinkedList<NodeStructure>();
 		tmp.add(new NodeStructure(true, tIP.getText(), tUser.getText(), tPassword.getText()));
 		return Utils.saveNodeFiles(tmp, "NP");
+	}
+	
+	public void setLabelText(final String text) {
+		if(desLabel!=null) {
+			desLabel.setText("<HTML><Font size = '3'>"+text+"</Font></HTML>");
+		}
 	}
 	
 	public JTextArea iniDes(){
