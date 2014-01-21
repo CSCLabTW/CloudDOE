@@ -64,10 +64,10 @@ public class HadoopInstall extends JFrame {
 	public JPanel CardPanel;
 	public JButton NextButton;
 	public JButton BackButton;
-	public String[] StepTitle = { "[Overview]",
-			"[Step 1. Access Information of Name Node]",
-			"[Step 2. Access Information of Data Nodes]",
-			"[Step 3. Hadoop Cluster Deployment]" };
+	public String[] StepTitle = { "Overview",
+			"Step 1. Access Information of Name Node",
+			"Step 2. Access Information of Data Nodes",
+			"Step 3. Hadoop Cluster Deployment" };
 	public JLabel CardTitle;
 	public int StepState = 0;
 

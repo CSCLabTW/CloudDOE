@@ -57,9 +57,9 @@ public class UninstallTabPanel extends JPanel implements ActionListener {
 		OVERVIEW, NAMENODE, UNDEPLOY
 	};
 
-	public String[] panelTitle = { "[Overview]",
-			"[Step 1. Access Information of NameNode]",
-			"[Step 2. Hadoop Cluster Undeployment]" };
+	public String[] panelTitle = { "Overview",
+			"Step 1. Access Information of NameNode",
+			"Step 2. Hadoop Cluster Undeployment" };
 
 	private int panelState = 0;
 
