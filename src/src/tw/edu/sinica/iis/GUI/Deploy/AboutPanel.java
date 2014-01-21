@@ -176,7 +176,7 @@ public class AboutPanel extends JPanel {
 
 		JButton button2 = new JButton();
 		button2.setBorder(null);
-		button2.setText("<HTML><FONT size = \"14px\" color=\"#0000FF\"><U>CloudBrushPack Project</U></FONT></HTML>");
+		button2.setText("<HTML><FONT size = \"14px\" color=\"#0000FF\"><U>CloudDOE Project</U></FONT></HTML>");
 		button2.setHorizontalAlignment(SwingConstants.CENTER);
 		button2.setBorderPainted(false);
 		button2.setFocusable(false);
@@ -186,14 +186,14 @@ public class AboutPanel extends JPanel {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
 					AboutPanel.open(new URI(
-							"http://cloudbrush.iis.sinica.edu.tw/"));
+							"http://clouddoe.iis.sinica.edu.tw/"));
 				} catch (Exception e) {
 				}
 
 			}
 		});
 		button2.setBackground(Color.WHITE);
-		button2.setBounds(paddingLeft + line7.getWidth(), paddingTop, 160, 20);
+		button2.setBounds(paddingLeft + line7.getWidth(), paddingTop, 140, 20);
 		this.add(button2);
 
 		JLabel line7_end = new JLabel();
