@@ -64,9 +64,9 @@ public class HadoopInstall extends JFrame {
 	public JPanel CardPanel;
 	public JButton NextButton;
 	public JButton BackButton;
-	public String[] StepTitle = { "[System Overview]",
-			"[Step 1. Access Information of the Controller]",
-			"[Step 2. Access Information of the Cluster Nodes]",
+	public String[] StepTitle = { "[Overview]",
+			"[Step 1. Access Information of Name Node]",
+			"[Step 2. Access Information of Data Nodes]",
 			"[Step 3. Hadoop Cluster Deployment]" };
 	public JLabel CardTitle;
 	public int StepState = 0;
@@ -572,6 +572,7 @@ public class HadoopInstall extends JFrame {
 	public BridgeConfigPanel getBPanel() {
 		if (BPanel == null) {
 			BPanel = new BridgeConfigPanel();
+			BPanel.setLabelText("Please provide access information of NameNode as follows.");
 		}
 		return BPanel;
 	}
@@ -587,20 +588,15 @@ public class HadoopInstall extends JFrame {
 			jep.setEditable(false);
 			jep.setBackground(RPanel.getBackground());
 			jep.setContentType("text/html");
-			jep.setText("<HTML><B>Hadoop Installation Wizard, denoted as the wizard, is an easy-to-use "+
-					" wizard to install <a href='http://wiki.apache.org/hadoop/HadoopMapReduce'>'Hadoop/MapReduce'</a> Platform on a cluster of PCs running <a href='http://www.ubuntu.com/'>'Ubuntu'</a>."+
-					" Note that one of the PCs of the cluster is designated as the controller of the cluster, "+
-					"The wizard "+
-					"will run on an external PC, denoted as THE PC, which then connects to the controller to install Hadoop/MapReduce Platform on "+
-					"PCs of the cluster which will also be referred to as the cluster nodes. THE PC is used not only to run the wizard but also"+
-					" to monitor progress of installation.<BR><BR>"+
-					"The wizard "+
-					"assumes that each cluster node has access to the Internet to download"+
-					" Hadoop and Java packages from their official sites. "+
-					"Configures the controller as the <a href='http://wiki.apache.org/hadoop/NameNode'>'Name Node'</a> of the Hadoop/MapReduce"+
-					" platform. The controller is also referred to as the Name Node. The other PCs of "+
-					"the cluster are configured as <a href='http://wiki.apache.org/hadoop/DataNode'>'Data Nodes'</a>, i.e.,  computing nodes with data storage,"+
-					" of the Hadoop/MapReduce Platform.</B></HTML>");
+			jep.setText("<HTML><B>CloudDOE Deploy tool is an easy-to-use wizard to install <a href='http://wiki.apache.org/hadoop/HadoopMapReduce'>Hadoop</a>"+
+					" platform and deploy a Hadoop cloud on a cluster of PCs running <a href='http://www.ubuntu.com/'>Ubuntu</a> Linux.<BR><BR>"+
+					"Note that:"
+					+ "<UL><LI>CloudDOE assumes that each PCs has access to the Internet to download Hadoop and Java packages from their official sites.</LI>"
+					+ "<LI>CloudDOE requires access information of PCs of the cluster, e.g., privileged username and password, and IP address, for deploying a Hadoop cloud.</LI>"
+					+ "<LI>CloudDOE configures one of the PCs of the cluster as <a href='http://wiki.apache.org/hadoop/NameNode'>Name Node</a>, and the other PCs"
+					+ " of the cluster as <a href='http://wiki.apache.org/hadoop/DataNode'>Data Nodes</a>."
+					+ "<LI>CloudDOE will connect to the Name Node and then deploy Hadoop cloud from it.</LI></UL>"
+					+ "</B></HTML>");
 			jep.addHyperlinkListener(new HyperlinkListener() {
 				
 				@Override

@@ -48,8 +48,7 @@ public class NodeConfigPanel extends JPanel {
 		JPanel title = new JPanel();
 		title.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 		title.setLayout(new BorderLayout());
-		JLabel titleL = new JLabel("<HTML>Please provide access information of the cluster nodes including <BR>"+
-				" privileged user name/password and IP address of each cluster node.</HTML>");
+		JLabel titleL = new JLabel("<HTML>Please provide access information for Hadoop cloud as follows.</HTML>");
 		title.add(titleL,BorderLayout.LINE_START);
 		this.add(title);
 		
@@ -79,7 +78,9 @@ public class NodeConfigPanel extends JPanel {
 		JPanel title = new JPanel();
 		title.setLayout(new BorderLayout());
 		title.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-		title.add(new JLabel("<HTML><FONT color='#FF0000'>IP of the Name Node </FONT>if it differs from the one for external PCs.</HTML>"),BorderLayout.LINE_START);
+		title.add(new JLabel("<HTML><FONT color='#FF0000'>IP of the Name Node</FONT><BR>"
+									+ "Note that the IP of Name Node is used for Hadoop internal communication.<BR>"
+									+ "It may be differ to the IP address CloudDOE used for Name Node connection.</HTML>"),BorderLayout.LINE_START);
 		NNPanel.add(title);
 		
 		FocusAdapter fa = new FocusAdapter() {
