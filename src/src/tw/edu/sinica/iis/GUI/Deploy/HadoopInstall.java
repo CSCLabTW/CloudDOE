@@ -422,7 +422,7 @@ public class HadoopInstall extends JFrame {
 		
 		switch (StepState) {
 		case 1:
-			DrawFrame.showNN();
+			DrawFrame.showPublicNN();
 			getBPanel().loadNodeData();
 			break;
 		case 2:
