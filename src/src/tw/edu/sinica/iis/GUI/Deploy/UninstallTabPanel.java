@@ -17,6 +17,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.border.EtchedBorder;
 import javax.swing.text.DefaultCaret;
@@ -44,6 +45,9 @@ public class UninstallTabPanel extends JPanel implements ActionListener {
 
 	private SSHShell sshShell;
 
+	private JTabbedPane parentPane;
+	private int mutexTarget;
+
 	// cards
 	public JPanel RPanel;
 	public BridgeConfigPanel BPanel;
@@ -57,7 +61,7 @@ public class UninstallTabPanel extends JPanel implements ActionListener {
 			"[Step 1. Access Information of NameNode]",
 			"[Step 2. Hadoop Cluster Undeployment]" };
 
-	public int panelState = 0;
+	private int panelState = 0;
 
 	private enum threadState {
 		IDLE, UNDEPLOY, MONITOR, CLEANUP, FINISH
@@ -79,6 +83,10 @@ public class UninstallTabPanel extends JPanel implements ActionListener {
 		this.add(getButtonPanel());
 
 		changeCard(0);
+	}
+
+	public void setMutex(final JTabbedPane parent, final int mutexTarget) {
+		parentPane = parent;
 	}
 
 	public JPanel getTitlePanel() {
@@ -147,11 +155,9 @@ public class UninstallTabPanel extends JPanel implements ActionListener {
 			return;
 		}
 
-		if (!check(state)) {
-			return;
-		}
-
 		panelState = state;
+		
+		mutexPanel();
 		loadData();
 		changeTitle();
 		buttonConfig();
@@ -159,8 +165,14 @@ public class UninstallTabPanel extends JPanel implements ActionListener {
 		changeCardPanel();
 	}
 
-	public boolean check(int state) {
-		return true;
+	private void mutexPanel() {
+		if (parentPane != null) {
+			if (panelState != panelOrder.OVERVIEW.ordinal()) {
+				parentPane.setEnabledAt(mutexTarget, false);
+			} else {
+				parentPane.setEnabledAt(mutexTarget, true);
+			}
+		}
 	}
 
 	public void loadData() {

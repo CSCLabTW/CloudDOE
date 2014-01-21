@@ -329,9 +329,11 @@ public class HadoopInstall extends JFrame {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setTitle("CloudDOE - Deploy Wizard");
 
-		UnistallPanel = new UninstallTabPanel();
-		
 		TagPanel = new JTabbedPane();
+		
+		UnistallPanel = new UninstallTabPanel();
+		UnistallPanel.setMutex(TagPanel, tabOrder.INSTALL.ordinal());
+		
 		TagPanel.add("Installation", getInstallPanel());
 		TagPanel.add("Uninstallation", UnistallPanel);
 		TagPanel.add("About", new AboutPanel());
@@ -411,6 +413,13 @@ public class HadoopInstall extends JFrame {
 	public void CardPageChanged() {
 		CardTitle.setText("<HTML><FONT SIZE=6>" + StepTitle[StepState]
 				+ "</FONT></HTML>");
+		
+		if(StepState > 0) {
+			TagPanel.setEnabledAt(tabOrder.UNINSTALL.ordinal(), false);
+		} else {
+			TagPanel.setEnabledAt(tabOrder.UNINSTALL.ordinal(), true);
+		}
+		
 		switch (StepState) {
 		case 1:
 			DrawFrame.showNN();
