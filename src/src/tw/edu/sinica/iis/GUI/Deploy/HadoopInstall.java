@@ -30,6 +30,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.border.EtchedBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import javax.swing.text.DefaultCaret;
@@ -44,14 +46,17 @@ import tw.edu.sinica.iis.SSHadoop.SSHadoopCmd;
 
 public class HadoopInstall extends JFrame {
 	private static final long serialVersionUID = 1230711203L;
-
+	
+	private enum tabOrder { INSTALL, UNINSTALL, ABOUT };
+	
 	public JPanel RPanel;
 	public NodeConfigPanel NPanel;
 	public StepProgressPanel SPanel;
 	public BridgeConfigPanel BPanel;
 
 	public FlowChatCanvas DrawFrame;
-
+	public UninstallTabPanel UnistallPanel = null;
+	
 	public JTabbedPane TagPanel;
 	public JButton StartButton;
 	public JTextArea InstallArea;
@@ -324,11 +329,30 @@ public class HadoopInstall extends JFrame {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setTitle("CloudDOE - Deploy Wizard");
 
+		UnistallPanel = new UninstallTabPanel();
+		
 		TagPanel = new JTabbedPane();
-
 		TagPanel.add("Installation", getInstallPanel());
+		TagPanel.add("Uninstallation", UnistallPanel);
 		TagPanel.add("About", new AboutPanel());
+		TagPanel.addChangeListener(new ChangeListener() {
 
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                if (e.getSource() instanceof JTabbedPane) {
+                    JTabbedPane pane = (JTabbedPane) e.getSource();
+                    int index = pane.getSelectedIndex();
+                    if(index==tabOrder.INSTALL.ordinal()){
+                    	DrawFrame.start();
+                    	UnistallPanel.DrawingPanel.stop();
+                    }else if(index==tabOrder.UNINSTALL.ordinal()){
+                    	UnistallPanel.DrawingPanel.start();
+                    	DrawFrame.stop();
+                    }
+                }
+            }
+        });
+		
 		setState(-1);
 		CardPageChanged();
 
@@ -642,6 +666,7 @@ public class HadoopInstall extends JFrame {
 			public void run() {
 				HadoopInstall tmp = new HadoopInstall();
 				tmp.DrawFrame.start();
+				tmp.UnistallPanel.DrawingPanel.start();
 			}
 		});
 
