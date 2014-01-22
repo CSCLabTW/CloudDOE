@@ -85,11 +85,11 @@ for dn_ip in $DN_IP; do
 done
 
 echo "---- [Stage 1 at $NN_IP] ----";
-# Data in NN is not removed now
-
-echo "---- [Congrats] Your Hadoop cluster is successfully removed ----"
+# Data in NN will be removed from GUI
 
 ### Finish Installation ###
+echo "---- [Congrats] Your Hadoop cluster is successfully removed ----"
+sleep 5
 rm $PID_FILE; exit
 
 # vim: ai ts=2 sw=2 et sts=2 ft=sh
