@@ -58,8 +58,8 @@ public class UninstallTabPanel extends JPanel implements ActionListener {
 	};
 
 	public String[] panelTitle = { "Overview",
-			"Step 1. Access Information of NameNode",
-			"Step 2. Hadoop Cluster Undeployment" };
+			"Step 1. Connect to Name Node",
+			"Step 2. Hadoop Cloud Undeployment" };
 
 	private int panelState = 0;
 
@@ -257,15 +257,15 @@ public class UninstallTabPanel extends JPanel implements ActionListener {
 			jep.setBackground(RPanel.getBackground());
 			jep.setContentType("text/html");
 			jep.setText("<HTML><B>"
-					+ "CloudDOE undeplyment tool helps you to undeploy a Hadoop cloud. This tool will perform following actions:"
+					+ "CloudDOE undeploy tool helps you to uninstall the Hadoop Cloud installed by CloudDOE. This tool will perform the following actions:"
 					+ "<UL><LI>Stop Hadoop services</LI>"
-					+ "<LI>Uninstall Hadoop platform</LI>"
+					+ "<LI>Uninstall Hadoop environment</LI>"
 					+ "<LI>Restore configurations</LI>"
 					+ "</UL><BR>"
 					+ "Note that"
-					+ "<UL><LI>This tool is only used for Hadoop cloud deployed by CloudDOE, or there will be errors during uninstallation</LI>"
-					+ "<LI>This tool will read configurations stored during last deployment as default settings</LI>"
-					+ "<LI>The uninsttallation procedures cannot be undone, cancel or stop</LI>"
+					+ "<UL><LI>There will be errors in using the tool to undeploy a Hadoop Cloud installed by other procedures.</LI>"
+					+ "<LI>This tool will read configurations stored on last deployment as default settings.</LI>"
+					+ "<LI>The uninsttallation procedures cannot be undone, cancelled or stoped.</LI>"
 					+ "</UL>" + "</B></HTML>");
 			RPanel.add(jep);
 		}
@@ -350,7 +350,7 @@ public class UninstallTabPanel extends JPanel implements ActionListener {
 
 				if (!succ) {
 					JOptionPane.showMessageDialog(null,
-							"Connect to NameNode failed.");
+							"Connect to Name Node failed.");
 					setState(threadState.IDLE);
 					return;
 				}

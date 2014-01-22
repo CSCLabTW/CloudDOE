@@ -65,9 +65,9 @@ public class HadoopInstall extends JFrame {
 	public JButton NextButton;
 	public JButton BackButton;
 	public String[] StepTitle = { "Overview",
-			"Step 1. Access Information of Name Node",
-			"Step 2. Access Information of Data Nodes",
-			"Step 3. Hadoop Cluster Deployment" };
+			"Step 1. Connect to Name Node",
+			"Step 2. Hadoop Cloud Configuration",
+			"Step 3. Hadoop Cloud Deployment" };
 	public JLabel CardTitle;
 	public int StepState = 0;
 
@@ -208,7 +208,7 @@ public class HadoopInstall extends JFrame {
 			public void run() {
 				NodeStructure master = getMaster();
 				if (master == null) {
-					JOptionPane.showMessageDialog(null, "No NameNode found.");
+					JOptionPane.showMessageDialog(null, "No Name Node found.");
 					setState(-1);
 					return;
 				}
@@ -229,14 +229,14 @@ public class HadoopInstall extends JFrame {
 					try {
 						sshShell.call();
 					} catch (Exception e) {
-						JOptionPane.showMessageDialog(null, "error.");
+						JOptionPane.showMessageDialog(null, "Error occurs.");
 						setState(-1);
 					}
 
 					setState(2);
 				} else {
 					JOptionPane.showMessageDialog(null,
-							"Connect to NameNode failed.");
+							"Connect to Name Node failed.");
 					setState(-1);
 					return;
 				}
@@ -256,7 +256,7 @@ public class HadoopInstall extends JFrame {
 				getInstallArea().setText(log);
 			}
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "error.");
+			JOptionPane.showMessageDialog(null, "Error occurs.");
 			setState(-1);
 		}
 	}
@@ -299,7 +299,7 @@ public class HadoopInstall extends JFrame {
 				return true;
 			}
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "error.");
+			JOptionPane.showMessageDialog(null, "Error occurs.");
 			setState(-1);
 		}
 
@@ -551,11 +551,11 @@ public class HadoopInstall extends JFrame {
 		if (SPanel == null) {
 			SPanel = new StepProgressPanel();
 			SPanel.addStep(new StepProgressLabel(
-					"Step1. Generate configurations...", 20));
+					"Step1. Generating configurations...", 20));
 			SPanel.addStep(new StepProgressLabel(
-					"Step2. Prepare for installation...", 20));
+					"Step2. Preparing installation...", 20));
 			SPanel.addStep(new StepProgressLabel(
-					"Step3. Installing Hadoop...", 20));
+					"Step3. Deploying Hadoop Cloud...", 20));
 
 		}
 		return SPanel;
@@ -572,7 +572,7 @@ public class HadoopInstall extends JFrame {
 	public BridgeConfigPanel getBPanel() {
 		if (BPanel == null) {
 			BPanel = new BridgeConfigPanel();
-			BPanel.setLabelText("Please provide access information of NameNode as follows.");
+			BPanel.setLabelText("Please provide access information of Name Node as follows.");
 		}
 		return BPanel;
 	}
@@ -588,14 +588,14 @@ public class HadoopInstall extends JFrame {
 			jep.setEditable(false);
 			jep.setBackground(RPanel.getBackground());
 			jep.setContentType("text/html");
-			jep.setText("<HTML><B>CloudDOE Deploy tool is an easy-to-use wizard to install <a href='http://wiki.apache.org/hadoop/HadoopMapReduce'>Hadoop</a>"+
-					" platform and deploy a Hadoop cloud on a cluster of PCs running <a href='http://www.ubuntu.com/'>Ubuntu</a> Linux.<BR><BR>"+
+			jep.setText("<HTML><B>CloudDOE Deploy tool is an easy-to-use wizard to install and configure a <a href='http://wiki.apache.org/hadoop/HadoopMapReduce'>Hadoop</a>"+
+					" Cloud on a cluster of PCs running <a href='http://www.ubuntu.com/'>Ubuntu</a> Linux.<BR><BR>"+
 					"Note that:"
 					+ "<UL><LI>CloudDOE assumes that each PCs has access to the Internet to download Hadoop and Java packages from their official sites.</LI>"
-					+ "<LI>CloudDOE requires access information of PCs of the cluster, e.g., privileged username and password, and IP address, for deploying a Hadoop cloud.</LI>"
+					+ "<LI>CloudDOE requires access information of PCs of the cluster, i.e., privileged username and password, and IP address, for deploying a Hadoop Cloud.</LI>"
 					+ "<LI>CloudDOE configures one of the PCs of the cluster as <a href='http://wiki.apache.org/hadoop/NameNode'>Name Node</a>, and the other PCs"
 					+ " of the cluster as <a href='http://wiki.apache.org/hadoop/DataNode'>Data Nodes</a>."
-					+ "<LI>CloudDOE will connect to the Name Node and then deploy Hadoop cloud from it.</LI></UL>"
+					+ "<LI>CloudDOE will connect to the Name Node and then continuing to configure Hadoop Cloud.</LI></UL>"
 					+ "</B></HTML>");
 			jep.addHyperlinkListener(new HyperlinkListener() {
 				
@@ -629,11 +629,11 @@ public class HadoopInstall extends JFrame {
 				public void actionPerformed(ActionEvent arg0) {
 					if (getNPanel().TableContent.Content.size() < 1) {
 						JOptionPane.showMessageDialog(null,
-								"Cluster node list is empty.");
+								"Cloud Node list is empty.");
 						return;
 					}
 					if (getMaster() == null) {
-						JOptionPane.showMessageDialog(null, "No NameNode.");
+						JOptionPane.showMessageDialog(null, "No Name Node.");
 						return;
 					}
 					int r = JOptionPane
