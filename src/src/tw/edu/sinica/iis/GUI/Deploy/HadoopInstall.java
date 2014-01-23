@@ -592,11 +592,11 @@ public class HadoopInstall extends JFrame {
 					" Cloud on a cluster of PCs running <a href='http://www.ubuntu.com/'>Ubuntu</a> Linux.<BR><BR>"+
 					"Note that:"
 					+ "<UL><LI>CloudDOE assumes that each PCs has access to the Internet to download Hadoop and Java packages from their official sites.</LI>"
-					+ "<LI>CloudDOE requires access information of PCs of the cluster, i.e., privileged username and password, and IP address, for deploying a Hadoop Cloud.</LI>"
-					+ "<LI>CloudDOE configures one of the PCs of the cluster as master node, and the other PCs of the cluster as slave nodes."
-					+ "<UL><LI>A master node functions as <a href='http://wiki.apache.org/hadoop/NameNode'>Name Node</a> and <a href='http://wiki.apache.org/hadoop/JobTracker'>JobTracker</a>.</LI>"
-					+ "<LI>A slave node acts functions  as <a href='http://wiki.apache.org/hadoop/DataNode'>Data Node</a> and <a href='http://wiki.apache.org/hadoop/TaskTracker'>TaskTracker</a>.</LI></UL>"
-					+ "<LI>CloudDOE will connect to the master node and then continuing to configure the Hadoop Cloud.</LI></UL>"
+					+ "<LI>CloudDOE requires access information of PCs of the cluster for deploying, including privileged username and password, and IP address.</LI>"
+					+ "<LI>CloudDOE configures one of the PCs of the cluster as Master Node (<a href='http://wiki.apache.org/hadoop/NameNode'>NameNode</a> and"
+					+ " <a href='http://wiki.apache.org/hadoop/JobTracker'>JobTracker</a>), and the other PCs of the cluster as Slave Nodes"
+					+ " (<a href='http://wiki.apache.org/hadoop/DataNode'>DataNode</a> and <a href='http://wiki.apache.org/hadoop/TaskTracker'>TaskTracker</a>)."
+					+ "<LI>CloudDOE will connect to the Master Node and then continuing to configure the Hadoop Cloud.</LI></UL>"
 					+ "</B></HTML>");
 			jep.addHyperlinkListener(new HyperlinkListener() {
 				
@@ -615,6 +615,7 @@ public class HadoopInstall extends JFrame {
 					}
 				}
 			});
+
 			RPanel.add(jep);
 		}
 		return RPanel;
