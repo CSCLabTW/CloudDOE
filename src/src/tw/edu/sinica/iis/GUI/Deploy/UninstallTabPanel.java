@@ -58,7 +58,7 @@ public class UninstallTabPanel extends JPanel implements ActionListener {
 	};
 
 	public String[] panelTitle = { "Overview",
-			"Step 1. Connect to Name Node",
+			"Step 1. Hadoop Cloud Connection",
 			"Step 2. Hadoop Cloud Undeployment" };
 
 	private int panelState = 0;
@@ -214,7 +214,7 @@ public class UninstallTabPanel extends JPanel implements ActionListener {
 	public BridgeConfigPanel getBPanel() {
 		if (BPanel == null) {
 			BPanel = new BridgeConfigPanel();
-			BPanel.setLabelText("Please provide access information of Name Node as follows:");
+			BPanel.setLabelText("Please provide access information of the Master Node as follows.");
 		}
 		return BPanel;
 	}
@@ -350,7 +350,7 @@ public class UninstallTabPanel extends JPanel implements ActionListener {
 
 				if (!succ) {
 					JOptionPane.showMessageDialog(null,
-							"Connect to Name Node failed.");
+							"Connect to Master Node failed.");
 					setState(threadState.IDLE);
 					return;
 				}

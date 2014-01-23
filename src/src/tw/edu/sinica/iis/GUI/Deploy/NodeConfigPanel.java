@@ -60,7 +60,7 @@ public class NodeConfigPanel extends JPanel {
 		JPanel tmp = new JPanel();
 		tmp.setLayout(new BorderLayout());
 		tmp.setBorder(BorderFactory.createEmptyBorder(10, 5, 0, 5));
-		tmp.add(new JLabel("<HTML><FONT color='#FF0000'>Data Nodes</FONT></HTML>"),BorderLayout.LINE_START);
+		tmp.add(new JLabel("<HTML><FONT color='#FF0000'>Slave Nodes</FONT></HTML>"),BorderLayout.LINE_START);
 		DNpanel.add(tmp);
 		DNpanel.add(getUpPanel());
 		DNpanel.add(getTablePanel());
@@ -73,12 +73,12 @@ public class NodeConfigPanel extends JPanel {
 	public JPanel getNNPanel(){
 		JPanel NNPanel = new JPanel();
 		NNPanel.setLayout(new BoxLayout(NNPanel, BoxLayout.PAGE_AXIS));
-//		NNPanel.setBorder(BorderFactory.createTitledBorder("Name Node"));
+//		NNPanel.setBorder(BorderFactory.createTitledBorder("Master Node"));
 		
 		JPanel title = new JPanel();
 		title.setLayout(new BorderLayout());
 		title.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-		title.add(new JLabel("<HTML><FONT color='#FF0000'>IP of the Name Node</FONT></HTML>"),BorderLayout.LINE_START);
+		title.add(new JLabel("<HTML><FONT color='#FF0000'>IP of the Master Node</FONT></HTML>"),BorderLayout.LINE_START);
 		NNPanel.add(title);
 		
 		FocusAdapter fa = new FocusAdapter() {

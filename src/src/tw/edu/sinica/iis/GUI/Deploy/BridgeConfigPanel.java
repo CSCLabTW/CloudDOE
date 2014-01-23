@@ -192,13 +192,13 @@ public class BridgeConfigPanel extends JPanel{
 			Des.setBackground(this.getBackground());
 			Des.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 			Des.append("Setting for Your PC connection\n");
-			Des.append("Your PC will use this setting connecting to Name Node for MapReduce installation.\n");
-			Des.append("Please ensure Your PC has directly access to Name Node with this setting.\n");
+			Des.append("Your PC will use this setting connecting to the Master Node for MapReduce installation.\n");
+			Des.append("Please ensure Your PC has directly access to the Master Node with this setting.\n");
 			Des.append("\n");
 			Des.append("Setting for Data Node connection\n");
 			Des.append("Data Node will use this setting to form a Hadoop cluster.\n");
 			Des.append("MapReduce-related services and web monitoring pages will be constructed based on this setting.\n");
-			Des.append("Please ensure all data nodes have directly access to Name Node.\n");
+			Des.append("Please ensure all data nodes have directly access to the Master Node.\n");
 		
 		}
 		

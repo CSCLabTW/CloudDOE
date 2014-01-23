@@ -41,7 +41,7 @@ public class LoginPanel extends JPanel{
 		JPanel nPanel = new JPanel();
 		nPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 		nPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-		JLabel title = new JLabel("Login");
+		JLabel title = new JLabel("Login to Master Node");
 		title.setFont(title.getFont().deriveFont(24f));
 		nPanel.add(title);
 		return nPanel;
