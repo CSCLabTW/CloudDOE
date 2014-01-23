@@ -81,7 +81,7 @@ public class HadoopInstall extends JFrame {
 	private static final String KEYPATH = CONFIGPATH + File.separator
 			+ "common";
 	private static final String KEYNAME = "hadoop";
-	private static final String KEYCOMT = "hadoop@CloudBrush";
+	private static final String KEYCOMT = "hadoop@CloudDOE";
 	private static final String STATEFILENAME = "_setting";
 
 	private static final String BINLOCATION = "~/workspace/bin";
