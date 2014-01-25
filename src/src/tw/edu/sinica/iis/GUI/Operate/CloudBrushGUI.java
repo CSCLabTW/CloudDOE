@@ -399,11 +399,19 @@ public class CloudBrushGUI extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
+				// Load NP file first
 				String NNFile = TextExtractor.getFileText(new File("workspace"
 						+ File.separator + "config" + File.separator + "common"
-						+ File.separator + "NN"));
-				if (NNFile.length() > 1) {
+						+ File.separator + "NP"));
+				
+				// Load NN file if there is no NP file
+				if (NNFile.length() == 0) {
+					NNFile = TextExtractor.getFileText(new File("workspace"
+							+ File.separator + "config" + File.separator + "common"
+							+ File.separator + "NN"));
+				}
+				
+				if(NNFile.length() > 1) {
 					String[] sp = NNFile.split("\t");
 					if (sp.length == 3) {
 						cPanel.ipText.setText(sp[0]);
