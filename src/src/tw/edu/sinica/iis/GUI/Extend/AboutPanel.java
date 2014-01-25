@@ -94,7 +94,7 @@ public class AboutPanel extends JPanel {
 		line4.setBounds(paddingLeft, paddingTop, 380, 20);
 		line4.setForeground(Color.BLUE);
 		line4.setFont(tmpFont2);
-		line4.setText("Hadoop cluster through CloudBrushPack.");
+		line4.setText("Hadoop cluster through CloudDOE.");
 		this.add(line4);
 		paddingTop += line4.getHeight();
 
