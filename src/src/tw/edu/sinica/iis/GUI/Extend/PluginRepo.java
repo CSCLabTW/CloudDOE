@@ -14,6 +14,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
+import tw.edu.sinica.iis.GUI.Operate.TextExtractor;
 import tw.edu.sinica.iis.SSHadoop.SSHSession;
 import tw.edu.sinica.iis.SSHadoop.SSHSftp;
 import tw.edu.sinica.iis.SSHadoop.SSHadoopCmd;
@@ -119,6 +120,35 @@ public class PluginRepo extends JFrame{
 						connDialog.dispose();
 					}
 				}).start();
+			}
+		});
+		
+		lPanel.LoadBt.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// Load NP file first
+				String NNFile = TextExtractor.getFileText(new File("workspace"
+						+ File.separator + "config" + File.separator + "common"
+						+ File.separator + "NP"));
+				
+				// Load NN file if there is no NP file
+				if (NNFile.length() == 0) {
+					NNFile = TextExtractor.getFileText(new File("workspace"
+							+ File.separator + "config" + File.separator + "common"
+							+ File.separator + "NN"));
+				}
+				
+				if(NNFile.length() > 1) {
+					String[] sp = NNFile.split("\t");
+					if (sp.length == 3) {
+						lPanel.IPTF.setText(sp[0]);
+						lPanel.USNTF.setText(sp[1]);
+						lPanel.PSWTF.setText(sp[2]);
+					}
+				} else {
+					JOptionPane
+							.showMessageDialog(null, "Can not find NN file.");
+				}
 			}
 		});
 		

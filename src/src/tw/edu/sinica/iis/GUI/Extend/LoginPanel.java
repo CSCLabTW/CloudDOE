@@ -20,7 +20,7 @@ public class LoginPanel extends JPanel{
 	 */
 	private static final long serialVersionUID = 91252934298L;
 
-	public JButton ConnectBt;
+	public JButton ConnectBt, LoadBt;
 	public JTextField IPTF;
 	public JTextField PTTF;
 	public JTextField USNTF;
@@ -51,6 +51,9 @@ public class LoginPanel extends JPanel{
 		JPanel sPanel = new JPanel();
 		sPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 		sPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+		
+		LoadBt = new JButton("Load");
+		sPanel.add(LoadBt);
 		
 		ConnectBt = new JButton("Connect");
 		sPanel.add(ConnectBt);
