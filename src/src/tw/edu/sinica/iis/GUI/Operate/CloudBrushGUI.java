@@ -412,7 +412,7 @@ public class CloudBrushGUI extends JPanel {
 				}
 				
 				if(NNFile.length() > 1) {
-					String[] sp = NNFile.split("\t");
+					String[] sp = NNFile.replace("\n", "").split("\t");
 					if (sp.length == 3) {
 						cPanel.ipText.setText(sp[0]);
 						cPanel.IDText.setText(sp[1]);
