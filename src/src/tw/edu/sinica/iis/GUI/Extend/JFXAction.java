@@ -12,7 +12,7 @@ public class JFXAction {
 	
 	private final String protocol = "cbppi://";
 	private final String shscript = ".sh";
-	private final String CBPURL   = "http://cloudbrush.iis.sinica.edu.tw/plugins/";
+	private final String CBPURL   = "http://clouddoe.iis.sinica.edu.tw/plugins/";
 	
 	private String cbppiToURL(final String internalURI) {
 		String url = null;

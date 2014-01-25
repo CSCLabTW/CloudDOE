@@ -31,7 +31,7 @@ public class WebPanel extends JPanel {
 
 	private static final long serialVersionUID = 2341954265L;
 	
-	private static final String repoURL = "http://cloudbrush.iis.sinica.edu.tw/plugin.html";
+	private static final String repoURL = "http://clouddoe.iis.sinica.edu.tw/plugin.html";
 
 	public JPanel webView;
 	public JLabel webTitle;
