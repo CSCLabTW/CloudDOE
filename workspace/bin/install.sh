@@ -38,6 +38,7 @@ userPass() {
 
 ### Start Installation ###
 echo $$ > $PID_FILE
+sleep 5
 
 ### Check for configuration files ###
 if [ ! -f $NNFILE ] || [ ! -f $DNFILE ]; then
