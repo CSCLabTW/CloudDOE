@@ -126,16 +126,16 @@ public class SSHadoopCmd {
 		return serverSpecialCmd + "; " + hdpCmd.job_status + " " + jobId;
 	}
 
-	public String CBStatus(final String workDir) {
-		return cmd.cat + userBase + workDir + "/brush.log";
+	public String CBStatus(final String workDir, final String logFile) {
+		return cmd.cat + userBase + workDir + "/" + logFile;
 	}
 
-	public String CBStepAndId(final String workDir, final int tailLineCnt) {
+	public String CBStepAndId(final String workDir, final String logFile, final int tailLineCnt) {
 		String count = "";
 		if (tailLineCnt > 0) {
 			count = "-n " + tailLineCnt + " ";
 		}
-		return cmd.tail + count + userBase + workDir + "/brush.details.log";
+		return cmd.tail + count + userBase + workDir + "/" + logFile;
 	}
 
 	public String CBKillJob(final String UID) {

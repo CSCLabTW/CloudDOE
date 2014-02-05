@@ -1125,7 +1125,7 @@ public class CloudBrushGUI extends JPanel {
 
 		public CBStatus isJobDone() {
 			Callable<String> channel2 = new SSHExec(HadoopSession.getSession(),
-					HadoopCmd.CBStatus(monitorName));
+					HadoopCmd.CBStatus(monitorName, "brush.log"));
 			CBStatus cbs = CBStatus.DEFAULT;
 
 			FutureTask<String> futureTask2 = new FutureTask<String>(channel2);
@@ -1152,7 +1152,7 @@ public class CloudBrushGUI extends JPanel {
 		public String[] getJobNameID() {
 
 			Callable<String> channel3 = new SSHExec(HadoopSession.getSession(),
-					HadoopCmd.CBStepAndId(monitorName, 80));
+					HadoopCmd.CBStepAndId(monitorName, "brush.details.log", 80));
 
 			String toolNameAndJobId[] = { "", "", "" };
 
