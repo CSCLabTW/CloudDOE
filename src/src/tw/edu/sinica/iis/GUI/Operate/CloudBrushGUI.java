@@ -771,12 +771,10 @@ public class CloudBrushGUI extends JPanel {
 	}
 
 	public boolean HDFSInitial() {
-		File tmp = new File("workspace/main");
-
 		SSHSftp sftp = new SSHSftp(ID, Ip);
 		sftp.setSSHPass(Password);
 		sftp.initSftp();
-		sftp.sftpUpload(tmp.getAbsolutePath(), UID + File.separator + "main");
+		sftp.sftpUpload(new File("workspace" + File.separator + "main").getAbsolutePath(), UID + "/main");
 
 		initialed = "done";
 		updateProperties();
@@ -798,8 +796,7 @@ public class CloudBrushGUI extends JPanel {
 		SSHSftp sftp = new SSHSftp(ID, Ip);
 		sftp.setSSHPass(Password);
 		sftp.initSftp();
-		sftp.sftpUpload(path.getAbsolutePath(), UID + File.separator + "data/"
-				+ path.getName());
+		sftp.sftpUpload(path.getAbsolutePath(), UID + "/data/" + path.getName());
 
 		Callable<String> channel = new SSHExec(HadoopSession.getSession(),
 				HadoopCmd.moveFromLocalHdp("data/" + path.getName(), "data/"
