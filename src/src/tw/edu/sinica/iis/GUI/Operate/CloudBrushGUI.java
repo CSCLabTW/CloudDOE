@@ -435,9 +435,9 @@ public class CloudBrushGUI extends JPanel {
 			public void actionPerformed(ActionEvent arg0) {
 				JFileChooser fc = new JFileChooser();
 				fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
-				fc.setFileFilter(new ExtensionFileFilter(new String[] {
-						".fastq", ".sfq" }, "Sequence files (*.fastq|sfq)"));
-				fc.setAcceptAllFileFilterUsed(false);
+//				fc.setFileFilter(new ExtensionFileFilter(new String[] {
+//						".fastq", ".sfq" }, "Sequence files (*.fastq|sfq)"));
+//				fc.setAcceptAllFileFilterUsed(false);
 
 				int returnVal = fc.showDialog(CloudBrushGUI.this, "Upload");
 				String path = "";
@@ -467,14 +467,14 @@ public class CloudBrushGUI extends JPanel {
 					}).start();
 
 					// convert
-					if (path.toLowerCase().endsWith(".fastq")) {
-						String newpath = fc.getSelectedFile().getPath();
-						newpath += fc.getSelectedFile().getName().replaceFirst(
-								".fastq", "_fastq.sfq");
-						FastqToSfq tmpConverter = new FastqToSfq(path, newpath);
-						tmpConverter.convert();
-						path = newpath;
-					}
+//					if (path.toLowerCase().endsWith(".fastq")) {
+//						String newpath = fc.getSelectedFile().getPath();
+//						newpath += fc.getSelectedFile().getName().replaceFirst(
+//								".fastq", "_fastq.sfq");
+//						FastqToSfq tmpConverter = new FastqToSfq(path, newpath);
+//						tmpConverter.convert();
+//						path = newpath;
+//					}
 					// ----
 					final File upFile = new File(path);
 					new Thread(new Runnable() {
