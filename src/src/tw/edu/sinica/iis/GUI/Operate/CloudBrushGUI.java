@@ -433,7 +433,7 @@ public class CloudBrushGUI extends JPanel {
 		uPanel.UploadButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				JFileChooser fc = new JFileChooser();
+				JFileChooser fc = new JFileChooser(new File("workspace" + File.separator + "data"));
 				fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
 //				fc.setFileFilter(new ExtensionFileFilter(new String[] {
 //						".fastq", ".sfq" }, "Sequence files (*.fastq|sfq)"));
