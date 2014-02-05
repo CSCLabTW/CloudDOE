@@ -119,7 +119,7 @@ public class CloudBrushGUI extends JPanel {
 				: System.getProperty("user.name");
 		UID = System.currentTimeMillis() + "_" + un;
 		String defPro = "UID=" + UID + "\r\n" + INITIALED + "=no";
-		TextExtractor.textToFileUTF8(System.getProperty("user.dir")
+		TextExtractor.textToFileUTF8(new File("").getAbsolutePath()
 				+ File.separator + PROPERTYNAME, defPro);
 	}
 
