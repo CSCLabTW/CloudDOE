@@ -16,6 +16,7 @@ public class SSHadoopCmd {
 		final static String grep = "grep ";
 		final static String mkdir = "mkdir ";
 		final static String pkill = "pkill ";
+		final static String touch = "touch ";
 	}
 
 	private class hdpCmd {
@@ -70,6 +71,14 @@ public class SSHadoopCmd {
 			recurMode = "-p ";
 		}
 		return cmd.mkdir + recurMode + userBase + filePath;
+	}
+	
+	public String touch(final String filePath) {
+		return cmd.touch + userBase + filePath;
+	}
+	
+	public String rm(final String filePath) {
+		return cmd.rm + userBase + filePath;
 	}
 
 	public String lsHdp(final String dir) {

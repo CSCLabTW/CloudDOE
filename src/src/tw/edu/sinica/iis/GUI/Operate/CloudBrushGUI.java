@@ -19,10 +19,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
-import javax.swing.JTable;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
+import tw.edu.sinica.iis.GUI.Operate.XMLConfigParser.DownloadItem;
+import tw.edu.sinica.iis.GUI.Operate.XMLConfigParser.downloadType;
+import tw.edu.sinica.iis.GUI.Operate.XMLConfigParser.logType;
+import tw.edu.sinica.iis.GUI.Operate.XMLConfigParser.paramType;
 import tw.edu.sinica.iis.SSHadoop.SSHCBRun;
 import tw.edu.sinica.iis.SSHadoop.SSHExec;
 import tw.edu.sinica.iis.SSHadoop.SSHSession;
@@ -82,6 +83,7 @@ public class CloudBrushGUI extends JPanel {
 	public final static String JOB_PARAS = "JOB_PARAS";
 
 	public final static String HDFS_FILES = "HDFS_FILES";
+	public final static String LOAD_PROG = "LOAD_PROG";
 
 	public final static String SPECIALCMD = "source /etc/profile; export PATH=$PATH:/opt/hadoop/bin";
 
@@ -98,6 +100,7 @@ public class CloudBrushGUI extends JPanel {
 	public String job_result;
 
 	public String job_paras_label;
+	public String load_prog_xml;
 
 	public LinkedList<String> fileList;
 
@@ -148,11 +151,15 @@ public class CloudBrushGUI extends JPanel {
 		job_result = PropertyUtility.readValue(PROPERTYNAME, JOB_RESULT) == null ? ""
 				: PropertyUtility.readValue(PROPERTYNAME, JOB_RESULT);
 
-		job_paras_label = PropertyUtility.readValue(PROPERTYNAME, JOB_PARAS) == null ? "0;0"
+		job_paras_label = PropertyUtility.readValue(PROPERTYNAME, JOB_PARAS) == null ? ""
 				: PropertyUtility.readValue(PROPERTYNAME, JOB_PARAS);
+
+		load_prog_xml = PropertyUtility.readValue(PROPERTYNAME, LOAD_PROG) == null ? ""
+				: PropertyUtility.readValue(PROPERTYNAME, LOAD_PROG);
 
 		String RemoteFiles = PropertyUtility
 				.readValue(PROPERTYNAME, HDFS_FILES);
+
 		fileList = new LinkedList<String>();
 		if (RemoteFiles != null && !"".equals(RemoteFiles)) {
 			String[] sp = RemoteFiles.split(";");
@@ -175,12 +182,17 @@ public class CloudBrushGUI extends JPanel {
 		PropertyUtility.writeProperties(PROPERTYNAME, JOB_PARAS,
 				job_paras_label);
 
+		if (rPanel != null) {
+			load_prog_xml = rPanel.programConf;
+			PropertyUtility.writeProperties(PROPERTYNAME, LOAD_PROG,
+					load_prog_xml);
+		}
+
 		String RemoteFiles = "";
 		for (int i = 0; i < fileList.size(); i++) {
 			RemoteFiles += fileList.get(i) + ";";
 		}
 		PropertyUtility.writeProperties(PROPERTYNAME, HDFS_FILES, RemoteFiles);
-		// System.out.println("updated.");
 	}
 
 	// -----------------------------------------
@@ -212,8 +224,10 @@ public class CloudBrushGUI extends JPanel {
 			cPanel.loadButton.setEnabled(false);
 			cPanel.connectButton.setText("Disconnect");
 
-			for (int i = 0; i < rPanel.ParameterText.length; i++) {
-				rPanel.ParameterText[i].setEnabled(false);
+			if (rPanel.ParameterText != null) {
+				for (int i = 0; i < rPanel.ParameterText.length; i++) {
+					rPanel.ParameterText[i].setEnabled(false);
+				}
 			}
 			rPanel.HadoopBar.setString("Refreshing Status...");
 			rPanel.ResultDownload.setEnabled(false);
@@ -233,8 +247,10 @@ public class CloudBrushGUI extends JPanel {
 			cPanel.loadButton.setEnabled(false);
 			cPanel.connectButton.setText("Disconnect");
 
-			for (int i = 0; i < rPanel.ParameterText.length; i++) {
-				rPanel.ParameterText[i].setEnabled(true);
+			if (rPanel.ParameterText != null) {
+				for (int i = 0; i < rPanel.ParameterText.length; i++) {
+					rPanel.ParameterText[i].setEnabled(true);
+				}
 			}
 			rPanel.ResultDownload.setEnabled(true);
 			rPanel.ResultClear.setEnabled(true);
@@ -253,8 +269,10 @@ public class CloudBrushGUI extends JPanel {
 			cPanel.loadButton.setEnabled(false);
 			cPanel.connectButton.setText("Disconnect");
 
-			for (int i = 0; i < rPanel.ParameterText.length; i++) {
-				rPanel.ParameterText[i].setEnabled(true);
+			if (rPanel.ParameterText != null) {
+				for (int i = 0; i < rPanel.ParameterText.length; i++) {
+					rPanel.ParameterText[i].setEnabled(true);
+				}
 			}
 			rPanel.ResultDownload.setEnabled(false);
 			rPanel.ResultClear.setEnabled(false);
@@ -285,13 +303,16 @@ public class CloudBrushGUI extends JPanel {
 		Tabs.addTab("Connect", cPanel);
 		uPanel = new UploadPanel();
 		Tabs.addTab("Upload", uPanel);
-		rPanel = new RunPanel();
+		rPanel = new RunPanel(load_prog_xml);
 		Tabs.addTab("Run", rPanel);
 		aPanel = new AboutPanel();
+
 		// TODO: clean up
 		JScrollPane scrollPane = new JScrollPane(new AboutPanel());
-		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+		scrollPane
+				.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+		scrollPane
+				.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		scrollPane.setPreferredSize(new Dimension(400, 300));
 		Tabs.addTab("About", scrollPane);
 
@@ -323,12 +344,14 @@ public class CloudBrushGUI extends JPanel {
 
 					// check ip changed
 					if (Ip.length() > 1 && !Ip.equals(cPanel.ipText.getText())) {
-						int ans = JOptionPane.showConfirmDialog(CloudBrushGUI.this,
-								"Warning!\nYou're trying to login into another Hadoop cluster with\n an existed connection settings. All the settings will\n be erased when you click OK.");
+						int ans = JOptionPane
+								.showConfirmDialog(
+										CloudBrushGUI.this,
+										"Warning!\nYou're trying to login into another Hadoop cluster with\n an existed connection settings. All the settings will\n be erased when you click OK.");
 						if (ans == JOptionPane.OK_OPTION) {
 							initialPropertyFile();
 							readProperties();
-						}else{
+						} else {
 							return;
 						}
 					}
@@ -353,6 +376,7 @@ public class CloudBrushGUI extends JPanel {
 							progressDialog.setVisible(true);
 						}
 					}).start();
+
 					new Thread(new Runnable() {
 						@Override
 						public void run() {
@@ -403,15 +427,15 @@ public class CloudBrushGUI extends JPanel {
 				String NNFile = TextExtractor.getFileText(new File("workspace"
 						+ File.separator + "config" + File.separator + "common"
 						+ File.separator + "NP"));
-				
+
 				// Load NN file if there is no NP file
 				if (NNFile.length() == 0) {
 					NNFile = TextExtractor.getFileText(new File("workspace"
-							+ File.separator + "config" + File.separator + "common"
-							+ File.separator + "NN"));
+							+ File.separator + "config" + File.separator
+							+ "common" + File.separator + "NN"));
 				}
-				
-				if(NNFile.length() > 1) {
+
+				if (NNFile.length() > 1) {
 					String[] sp = NNFile.replace("\n", "").split("\t");
 					if (sp.length == 3) {
 						cPanel.ipText.setText(sp[0]);
@@ -433,11 +457,12 @@ public class CloudBrushGUI extends JPanel {
 		uPanel.UploadButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				JFileChooser fc = new JFileChooser(new File("workspace" + File.separator + "data"));
+				JFileChooser fc = new JFileChooser(new File("workspace"
+						+ File.separator + "data"));
 				fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
-//				fc.setFileFilter(new ExtensionFileFilter(new String[] {
-//						".fastq", ".sfq" }, "Sequence files (*.fastq|sfq)"));
-//				fc.setAcceptAllFileFilterUsed(false);
+				// fc.setFileFilter(new ExtensionFileFilter(new String[] {
+				// ".fastq", ".sfq" }, "Sequence files (*.fastq|sfq)"));
+				// fc.setAcceptAllFileFilterUsed(false);
 
 				int returnVal = fc.showDialog(CloudBrushGUI.this, "Upload");
 				String path = "";
@@ -466,16 +491,6 @@ public class CloudBrushGUI extends JPanel {
 						}
 					}).start();
 
-					// convert
-//					if (path.toLowerCase().endsWith(".fastq")) {
-//						String newpath = fc.getSelectedFile().getPath();
-//						newpath += fc.getSelectedFile().getName().replaceFirst(
-//								".fastq", "_fastq.sfq");
-//						FastqToSfq tmpConverter = new FastqToSfq(path, newpath);
-//						tmpConverter.convert();
-//						path = newpath;
-//					}
-					// ----
 					final File upFile = new File(path);
 					new Thread(new Runnable() {
 
@@ -605,13 +620,13 @@ public class CloudBrushGUI extends JPanel {
 					return;
 				}
 
-				if(!rPanel.getAndCheckParameter()){
+				if (!rPanel.getAndCheckParameter()) {
 					JOptionPane.showMessageDialog(null, "Format error!");
 					return;
 				}
-				
+
 				rPanel.HadoopBar.setString("Running");
-				job_id = jobRun(rPanel.RunParameters);
+				job_id = jobRun();
 				if (job_id != null) {
 					updateProperties();
 					StatusChange(JOB_WORKING);
@@ -734,7 +749,7 @@ public class CloudBrushGUI extends JPanel {
 
 	public void startThread() {
 		if (mThread == null || !mThread.isAlive()) {
-			mThread = new MonitorThread("log");
+			mThread = new MonitorThread(paramType.WORK.toString().toLowerCase());
 			rPanel.HadoopTotalBar.setValue(0);
 			rPanel.HadoopBar.setValue(0);
 			mThread.start();
@@ -774,7 +789,8 @@ public class CloudBrushGUI extends JPanel {
 		SSHSftp sftp = new SSHSftp(ID, Ip);
 		sftp.setSSHPass(Password);
 		sftp.initSftp();
-		sftp.sftpUpload(new File("workspace" + File.separator + "main").getAbsolutePath(), UID + "/main");
+		sftp.sftpUpload(new File("workspace" + File.separator + "main")
+				.getAbsolutePath(), UID + "/main");
 
 		initialed = "done";
 		updateProperties();
@@ -799,31 +815,10 @@ public class CloudBrushGUI extends JPanel {
 		sftp.sftpUpload(path.getAbsolutePath(), UID + "/data/" + path.getName());
 
 		Callable<String> channel = new SSHExec(HadoopSession.getSession(),
-				HadoopCmd.moveFromLocalHdp("data/" + path.getName(), "data/"
-						+ path.getName()));
-		FutureTask<String> futureTask = new FutureTask<String>(channel);
-
-		Thread thread = new Thread(futureTask);
-		thread.start();
-
-		while (true) {
-			if (futureTask.isDone()) {
-				break;
-			}
-		}
-
-		refreshFileList();
-		return true;
-	}
-
-	public boolean uploadDir(File localPath, File remotePath) {
-		SSHSftp sftp = new SSHSftp(ID, Ip);
-		sftp.setSSHPass(Password);
-		sftp.initSftp();
-		sftp.sftpUpload(localPath.getPath(), remotePath.getPath());
-
-		Callable<String> channel = new SSHExec(HadoopSession.getSession(),
-				HadoopCmd.putHdp(localPath.getName(), ""));
+				HadoopCmd.moveFromLocalHdp(
+						"data/" + path.getName(),
+						paramType.INPUT.toString().toLowerCase() + "/"
+								+ path.getName()));
 		FutureTask<String> futureTask = new FutureTask<String>(channel);
 
 		Thread thread = new Thread(futureTask);
@@ -849,7 +844,8 @@ public class CloudBrushGUI extends JPanel {
 
 			String rmFileName = fileList.get(t);
 			Callable<String> channel = new SSHExec(HadoopSession.getSession(),
-					HadoopCmd.rmrHdp("data/" + rmFileName));
+					HadoopCmd.rmrHdp(paramType.INPUT.toString().toLowerCase()
+							+ "/" + rmFileName));
 			FutureTask<String> futureTask = new FutureTask<String>(channel);
 
 			Thread thread = new Thread(futureTask);
@@ -876,7 +872,7 @@ public class CloudBrushGUI extends JPanel {
 
 		SSHadoopCmd tmpCMD = new SSHadoopCmd(UID, SPECIALCMD);
 		Callable<String> channel = new SSHExec(HadoopSession.getSession(),
-				tmpCMD.lsHdp("data"));
+				tmpCMD.lsHdp(paramType.INPUT.toString().toLowerCase() + "/"));
 		FutureTask<String> futureTask = new FutureTask<String>(channel);
 
 		Thread thread = new Thread(futureTask);
@@ -911,24 +907,27 @@ public class CloudBrushGUI extends JPanel {
 		return true;
 	}
 
-	public String jobRun(String[] args) {
-		// JOptionPane.showMessageDialog(null, args[0] + args[1] + args[2] +
-		// args[3]);
+	public String jobRun() {
 
-		if (args[0] == null || args[1] == null) {
+		if (!rPanel.getAndCheckParameter()) {
 			return null;
 		}
 
-		job_paras_label = args[0] + ";" + args[1];
-		job_result = "output";
+		job_paras_label = rPanel.xmlConfigParser.genParamValList(';');
+		job_result = paramType.OUTPUT.toString().toLowerCase();
 
-		String testCmd = HadoopCmd.jarHdp(UID + "/main/CloudBrush2.jar", "",
-				"-asm " + UID + "/" + job_result + " -reads " + UID + "/data"
-						+ " -readlen " + args[0] + " -k " + args[1] + " -work "
-						+ UID + "/log");
-		// System.out.println(testCmd);
+		String runCmd = HadoopCmd.touch(load_prog_xml.replace(".xml", ".pid"))
+				+ ";"
+				+ HadoopCmd
+						.mkdir(paramType.WORK.toString().toLowerCase(), true)
+				+ ";"
+				+ HadoopCmd.jarHdp(UID + "/main/"
+						+ rPanel.xmlConfigParser.programInfo.jarfile, "",
+						rPanel.xmlConfigParser.genProgramArgs(UID)) + ";"
+				+ HadoopCmd.rm(load_prog_xml.replace(".xml", ".pid"));
+
 		Callable<String> channel = new SSHCBRun(HadoopSession.getSession(),
-				testCmd);
+				runCmd);
 		FutureTask<String> futureTask = new FutureTask<String>(channel);
 
 		Thread thread = new Thread(futureTask);
@@ -945,15 +944,30 @@ public class CloudBrushGUI extends JPanel {
 		return jobId;
 	}
 
+	private String genDownloadCmd() {
+		String rst = "";
+
+		for (DownloadItem d : rPanel.xmlConfigParser.downloadItems) {
+			if (d.method == downloadType.GET) {
+				rst += HadoopCmd.getHdp(job_result + "/" + d.src, job_result
+						+ "/" + d.dst);
+			} else if (d.method == downloadType.GETMERGE) {
+				rst += HadoopCmd.getMergeRstHdp(job_result + "/" + d.src,
+						job_result + "/" + d.dst);
+			}
+
+			rst += ";";
+		}
+
+		return rst;
+	}
+
 	public boolean ResultDownload(JFileChooser fc) {
 		try {
 			if (job_result == null || "".equals(job_result))
 				return false;
 			Callable<String> channel = new SSHExec(HadoopSession.getSession(),
-					HadoopCmd.getMergeRstHdp(job_result, "output/output.fasta")
-							+ ";"
-							+ HadoopCmd.getHdp("output.jpeg/stats.jpg",
-									"output/stats.jpg"));
+					genDownloadCmd());
 			FutureTask<String> futureTask = new FutureTask<String>(channel);
 
 			Thread thread = new Thread(futureTask);
@@ -968,7 +982,8 @@ public class CloudBrushGUI extends JPanel {
 			SSHSftp sftp = new SSHSftp(ID, Ip);
 			sftp.setSSHPass(Password);
 			sftp.initSftp();
-			sftp.sftpDownload(UID + "/output", fc.getSelectedFile().getPath());
+			sftp.sftpDownload(UID + "/" + job_result, fc.getSelectedFile()
+					.getPath());
 			return true;
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -983,8 +998,7 @@ public class CloudBrushGUI extends JPanel {
 			return false;
 		}
 		Callable<String> channel = new SSHExec(HadoopSession.getSession(),
-				HadoopCmd.rmrHdp(job_result) + ";"
-						+ HadoopCmd.rmrHdp("output.jpeg"));
+				HadoopCmd.rmrHdp(job_result + "*"));
 		FutureTask<String> futureTask = new FutureTask<String>(channel);
 
 		Thread thread = new Thread(futureTask);
@@ -1002,15 +1016,16 @@ public class CloudBrushGUI extends JPanel {
 		SSHSftp sftp = new SSHSftp(ID, Ip);
 		sftp.setSSHPass(Password);
 		sftp.initSftp();
-		sftp.sftpDelete(UID + "/log");
-		sftp.sftpDelete(UID + "/output");
+		sftp.sftpDelete(UID + "/" + paramType.WORK.toString().toLowerCase());
+		sftp.sftpDelete(UID + "/" + paramType.OUTPUT.toString().toLowerCase());
 
 		return true;
 	}
 
 	public boolean ClearDataDir() {
 		Callable<String> channel = new SSHExec(HadoopSession.getSession(),
-				HadoopCmd.rmrHdp("data"));
+				HadoopCmd
+						.rmrHdp(paramType.INPUT.toString().toLowerCase() + "/"));
 		FutureTask<String> futureTask = new FutureTask<String>(channel);
 
 		Thread thread = new Thread(futureTask);
@@ -1055,7 +1070,8 @@ public class CloudBrushGUI extends JPanel {
 
 	public boolean MakeDatDir() {
 		Callable<String> channel = new SSHExec(HadoopSession.getSession(),
-				"hadoop fs -mkdir " + UID + "/data");
+				"hadoop fs -mkdir " + UID + "/"
+						+ paramType.INPUT.toString().toLowerCase() + "/");
 		FutureTask<String> futureTask = new FutureTask<String>(channel);
 
 		Thread thread = new Thread(futureTask);
@@ -1075,9 +1091,6 @@ public class CloudBrushGUI extends JPanel {
 	}
 
 	public void JobError() {
-		// job_id = "";
-		// job_result = "";
-		// updateProperties();
 		StatusChange(JOB_FINISHED);
 		rPanel.ResultDownload.setEnabled(false);
 		statusMSG("Job Ended with Error.");
@@ -1085,34 +1098,9 @@ public class CloudBrushGUI extends JPanel {
 
 	// --------------------inner------------------
 
-	public class selectList implements ListSelectionListener {
-
-		public JTable Tparent;
-		public int index;
-
-		public selectList(JTable t, int i) {
-			Tparent = t;
-			index = i;
-		}
-
-		@Override
-		public void valueChanged(ListSelectionEvent arg0) {
-			if (arg0.getValueIsAdjusting()) {
-				return;
-			}
-			for (int c : Tparent.getSelectedRows()) {
-				String data = Tparent.getValueAt(c, 0).toString();
-				rPanel.RunParameters[index] = data;
-				rPanel.ParameterText[index].setText(data);
-				selectDialog.dispose();
-			}
-		}
-
-	}
-
 	public class MonitorThread extends Thread {
 
-		public String monitorName = "bioFinal";
+		public String monitorName = paramType.WORK.toString().toLowerCase();
 		public SSHadoopUtils utils = null;
 
 		public MonitorThread(String jobMonName) {
@@ -1122,7 +1110,7 @@ public class CloudBrushGUI extends JPanel {
 
 		public CBStatus isJobDone() {
 			Callable<String> channel2 = new SSHExec(HadoopSession.getSession(),
-					HadoopCmd.CBStatus(monitorName, "brush.log"));
+					HadoopCmd.ls(load_prog_xml.replace(".xml", ".pid")));
 			CBStatus cbs = CBStatus.DEFAULT;
 
 			FutureTask<String> futureTask2 = new FutureTask<String>(channel2);
@@ -1130,11 +1118,10 @@ public class CloudBrushGUI extends JPanel {
 			Thread thread2 = new Thread(futureTask2);
 			thread2.start();
 
-			// get whether cb is done
 			while (true) {
 				if (futureTask2.isDone()) {
 					try {
-						cbs = utils.getCBStatus(futureTask2.get());
+						cbs = utils.getOPStatus(futureTask2.get());
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					} catch (ExecutionException e) {
@@ -1149,7 +1136,9 @@ public class CloudBrushGUI extends JPanel {
 		public String[] getJobNameID() {
 
 			Callable<String> channel3 = new SSHExec(HadoopSession.getSession(),
-					HadoopCmd.CBStepAndId(monitorName, "brush.details.log", 80));
+					HadoopCmd.CBStepAndId(monitorName,
+							rPanel.xmlConfigParser.getLog(logType.DETAIL).name,
+							80));
 
 			String toolNameAndJobId[] = { "", "", "" };
 
@@ -1236,8 +1225,7 @@ public class CloudBrushGUI extends JPanel {
 						} else {
 							rPanel.HadoopBar.setString("Running ");
 							rPanel.HadoopBar.setString(rPanel.HadoopBar
-									.getString()
-									+ jNameID[0]);
+									.getString() + jNameID[0]);
 						}
 
 						int total_per = (int) ((res[0] + res[1]) / 2);

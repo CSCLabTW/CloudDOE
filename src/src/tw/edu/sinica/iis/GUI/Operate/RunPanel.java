@@ -4,29 +4,37 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.io.File;
+import java.io.FilenameFilter;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+
+import tw.edu.sinica.iis.GUI.Operate.XMLConfigParser.paramType;
 
 public class RunPanel extends JPanel {
 
 	private static final long serialVersionUID = 4224485357881142712L;
+	private static final String confExt = ".xml";
 
 	public int default_w = 400;
-	public int default_h = 300;
-
-	public String[] RunParameters;
+	public int default_h = 400;
 
 	public JLabel[] ParameterLabel;
 	public JTextField[] ParameterText;
-	public String[] ParameterName;
 
 	public JButton WorkRun;
 	public JButton ResultDownload;
@@ -36,8 +44,26 @@ public class RunPanel extends JPanel {
 	public JProgressBar HadoopTotalBar;
 	public JProgressBar HadoopBar;
 
+	public JPanel programPanel;
+	public JPanel parameterPanel;
+	public JPanel clickPanel;
+	public JLabel clickLabel;
+	public String programConf;
+
+	public JComboBox<String> programSelector;
+	public String xmlPath;
+	public XMLConfigParser xmlConfigParser;
+
+	public final String SELECTOR_DEFAULT = "Select";
+
 	public RunPanel() {
 		super();
+		init(default_w, default_h);
+	}
+	
+	public RunPanel(final String confXML) {
+		super();
+		programConf = confXML;
 		init(default_w, default_h);
 	}
 
@@ -47,87 +73,62 @@ public class RunPanel extends JPanel {
 	}
 
 	public void init(int w, int h) {
-		// this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS ));
+		xmlPath = "workspace" + File.separator + "main";
+
+		xmlConfigParser = new XMLConfigParser();
+
 		this.setLayout(null);
 		this.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		this.setSize(w, h);
 		this.setPreferredSize(new Dimension(w, h));
 
 		JPanel pPanel = new JPanel();
-		// pPanel.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 		pPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
-		pPanel.setBounds(10, 25, 380, 230);
+		pPanel.setBounds(10, 25, 380, 330);
 		pPanel.setLayout(null);
 
-		ParameterName = getParameterName();
+		JPanel mPanel = new JPanel();
+		mPanel.setLayout(new BoxLayout(mPanel, BoxLayout.Y_AXIS));
+		mPanel.setBorder(BorderFactory.createTitledBorder("Configuration"));
+		mPanel.setBounds(10, 10, 360, 200);
 
-		int pn = ParameterName.length;
-		ParameterLabel = new JLabel[pn];
-		ParameterText = new JTextField[pn];
-		RunParameters = new String[pn];
+		programPanel = new JPanel();
+		programPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+		programPanel.setMaximumSize(new Dimension(mPanel.getWidth(), 0));
+		programPanel.add(new JLabel("Program: "));
+		setProgramPanel();
 
-		int LineHeight = 35;
-		int StartHeight = 20;
-
-		JPanel parameterPanel = new JPanel();
-		parameterPanel.setBounds(10, 10, 360, 95);
-		parameterPanel
-				.setBorder(BorderFactory.createTitledBorder("Parameters"));
-		parameterPanel.setLayout(null);
-
-		for (int i = 0; i < pn; i++) {
-			ParameterLabel[i] = new JLabel(ParameterName[i]);
-			ParameterLabel[i].setBounds(0, StartHeight + LineHeight * i, 185,
-					25);
-			ParameterLabel[i].setHorizontalAlignment(SwingConstants.RIGHT);
-			ParameterLabel[i].setVerticalAlignment(SwingConstants.CENTER);
-			parameterPanel.add(ParameterLabel[i]);
-
-			ParameterText[i] = new JTextField();
-			ParameterText[i].setText("0");
-			ParameterText[i].setBounds(195, StartHeight + LineHeight * i, 150,
-					25);
-			parameterPanel.add(ParameterText[i]);
-		}
-
-		// JobNameLabel = new JLabel();
-		// JobNameLabel.setForeground(Color.RED);
-		// JobNameLabel.setText("Server Ready");
-		// JobNameLabel.setBounds(10, 130, 360, 20);
-		// JobNameLabel.setHorizontalAlignment(JLabel.CENTER);
-		// pPanel.add(JobNameLabel);
+		parameterPanel = new JPanel();
+		parameterPanel.setBounds(10, 25, 340, 150);
+		setParameterPanel();
 
 		JPanel progressPanel = new JPanel();
-		progressPanel.setBounds(10, 120, 360, 100);
+		progressPanel.setBounds(10, 220, 360, 100);
 		progressPanel.setBorder(BorderFactory.createTitledBorder("Progress"));
 		progressPanel.setLayout(null);
 
 		HadoopBar = new JProgressBar();
 		HadoopBar.setStringPainted(true);
 		HadoopBar.setBounds(10, 25, 340, 25);
-		// HadoopBar.setBorderPainted(false);
-		// HadoopBar.setBorder(BorderFactory.createTitledBorder("title"));
-		// HadoopBar.setForeground(new Color(255, 100, 100));
-		// HadoopBar.setValue(10);
 		HadoopBar.setString("Server Ready");
 		progressPanel.add(HadoopBar);
 
 		HadoopTotalBar = new JProgressBar();
 		HadoopTotalBar.setBounds(10, 60, 340, 25);
 		HadoopTotalBar.setStringPainted(true);
-		// HadoopTotalBar.setValue(10);
 		progressPanel.add(HadoopTotalBar);
 
-		pPanel.add(parameterPanel);
+		mPanel.add(programPanel);
+		mPanel.add(parameterPanel);
+
+		pPanel.add(mPanel);
 		pPanel.add(progressPanel);
 
 		this.add(pPanel);
 
 		JPanel ButtonPanel = new JPanel();
-		// ButtonPanel.setLayout(new GridLayout(1, 3, 10, 10));
 		ButtonPanel.setLayout(new FlowLayout());
-		ButtonPanel.setBounds(20, 260, 360, 35);
-		// ButtonPanel.add(Box.createHorizontalGlue());
+		ButtonPanel.setBounds(20, 360, 360, 35);
 		ButtonPanel.add(getWorkRun());
 		ButtonPanel.add(Box.createHorizontalStrut(10));
 		ButtonPanel.add(getResultDownload());
@@ -147,11 +148,93 @@ public class RunPanel extends JPanel {
 
 	}
 
-	public String[] getParameterName() {
-		String[] res = new String[2];
-		res[0] = "Read length:";
-		res[1] = "Minimum overlap length:";
-		return res;
+	public void setProgramPanel() {
+		File pluginDir = new File(xmlPath);
+
+		String[] files = pluginDir.list(new FilenameFilter() {
+
+			@Override
+			public boolean accept(File dir, String name) {
+				if (name.endsWith(confExt)) {
+					return true;
+				}
+				return false;
+			}
+		});
+
+		programSelector = new JComboBox<String>();
+		programSelector.addItem(SELECTOR_DEFAULT);
+
+		for (String item : files) {
+			programSelector.addItem(item.replace(confExt, ""));
+			if(programConf != null && programConf.equals(item)) {
+				programSelector.setSelectedItem(item.replace(confExt, ""));
+			}
+		}
+		
+		programSelector.addItemListener(new ItemListener() {
+
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				if (e.getStateChange() == ItemEvent.SELECTED) {
+					programConf = programSelector.getSelectedItem().toString()
+							.concat(confExt);
+					setParameterPanel();
+				}
+			}
+		});
+
+		programPanel.add(programSelector);
+	}
+
+	public void setParameterPanel() {
+		if (programConf == null || programConf.equals(SELECTOR_DEFAULT)) {
+			return;
+		}
+
+		parameterPanel.removeAll();
+
+		xmlConfigParser.removeAll();
+		if (xmlConfigParser.load(xmlPath + File.separator + programConf)) {
+			
+			int pn = xmlConfigParser.parameterItems.size();
+
+			ParameterLabel = new JLabel[pn];
+			ParameterText = new JTextField[pn];
+
+			JPanel paramsPanel = new JPanel();
+			paramsPanel.setLayout(new GridLayout(pn, 2));
+			paramsPanel.setPreferredSize(new Dimension(0, pn * 25));
+
+			for (int i = 0; i < pn; i++) {
+				ParameterLabel[i] = new JLabel(
+						xmlConfigParser.parameterItems.get(i).label + ": ");
+				ParameterLabel[i].setHorizontalAlignment(SwingConstants.RIGHT);
+				ParameterLabel[i].setVerticalAlignment(SwingConstants.CENTER);
+				ParameterLabel[i].setEnabled(xmlConfigParser.parameterItems
+						.get(i).editable);
+				paramsPanel.add(ParameterLabel[i]);
+
+				ParameterText[i] = new JTextField();
+				ParameterText[i]
+						.setText(xmlConfigParser.parameterItems.get(i).value);
+				ParameterText[i].setEditable(xmlConfigParser.parameterItems
+						.get(i).editable);
+				paramsPanel.add(ParameterText[i]);
+			}
+
+			JScrollPane jsp = new JScrollPane(paramsPanel);
+			jsp.setBorder(null);
+			jsp.setPreferredSize(new Dimension(parameterPanel.getWidth(),
+					parameterPanel.getHeight() - 10));
+			jsp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+			jsp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
+			parameterPanel.add(jsp);
+		}
+
+		this.repaint();
+		this.revalidate();
 	}
 
 	public JButton getWorkRun() {
@@ -175,29 +258,26 @@ public class RunPanel extends JPanel {
 		return ResultClear;
 	}
 
-	public boolean getAndCheckParameter(){
-		try {
-			for(int i=0;i<getParameterName().length;i++){
-				RunParameters[i] = ParameterText[i].getText();
-				Integer.parseInt(RunParameters[i]);
-			}
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
+	public boolean getAndCheckParameter() {
+		if (xmlConfigParser.parameterItems.size() == 0
+				|| xmlConfigParser.getSingleParam(paramType.INPUT) == null
+				|| xmlConfigParser.getSingleParam(paramType.OUTPUT) == null) {
 			return false;
+		}
+
+		for (int i = 0; i < xmlConfigParser.parameterItems.size(); i++) {
+			xmlConfigParser.parameterItems.get(i).value = ParameterText[i]
+					.getText();
 		}
 		return true;
 	}
-	
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		JFrame test = new JFrame();
-		test.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		test.add(new RunPanel());
-		test.pack();
-		test.setVisible(true);
-	}
 
+	public static void main(String[] args) {
+		final JFrame runPanel = new JFrame();
+		runPanel.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		RunPanel rp = new RunPanel("CloudRS.xml");
+		runPanel.add(rp);
+		runPanel.pack();
+		runPanel.setVisible(true);
+	}
 }

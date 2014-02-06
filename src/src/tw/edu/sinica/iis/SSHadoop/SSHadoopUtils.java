@@ -54,6 +54,15 @@ public class SSHadoopUtils {
 
 		return CBStatus.DEFAULT;
 	}
+	
+	public CBStatus getOPStatus(final String status) {
+		if (status.equals("")) {
+			return CBStatus.SUCCESS;
+		}
+
+		return CBStatus.DEFAULT;
+	}
+
 
 	public String[] getCBStepAndJobId(final String status) {
 		String toolName = "";
