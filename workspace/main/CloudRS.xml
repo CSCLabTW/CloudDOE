@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CloudDOE xmlns="http://clouddoe.iis.sinica.edu.tw/confXML">
+	<program>
+		<name>CloudRS</name>
+		<jarfile>CloudRS.jar</jarfile>
+		<lastupd>2014/02/06</lastupd>
+		<helpurl>https://github.com/ice91/ReadStackCorrector</helpurl>
+		<argformat>$input $output $work $value</argformat>
+	</program>
+	<parameters>
+		<parameter>
+			<label>Input</label>
+			<arg>-in</arg>
+			<value>/100k_RS.sfq</value>
+			<type>input</type>
+			<editable>true</editable>
+		</parameter>
+		<parameter>
+			<label>Output</label>
+			<arg>-out</arg>
+			<value>/</value>
+			<type>output</type>
+			<editable>false</editable>
+		</parameter>
+		<parameter>
+			<label>Work</label>
+			<arg>-work</arg>
+			<value>/</value>
+			<type>work</type>
+			<editable>false</editable>
+		</parameter>
+		<parameter>
+			<label>Minimum overlap length</label>
+			<arg>-K</arg>
+			<value>24</value>
+			<type>value</type>
+			<editable>true</editable>
+		</parameter>
+	</parameters>
+	<logs>
+		<log>
+			<name>error.log</name>
+			<type>short</type>
+		</log>
+		<log>
+			<name>error.details.log</name>
+			<type>detail</type>
+		</log>
+	</logs>
+	<downloads>
+		<download>
+			<method>getmerge</method>
+			<src>_file</src>
+			<dst>output.fastq</dst>
+		</download>
+	</downloads>
+</CloudDOE>
