@@ -1,1 +1,7 @@
 The directory to place (sample) data for Operate usage.
+
+Sample data, i.e., ref.br and qry.br, of CloudBurst is
+retrieved from its website. The ref.br is renamed from
+s_suis.br and the qry.br is renamed from 100k.br.
+CloudBurst website:
+http://sourceforge.net/projects/cloudburst-bio/
