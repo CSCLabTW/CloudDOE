@@ -97,7 +97,7 @@ public class RunPanel extends JPanel {
 		setProgramPanel();
 
 		parameterPanel = new JPanel();
-		parameterPanel.setBounds(10, 25, 340, 150);
+		parameterPanel.setBounds(10, 25, 350, 145);
 		setParameterPanel();
 
 		JPanel progressPanel = new JPanel();
@@ -227,7 +227,7 @@ public class RunPanel extends JPanel {
 
 			JScrollPane jsp = new JScrollPane(paramsPanel);
 			jsp.setBorder(null);
-			jsp.setPreferredSize(new Dimension(parameterPanel.getWidth(),
+			jsp.setPreferredSize(new Dimension(parameterPanel.getWidth() - 5,
 					parameterPanel.getHeight() - 10));
 			jsp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 			jsp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);

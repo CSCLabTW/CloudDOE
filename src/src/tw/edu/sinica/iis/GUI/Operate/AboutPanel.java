@@ -23,7 +23,7 @@ public class AboutPanel extends JPanel {
 	private static final String versionStr = "CloudDOE - Operate Wizard (v1.2.20140125)";
 	
 	public int default_w = 580;
-	public int default_h = 300;
+	public int default_h = 400;
 
 	public JLabel GUIVer;
 	public JLabel JARVer;

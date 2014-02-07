@@ -18,7 +18,7 @@ public class ConnectPanel extends JPanel {
 	private static final long serialVersionUID = 3673480019949195702L;
 
 	public int default_w = 400;
-	public int default_h = 300;
+	public int default_h = 400;
 
 	public JTextField ipText;
 	public JTextField portText;

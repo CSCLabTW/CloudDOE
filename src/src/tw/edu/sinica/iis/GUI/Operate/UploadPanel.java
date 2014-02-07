@@ -21,7 +21,7 @@ public class UploadPanel extends JPanel {
 	private static final long serialVersionUID = -2797660625566368460L;
 
 	public int default_w = 400;
-	public int default_h = 300;
+	public int default_h = 400;
 
 	public JPanel LoadPanel;
 	public JPanel RemoteViewPanel;
@@ -70,7 +70,7 @@ public class UploadPanel extends JPanel {
 			RemoteViewPanel = new JPanel();
 			RemoteViewPanel.setLayout(null);
 			// RemoteViewPanel.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-			RemoteViewPanel.setBounds(10, 25, 380, 275);
+			RemoteViewPanel.setBounds(10, 25, 380, 375);
 
 			// TableData = new HDFSTableModel(getData());
 			TableData = new HDFSTableModel();
@@ -79,12 +79,12 @@ public class UploadPanel extends JPanel {
 			FileTable.setRowHeight(22);
 			FileTable.setAutoscrolls(true);
 			JScrollPane tmpTable = new JScrollPane(FileTable);
-			tmpTable.setBounds(0, 0, 380, 225);
+			tmpTable.setBounds(0, 0, 380, 325);
 			RemoteViewPanel.add(tmpTable);
 
 			JPanel ButtonPanel = new JPanel();
 			ButtonPanel.setLayout(new GridLayout(1, 2, 10, 10));
-			ButtonPanel.setBounds(10, 235, 360, 30);
+			ButtonPanel.setBounds(10, 335, 360, 30);
 			ButtonPanel.add(getUploadButton());
 			ButtonPanel.add(getRemoveButton());
 			// ButtonPanel.add(Box.createHorizontalGlue());
