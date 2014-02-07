@@ -596,6 +596,21 @@ public class CloudBrushGUI extends JPanel {
 	}
 
 	public void RunPanelSetting() {
+		rPanel.programHelper.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String information = "Program help information is not avalable.";
+				if (!rPanel.xmlConfigParser.programInfo.helpurl.equals("")) {
+					information = "Program help information is avaliable at \n"
+							+ rPanel.xmlConfigParser.programInfo.helpurl;
+				}
+
+				JOptionPane.showMessageDialog(CloudBrushGUI.this, information,
+						"Information", JOptionPane.INFORMATION_MESSAGE);
+			}
+		});
+
 		rPanel.WorkRun.addActionListener(new ActionListener() {
 
 			@Override
@@ -720,7 +735,8 @@ public class CloudBrushGUI extends JPanel {
 									if (Status == JOB_FINISHED) {
 										updateProperties();
 
-										rPanel.programSelector.setSelectedItem(RunPanel.SELECTOR_DEFAULT);
+										rPanel.programSelector
+												.setSelectedItem(RunPanel.SELECTOR_DEFAULT);
 										rPanel.HadoopTotalBar.setValue(0);
 										rPanel.HadoopBar.setValue(0);
 										StatusChange(JOB_READY);

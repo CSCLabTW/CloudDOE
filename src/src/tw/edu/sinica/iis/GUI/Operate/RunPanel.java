@@ -38,6 +38,7 @@ public class RunPanel extends JPanel {
 	public JLabel[] ParameterLabel;
 	public JTextField[] ParameterText;
 
+	public JButton programHelper;
 	public JButton WorkRun;
 	public JButton ResultDownload;
 	public JButton ResultClear;
@@ -159,6 +160,8 @@ public class RunPanel extends JPanel {
 			}
 		});
 
+		programHelper = new JButton("Help");
+		
 		programSelector = new JComboBox<String>();
 		programSelector.addItem(SELECTOR_DEFAULT);
 
@@ -183,6 +186,7 @@ public class RunPanel extends JPanel {
 
 		programPanel.add(new JLabel("Program: "));
 		programPanel.add(programSelector);
+		programPanel.add(programHelper);
 	}
 
 	public void setParameterPanel() {
