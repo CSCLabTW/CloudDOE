@@ -729,8 +729,6 @@ public class CloudBrushGUI extends JPanel {
 									}
 									progressDialog.dispose();
 									Tabs.setSelectedIndex(1);
-									rPanel.ParameterText[0].setText("0");
-									rPanel.ParameterText[1].setText("0");
 								}
 							}
 						}).start();
