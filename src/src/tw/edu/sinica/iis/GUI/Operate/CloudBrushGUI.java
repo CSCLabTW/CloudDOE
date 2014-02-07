@@ -908,7 +908,7 @@ public class CloudBrushGUI extends JPanel {
 		if (!rPanel.getAndCheckParameter()) {
 			return null;
 		}
-		
+
 		job_prog_load = rPanel.programConf;
 
 		job_paras_label = rPanel.xmlConfigParser.genParamValList(';');
@@ -1047,7 +1047,8 @@ public class CloudBrushGUI extends JPanel {
 			return false;
 		}
 		Callable<String> channel = new SSHExec(HadoopSession.getSession(),
-				HadoopCmd.CBKillJob(UID));
+				HadoopCmd.rm(job_prog_load.replace(".xml", ".pid")) + ";"
+						+ HadoopCmd.CBKillJob(UID));
 		FutureTask<String> futureTask = new FutureTask<String>(channel);
 
 		Thread thread = new Thread(futureTask);
