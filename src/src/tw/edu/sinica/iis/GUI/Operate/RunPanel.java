@@ -136,7 +136,7 @@ public class RunPanel extends JPanel {
 		this.add(ButtonPanel);
 
 		JLabel step_tip = new JLabel(
-				"Step 3. Run CloudBrush and download the assembly");
+				"Step 3. Run program and download results");
 		step_tip.setHorizontalAlignment(SwingConstants.LEFT);
 		step_tip.setForeground(Color.BLUE);
 		step_tip.setFont(new Font(step_tip.getFont().getFontName(), step_tip

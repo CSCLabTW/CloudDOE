@@ -90,7 +90,7 @@ public class ConnectPanel extends JPanel {
 
 		this.add(centerP);
 
-		JLabel step_tip = new JLabel("Step 1. Connect to your Hadoop Cloud");
+		JLabel step_tip = new JLabel("Step 1. Connect to Hadoop Cloud");
 		step_tip.setHorizontalAlignment(SwingConstants.LEFT);
 		step_tip.setForeground(Color.BLUE);
 		step_tip.setFont(new Font(step_tip.getFont().getFontName(), step_tip

@@ -55,7 +55,7 @@ public class UploadPanel extends JPanel {
 		this.setPreferredSize(new Dimension(w, h));
 
 		this.add(getRemoteViewPanel());
-		JLabel step_tip = new JLabel("Step 2. Upload the fastq file(s)");
+		JLabel step_tip = new JLabel("Step 2. Upload file(s) for analysis");
 		step_tip.setHorizontalAlignment(SwingConstants.LEFT);
 		step_tip.setForeground(Color.BLUE);
 		step_tip.setFont(new Font(step_tip.getFont().getFontName(), step_tip
