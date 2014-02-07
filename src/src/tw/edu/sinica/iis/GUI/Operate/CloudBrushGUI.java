@@ -720,6 +720,7 @@ public class CloudBrushGUI extends JPanel {
 									if (Status == JOB_FINISHED) {
 										updateProperties();
 
+										rPanel.programSelector.setSelectedItem(rPanel.SELECTOR_DEFAULT);
 										rPanel.HadoopTotalBar.setValue(0);
 										rPanel.HadoopBar.setValue(0);
 										StatusChange(JOB_READY);
@@ -1011,6 +1012,7 @@ public class CloudBrushGUI extends JPanel {
 		job_id = "";
 		job_result = "";
 		job_paras_label = "";
+		job_prog_load = "";
 
 		SSHSftp sftp = new SSHSftp(ID, Ip);
 		sftp.setSSHPass(Password);
