@@ -720,7 +720,7 @@ public class CloudBrushGUI extends JPanel {
 									if (Status == JOB_FINISHED) {
 										updateProperties();
 
-										rPanel.programSelector.setSelectedItem(rPanel.SELECTOR_DEFAULT);
+										rPanel.programSelector.setSelectedItem(RunPanel.SELECTOR_DEFAULT);
 										rPanel.HadoopTotalBar.setValue(0);
 										rPanel.HadoopBar.setValue(0);
 										StatusChange(JOB_READY);

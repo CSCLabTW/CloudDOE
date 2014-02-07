@@ -29,9 +29,11 @@ public class RunPanel extends JPanel {
 
 	private static final long serialVersionUID = 4224485357881142712L;
 	private static final String confExt = ".xml";
-
-	public int default_w = 400;
-	public int default_h = 400;
+	
+	public static final String SELECTOR_DEFAULT = "";
+	
+	public static int default_w = 400;
+	public static int default_h = 400;
 
 	public JLabel[] ParameterLabel;
 	public JTextField[] ParameterText;
@@ -40,21 +42,17 @@ public class RunPanel extends JPanel {
 	public JButton ResultDownload;
 	public JButton ResultClear;
 
-	public JLabel JobNameLabel;
 	public JProgressBar HadoopTotalBar;
 	public JProgressBar HadoopBar;
 
 	public JPanel programPanel;
 	public JPanel parameterPanel;
-	public JPanel clickPanel;
-	public JLabel clickLabel;
+
+	public String xmlPath;
 	public String programConf;
 
 	public JComboBox<String> programSelector;
-	public String xmlPath;
 	public XMLConfigParser xmlConfigParser;
-
-	public final String SELECTOR_DEFAULT = "Select";
 
 	public RunPanel() {
 		super();
@@ -95,7 +93,6 @@ public class RunPanel extends JPanel {
 		programPanel = new JPanel();
 		programPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		programPanel.setMaximumSize(new Dimension(mPanel.getWidth(), 0));
-		programPanel.add(new JLabel("Program: "));
 		setProgramPanel();
 
 		parameterPanel = new JPanel();
@@ -184,6 +181,7 @@ public class RunPanel extends JPanel {
 			}
 		});
 
+		programPanel.add(new JLabel("Program: "));
 		programPanel.add(programSelector);
 	}
 
@@ -193,8 +191,8 @@ public class RunPanel extends JPanel {
 		}
 
 		parameterPanel.removeAll();
-
 		xmlConfigParser.removeAll();
+		
 		if (xmlConfigParser.load(xmlPath + File.separator + programConf)) {
 			
 			int pn = xmlConfigParser.parameterItems.size();
