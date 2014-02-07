@@ -220,6 +220,7 @@ public class CloudBrushGUI extends JPanel {
 			cPanel.loadButton.setEnabled(false);
 			cPanel.connectButton.setText("Disconnect");
 
+			rPanel.programSelector.setEnabled(false);
 			if (rPanel.ParameterText != null) {
 				for (int i = 0; i < rPanel.ParameterText.length; i++) {
 					rPanel.ParameterText[i].setEnabled(false);
@@ -243,6 +244,7 @@ public class CloudBrushGUI extends JPanel {
 			cPanel.loadButton.setEnabled(false);
 			cPanel.connectButton.setText("Disconnect");
 
+			rPanel.programSelector.setEnabled(true);
 			if (rPanel.ParameterText != null) {
 				for (int i = 0; i < rPanel.ParameterText.length; i++) {
 					rPanel.ParameterText[i].setEnabled(true);
@@ -265,6 +267,7 @@ public class CloudBrushGUI extends JPanel {
 			cPanel.loadButton.setEnabled(false);
 			cPanel.connectButton.setText("Disconnect");
 
+			rPanel.programSelector.setEnabled(true);
 			if (rPanel.ParameterText != null) {
 				for (int i = 0; i < rPanel.ParameterText.length; i++) {
 					rPanel.ParameterText[i].setEnabled(true);
