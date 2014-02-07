@@ -18,7 +18,7 @@
 		<parameter>
 			<label>Output</label>
 			<arg>-out</arg>
-			<value>/</value>
+			<value>/CloudRS</value>
 			<type>output</type>
 			<editable>false</editable>
 		</parameter>
@@ -50,7 +50,7 @@
 	<downloads>
 		<download>
 			<method>getmerge</method>
-			<src>_file</src>
+			<src>CloudRS_file</src>
 			<dst>output.fastq</dst>
 		</download>
 	</downloads>

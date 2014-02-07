@@ -25,7 +25,7 @@
 		<parameter>
 			<label>Output</label>
 			<arg></arg>
-			<value></value>
+			<value>/CloudBurst</value>
 			<type>output</type>
 			<editable>false</editable>
 		</parameter>
@@ -53,7 +53,7 @@
 	<downloads>
 		<download>
 			<method>get</method>
-			<src>/</src>
+			<src>/CloudBurst</src>
 			<dst>results</dst>
 		</download>
 	</downloads>

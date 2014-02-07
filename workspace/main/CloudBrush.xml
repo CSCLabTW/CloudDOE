@@ -18,7 +18,7 @@
 		<parameter>
 			<label>Output</label>
 			<arg>-asm</arg>
-			<value>/</value>
+			<value>/CloudBrush</value>
 			<type>output</type>
 			<editable>false</editable>
 		</parameter>
@@ -57,12 +57,12 @@
 	<downloads>
 		<download>
 			<method>get</method>
-			<src>.jpeg/stats.jpg</src>
+			<src>/CloudBrush.jpeg/stats.jpg</src>
 			<dst>stats.jpg</dst>
 		</download>
 		<download>
 			<method>getmerge</method>
-			<src>/</src>
+			<src>/CloudBrush</src>
 			<dst>output.fasta</dst>
 		</download>
 	</downloads>
