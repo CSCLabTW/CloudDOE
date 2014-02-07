@@ -100,7 +100,7 @@ public class CloudBrushGUI extends JPanel {
 	public String job_result;
 
 	public String job_paras_label;
-	public String load_prog_xml;
+	public String job_prog_load;
 
 	public LinkedList<String> fileList;
 
@@ -154,7 +154,7 @@ public class CloudBrushGUI extends JPanel {
 		job_paras_label = PropertyUtility.readValue(PROPERTYNAME, JOB_PARAS) == null ? ""
 				: PropertyUtility.readValue(PROPERTYNAME, JOB_PARAS);
 
-		load_prog_xml = PropertyUtility.readValue(PROPERTYNAME, LOAD_PROG) == null ? ""
+		job_prog_load = PropertyUtility.readValue(PROPERTYNAME, LOAD_PROG) == null ? ""
 				: PropertyUtility.readValue(PROPERTYNAME, LOAD_PROG);
 
 		String RemoteFiles = PropertyUtility
@@ -182,11 +182,7 @@ public class CloudBrushGUI extends JPanel {
 		PropertyUtility.writeProperties(PROPERTYNAME, JOB_PARAS,
 				job_paras_label);
 
-		if (rPanel != null) {
-			load_prog_xml = rPanel.programConf;
-			PropertyUtility.writeProperties(PROPERTYNAME, LOAD_PROG,
-					load_prog_xml);
-		}
+		PropertyUtility.writeProperties(PROPERTYNAME, LOAD_PROG, job_prog_load);
 
 		String RemoteFiles = "";
 		for (int i = 0; i < fileList.size(); i++) {
@@ -303,7 +299,7 @@ public class CloudBrushGUI extends JPanel {
 		Tabs.addTab("Connect", cPanel);
 		uPanel = new UploadPanel();
 		Tabs.addTab("Upload", uPanel);
-		rPanel = new RunPanel(load_prog_xml);
+		rPanel = new RunPanel(job_prog_load);
 		Tabs.addTab("Run", rPanel);
 		aPanel = new AboutPanel();
 
@@ -912,11 +908,13 @@ public class CloudBrushGUI extends JPanel {
 		if (!rPanel.getAndCheckParameter()) {
 			return null;
 		}
+		
+		job_prog_load = rPanel.programConf;
 
 		job_paras_label = rPanel.xmlConfigParser.genParamValList(';');
 		job_result = paramType.OUTPUT.toString().toLowerCase();
 
-		String runCmd = HadoopCmd.touch(load_prog_xml.replace(".xml", ".pid"))
+		String runCmd = HadoopCmd.touch(job_prog_load.replace(".xml", ".pid"))
 				+ ";"
 				+ HadoopCmd
 						.mkdir(paramType.WORK.toString().toLowerCase(), true)
@@ -924,7 +922,7 @@ public class CloudBrushGUI extends JPanel {
 				+ HadoopCmd.jarHdp(UID + "/main/"
 						+ rPanel.xmlConfigParser.programInfo.jarfile, "",
 						rPanel.xmlConfigParser.genProgramArgs(UID)) + ";"
-				+ HadoopCmd.rm(load_prog_xml.replace(".xml", ".pid"));
+				+ HadoopCmd.rm(job_prog_load.replace(".xml", ".pid"));
 
 		Callable<String> channel = new SSHCBRun(HadoopSession.getSession(),
 				runCmd);
@@ -1110,7 +1108,7 @@ public class CloudBrushGUI extends JPanel {
 
 		public CBStatus isJobDone() {
 			Callable<String> channel2 = new SSHExec(HadoopSession.getSession(),
-					HadoopCmd.ls(load_prog_xml.replace(".xml", ".pid")));
+					HadoopCmd.ls(job_prog_load.replace(".xml", ".pid")));
 			CBStatus cbs = CBStatus.DEFAULT;
 
 			FutureTask<String> futureTask2 = new FutureTask<String>(channel2);
