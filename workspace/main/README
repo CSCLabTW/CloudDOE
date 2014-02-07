@@ -1,1 +1,13 @@
-The directory to place MapReduce applications of Operate usage.
+The directory to place MapReduce programs and configuration XML of Operate
+usage.
+
+Current we support three MapReduce programs, i.e., CloudBrush, CloudRS, and
+CloudBurst. The configuration XML is generated from CloudDOE developers and the
+program sources are download from their websites as following.
+
+- CloudBrush
+  https://github.com/ice91/CloudBrush
+- CloudRS
+  https://github.com/ice91/ReadStackCorrector
+- CloudBurst
+  http://sourceforge.net/projects/cloudburst-bio
