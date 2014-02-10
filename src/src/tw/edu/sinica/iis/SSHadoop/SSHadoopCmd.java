@@ -135,10 +135,6 @@ public class SSHadoopCmd {
 		return serverSpecialCmd + "; " + hdpCmd.job_status + " " + jobId;
 	}
 
-	public String CBStatus(final String workDir, final String logFile) {
-		return cmd.cat + userBase + workDir + "/" + logFile;
-	}
-
 	public String CBStepAndId(final String workDir, final String logFile, final int tailLineCnt) {
 		String count = "";
 		if (tailLineCnt > 0) {

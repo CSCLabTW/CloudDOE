@@ -11,9 +11,6 @@ public class SSHadoopUtils {
 	Pattern patToolStatus = Pattern
 			.compile(".*(Tool name: )(.*) \\[((\\d+)/(\\d+)|\\.\\.\\.)\\]");
 
-	Pattern patCBEnd = Pattern.compile(".*(== Ending time )(.*)");
-	Pattern patCBTer = Pattern.compile(".*(Program terminated)(.*)");
-
 	public enum CBStatus {
 		DEFAULT, ERROR, SUCCESS
 	}
@@ -38,21 +35,6 @@ public class SSHadoopUtils {
 		}
 
 		return (new double[] { mapStatus, redStatus });
-	}
-
-	public CBStatus getCBStatus(final String status) {
-		Matcher matCBEnd = patCBEnd.matcher(status);
-		Matcher matCBTer = patCBTer.matcher(status);
-
-		if (matCBTer.find()) {
-			return CBStatus.ERROR;
-		}
-
-		if (matCBEnd.find()) {
-			return CBStatus.SUCCESS;
-		}
-
-		return CBStatus.DEFAULT;
 	}
 
 	public CBStatus getOPStatus(final String status) {
