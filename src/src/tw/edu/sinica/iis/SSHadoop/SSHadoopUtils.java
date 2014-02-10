@@ -54,15 +54,24 @@ public class SSHadoopUtils {
 
 		return CBStatus.DEFAULT;
 	}
-	
+
 	public CBStatus getOPStatus(final String status) {
-		if (status.equals("")) {
-			return CBStatus.SUCCESS;
+		String[] currentStatus = status.split(";");
+		
+		if (currentStatus.length != 2) {
+			return CBStatus.ERROR;
+		}
+
+		if (currentStatus[0].trim().equals("")) {
+			if (currentStatus[1].trim().equals("")) {
+				return CBStatus.ERROR;
+			} else {
+				return CBStatus.SUCCESS;
+			}
 		}
 
 		return CBStatus.DEFAULT;
 	}
-
 
 	public String[] getCBStepAndJobId(final String status) {
 		String toolName = "";

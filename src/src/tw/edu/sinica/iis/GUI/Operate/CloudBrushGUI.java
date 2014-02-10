@@ -1127,9 +1127,15 @@ public class CloudBrushGUI extends JPanel {
 		}
 
 		public CBStatus isJobDone() {
-			Callable<String> channel2 = new SSHExec(HadoopSession.getSession(),
-					HadoopCmd.ls(job_prog_load.replace(".xml", ".pid")));
 			CBStatus cbs = CBStatus.DEFAULT;
+
+			Callable<String> channel2 = new SSHExec(HadoopSession.getSession(),
+					HadoopCmd.ls(job_prog_load.replace(".xml", ".pid"))
+							+ ";echo -n ';';"
+							+ HadoopCmd.lsHdp(job_result
+									+ "/"
+									+ rPanel.xmlConfigParser.downloadItems
+											.get(0).src));
 
 			FutureTask<String> futureTask2 = new FutureTask<String>(channel2);
 
