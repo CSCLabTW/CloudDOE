@@ -2,8 +2,8 @@ package tw.edu.sinica.iis.SSHadoop;
 
 import com.jcraft.jsch.Session;
 
-public class SSHCBRun extends SSHExec {
-	public SSHCBRun(final Session sess, final String command) {
+public class SSHRun extends SSHExec {
+	public SSHRun(final Session sess, final String command) {
 		setSession(sess);
 		setCommand(command);
 	}

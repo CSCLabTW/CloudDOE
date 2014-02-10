@@ -24,13 +24,13 @@ import tw.edu.sinica.iis.GUI.Operate.XMLConfigParser.DownloadItem;
 import tw.edu.sinica.iis.GUI.Operate.XMLConfigParser.downloadType;
 import tw.edu.sinica.iis.GUI.Operate.XMLConfigParser.logType;
 import tw.edu.sinica.iis.GUI.Operate.XMLConfigParser.paramType;
-import tw.edu.sinica.iis.SSHadoop.SSHCBRun;
+import tw.edu.sinica.iis.SSHadoop.SSHRun;
 import tw.edu.sinica.iis.SSHadoop.SSHExec;
 import tw.edu.sinica.iis.SSHadoop.SSHSession;
 import tw.edu.sinica.iis.SSHadoop.SSHSftp;
 import tw.edu.sinica.iis.SSHadoop.SSHadoopCmd;
 import tw.edu.sinica.iis.SSHadoop.SSHadoopUtils;
-import tw.edu.sinica.iis.SSHadoop.SSHadoopUtils.CBStatus;
+import tw.edu.sinica.iis.SSHadoop.SSHadoopUtils.OperateStatus;
 
 public class CloudBrushGUI extends JPanel {
 
@@ -459,9 +459,6 @@ public class CloudBrushGUI extends JPanel {
 				JFileChooser fc = new JFileChooser(new File("workspace"
 						+ File.separator + "data"));
 				fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
-				// fc.setFileFilter(new ExtensionFileFilter(new String[] {
-				// ".fastq", ".sfq" }, "Sequence files (*.fastq|sfq)"));
-				// fc.setAcceptAllFileFilterUsed(false);
 
 				int returnVal = fc.showDialog(CloudBrushGUI.this, "Upload");
 				String path = "";
@@ -640,7 +637,7 @@ public class CloudBrushGUI extends JPanel {
 				}
 
 				rPanel.HadoopBar.setString("Running");
-				job_id = jobRun();
+				job_id = RunJob();
 				if (job_id != null) {
 					updateProperties();
 					StatusChange(JOB_WORKING);
@@ -921,7 +918,7 @@ public class CloudBrushGUI extends JPanel {
 		return true;
 	}
 
-	public String jobRun() {
+	public String RunJob() {
 
 		if (!rPanel.getAndCheckParameter()) {
 			return null;
@@ -942,7 +939,7 @@ public class CloudBrushGUI extends JPanel {
 						rPanel.xmlConfigParser.genProgramArgs(UID)) + ";"
 				+ HadoopCmd.rm(job_prog_load.replace(".xml", ".pid"));
 
-		Callable<String> channel = new SSHCBRun(HadoopSession.getSession(),
+		Callable<String> channel = new SSHRun(HadoopSession.getSession(),
 				runCmd);
 		FutureTask<String> futureTask = new FutureTask<String>(channel);
 
@@ -1086,7 +1083,7 @@ public class CloudBrushGUI extends JPanel {
 		return true;
 	}
 
-	public boolean MakeDatDir() {
+	public boolean MakeDataDir() {
 		Callable<String> channel = new SSHExec(HadoopSession.getSession(),
 				"hadoop fs -mkdir " + UID + "/"
 						+ paramType.INPUT.toString().toLowerCase() + "/");
@@ -1126,8 +1123,8 @@ public class CloudBrushGUI extends JPanel {
 			utils = new SSHadoopUtils();
 		}
 
-		public CBStatus isJobDone() {
-			CBStatus cbs = CBStatus.DEFAULT;
+		public OperateStatus isJobDone() {
+			OperateStatus opStatus = OperateStatus.DEFAULT;
 
 			Callable<String> channel2 = new SSHExec(HadoopSession.getSession(),
 					HadoopCmd.ls(job_prog_load.replace(".xml", ".pid"))
@@ -1145,7 +1142,7 @@ public class CloudBrushGUI extends JPanel {
 			while (true) {
 				if (futureTask2.isDone()) {
 					try {
-						cbs = utils.getOPStatus(futureTask2.get());
+						opStatus = utils.getOPStatus(futureTask2.get());
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					} catch (ExecutionException e) {
@@ -1154,7 +1151,7 @@ public class CloudBrushGUI extends JPanel {
 					break;
 				}
 			}
-			return cbs;
+			return opStatus;
 		}
 
 		public String[] getJobNameID() {
@@ -1171,7 +1168,7 @@ public class CloudBrushGUI extends JPanel {
 			Thread thread3 = new Thread(futureTask3);
 			thread3.start();
 
-			// get cb step and job id
+			// get step and job id
 			while (true) {
 				if (futureTask3.isDone()) {
 					try {
@@ -1224,9 +1221,9 @@ public class CloudBrushGUI extends JPanel {
 		@Override
 		public void run() {
 
-			CBStatus cbs = CBStatus.DEFAULT;
+			OperateStatus opStatus = OperateStatus.DEFAULT;
 
-			while ((cbs = isJobDone()) == CBStatus.DEFAULT) {
+			while ((opStatus = isJobDone()) == OperateStatus.DEFAULT) {
 
 				String[] jNameID = { "", "", "" };
 				while (true) {
@@ -1289,10 +1286,10 @@ public class CloudBrushGUI extends JPanel {
 			rPanel.HadoopTotalBar.setValue(100);
 			rPanel.HadoopBar.setValue(100);
 
-			if (cbs == CBStatus.SUCCESS) {
+			if (opStatus == OperateStatus.SUCCESS) {
 				rPanel.HadoopBar.setString("Finished");
 				ThreadOver();
-			} else if (cbs == CBStatus.ERROR) {
+			} else if (opStatus == OperateStatus.ERROR) {
 				rPanel.HadoopBar.setString("Error found");
 				JobError();
 			}
@@ -1300,10 +1297,6 @@ public class CloudBrushGUI extends JPanel {
 		}
 	}
 
-	// -------------------------------------------
-	/**
-	 * @param args
-	 */
 	public static void main(String[] args) {
 		JFrame window = new JFrame("CloudDOE - Operate Wizard");
 		window.setResizable(false);

@@ -11,7 +11,7 @@ public class SSHadoopUtils {
 	Pattern patToolStatus = Pattern
 			.compile(".*(Tool name: )(.*) \\[((\\d+)/(\\d+)|\\.\\.\\.)\\]");
 
-	public enum CBStatus {
+	public enum OperateStatus {
 		DEFAULT, ERROR, SUCCESS
 	}
 
@@ -37,22 +37,22 @@ public class SSHadoopUtils {
 		return (new double[] { mapStatus, redStatus });
 	}
 
-	public CBStatus getOPStatus(final String status) {
+	public OperateStatus getOPStatus(final String status) {
 		String[] currentStatus = status.split(";");
 		
 		if (currentStatus.length != 2) {
-			return CBStatus.ERROR;
+			return OperateStatus.ERROR;
 		}
 
 		if (currentStatus[0].trim().equals("")) {
 			if (currentStatus[1].trim().equals("")) {
-				return CBStatus.ERROR;
+				return OperateStatus.ERROR;
 			} else {
-				return CBStatus.SUCCESS;
+				return OperateStatus.SUCCESS;
 			}
 		}
 
-		return CBStatus.DEFAULT;
+		return OperateStatus.DEFAULT;
 	}
 
 	public String[] getCBStepAndJobId(final String status) {
