@@ -875,14 +875,8 @@ public class Operate extends JPanel {
 	}
 
 	public boolean refreshFileList() {
-		for (int i = fileList.size() - 1; i >= 0; i--) {
-			fileList.remove(i);
-		}
-		HadoopSession.openSession();
-
-		SSHadoopCmd tmpCMD = new SSHadoopCmd(UID, SPECIALCMD);
 		Callable<String> channel = new SSHExec(HadoopSession.getSession(),
-				tmpCMD.lsHdp(paramType.INPUT.toString().toLowerCase() + "/"));
+				HadoopCmd.lsHdp(paramType.INPUT.toString().toLowerCase() + "/"));
 		FutureTask<String> futureTask = new FutureTask<String>(channel);
 
 		Thread thread = new Thread(futureTask);
@@ -890,24 +884,22 @@ public class Operate extends JPanel {
 
 		while (true) {
 			if (futureTask.isDone()) {
+				for (int i = fileList.size() - 1; i >= 0; i--) {
+					fileList.remove(i);
+				}
+
 				try {
 					String[] result = futureTask.get().split("\n");
 					for (int i = 1; i < result.length; i++) {
-						String[] sp = result[i].split("/");
-						String dirName = sp[sp.length - 1];
-
-						// ignore .tmp dir
-						if (dirName.indexOf(".tmp") > 0)
-							continue;
+						String dirName = result[i].substring(result[i]
+								.lastIndexOf("/") + 1);
 
 						fileList.add(dirName);
 					}
-
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				} catch (ExecutionException e) {
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
+
 				break;
 			}
 		}
@@ -998,7 +990,7 @@ public class Operate extends JPanel {
 			sftp.initSftp();
 			sftp.sftpDownload(UID + "/" + job_result, fc.getSelectedFile()
 					.getPath());
-			
+
 			return true;
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -1024,7 +1016,7 @@ public class Operate extends JPanel {
 				break;
 			}
 		}
-		
+
 		job_id = "";
 		job_result = "";
 		job_paras_label = "";
@@ -1053,11 +1045,11 @@ public class Operate extends JPanel {
 				break;
 			}
 		}
-		
+
 		while (fileList.size() > 0) {
 			fileList.removeFirst();
 		}
-		
+
 		uPanel.TableData.fireTableDataChanged();
 		return true;
 	}
