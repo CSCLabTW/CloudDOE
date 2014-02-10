@@ -32,7 +32,7 @@ import tw.edu.sinica.iis.SSHadoop.SSHadoopCmd;
 import tw.edu.sinica.iis.SSHadoop.SSHadoopUtils;
 import tw.edu.sinica.iis.SSHadoop.SSHadoopUtils.OperateStatus;
 
-public class CloudBrushGUI extends JPanel {
+public class Operate extends JPanel {
 
 	private static final long serialVersionUID = -1666416040585522565L;
 
@@ -104,7 +104,7 @@ public class CloudBrushGUI extends JPanel {
 
 	public LinkedList<String> fileList;
 
-	public CloudBrushGUI(JFrame p) {
+	public Operate(JFrame p) {
 		super();
 		parent = p;
 
@@ -345,7 +345,7 @@ public class CloudBrushGUI extends JPanel {
 					if (Ip.length() > 1 && !Ip.equals(cPanel.ipText.getText())) {
 						int ans = JOptionPane
 								.showConfirmDialog(
-										CloudBrushGUI.this,
+										Operate.this,
 										"Warning!\nYou're trying to login into another Hadoop cluster with\n an existed connection settings. All the settings will\n be erased when you click OK.");
 						if (ans == JOptionPane.OK_OPTION) {
 							initialPropertyFile();
@@ -460,12 +460,12 @@ public class CloudBrushGUI extends JPanel {
 						+ File.separator + "data"));
 				fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
 
-				int returnVal = fc.showDialog(CloudBrushGUI.this, "Upload");
+				int returnVal = fc.showDialog(Operate.this, "Upload");
 				String path = "";
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
 					path = fc.getSelectedFile().getAbsolutePath();
 
-					int r = JOptionPane.showConfirmDialog(CloudBrushGUI.this,
+					int r = JOptionPane.showConfirmDialog(Operate.this,
 							"Upload selected file : \n " + path, "WARNING",
 							JOptionPane.YES_NO_OPTION);
 					if (r == JOptionPane.NO_OPTION) {
@@ -519,7 +519,7 @@ public class CloudBrushGUI extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-					int r = JOptionPane.showConfirmDialog(CloudBrushGUI.this,
+					int r = JOptionPane.showConfirmDialog(Operate.this,
 							"Remove selected file(s)?", "WARNING",
 							JOptionPane.YES_NO_OPTION);
 					if (r == JOptionPane.NO_OPTION) {
@@ -603,7 +603,7 @@ public class CloudBrushGUI extends JPanel {
 							+ rPanel.xmlConfigParser.programInfo.helpurl;
 				}
 
-				JOptionPane.showMessageDialog(CloudBrushGUI.this, information,
+				JOptionPane.showMessageDialog(Operate.this, information,
 						"Information", JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
@@ -615,7 +615,7 @@ public class CloudBrushGUI extends JPanel {
 				if (job_id.length() > 0) {
 					int r = JOptionPane
 							.showConfirmDialog(
-									CloudBrushGUI.this,
+									Operate.this,
 									"Previous results will be cleared before next run, contine?",
 									"WARNING", JOptionPane.YES_NO_OPTION);
 					if (r == JOptionPane.NO_OPTION) {
@@ -656,7 +656,7 @@ public class CloudBrushGUI extends JPanel {
 			public void actionPerformed(ActionEvent arg0) {
 				final JFileChooser fc = new JFileChooser();
 				fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-				int returnVal = fc.showSaveDialog(CloudBrushGUI.this);
+				int returnVal = fc.showSaveDialog(Operate.this);
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
 
 					statusMSG("Downloading Result.");
@@ -696,7 +696,7 @@ public class CloudBrushGUI extends JPanel {
 					if (Status == JOB_WORKING) {
 						// Cancel
 						int r = JOptionPane.showConfirmDialog(
-								CloudBrushGUI.this, "Cancel this running job?",
+								Operate.this, "Cancel this running job?",
 								"WARNING", JOptionPane.YES_NO_OPTION);
 						if (r == JOptionPane.NO_OPTION) {
 							return;
@@ -708,7 +708,7 @@ public class CloudBrushGUI extends JPanel {
 					} else {
 						// Clear
 						int r = JOptionPane.showConfirmDialog(
-								CloudBrushGUI.this,
+								Operate.this,
 								"Clear result and input data?", "WARNING",
 								JOptionPane.YES_NO_OPTION);
 						if (r == JOptionPane.NO_OPTION) {
@@ -1302,7 +1302,7 @@ public class CloudBrushGUI extends JPanel {
 		window.setResizable(false);
 		window.setLocationByPlatform(true);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		CloudBrushGUI mainPanel = new CloudBrushGUI(window);
+		Operate mainPanel = new Operate(window);
 		window.getContentPane().add(mainPanel);
 		window.pack();
 		window.setVisible(true);

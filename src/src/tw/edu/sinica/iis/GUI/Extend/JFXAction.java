@@ -6,7 +6,7 @@ import javax.swing.JOptionPane;
 import tw.edu.sinica.iis.SSHadoop.SSHShell;
 
 public class JFXAction {
-	public PluginRepo frame;
+	public Extend frame;
 
 	private SSHShell sshShell;
 	
@@ -32,7 +32,7 @@ public class JFXAction {
 		return null;
 	}
 	
-	public JFXAction(PluginRepo f) {
+	public JFXAction(Extend f) {
 		frame = f;
 	}
 	
@@ -53,11 +53,11 @@ public class JFXAction {
 				final String logFilePath = "~/" + replaceProtocol(pkgContent) + ".log";
 				final String pidFilePath = "~/" + replaceProtocol(pkgContent) + "_install.pid";
 				
-				final String instCmd = "install.sh " + PluginRepo.IP + " " + PluginRepo.Username + " " + PluginRepo.Password + " " + replaceProtocol(pkgContent);
+				final String instCmd = "install.sh " + Extend.IP + " " + Extend.Username + " " + Extend.Password + " " + replaceProtocol(pkgContent);
 				
-				String testCmd = PluginRepo.HadoopCmd.PPIRun(instCmd, instScript, logFilePath);
+				String testCmd = Extend.HadoopCmd.PPIRun(instCmd, instScript, logFilePath);
 
-				sshShell = new SSHShell(PluginRepo.HadoopSession.getSession(), testCmd);
+				sshShell = new SSHShell(Extend.HadoopSession.getSession(), testCmd);
 
 				try {
 					sshShell.call();

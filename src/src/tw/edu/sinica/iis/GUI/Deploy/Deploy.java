@@ -44,7 +44,7 @@ import tw.edu.sinica.iis.SSHadoop.SSHSftp;
 import tw.edu.sinica.iis.SSHadoop.SSHShell;
 import tw.edu.sinica.iis.SSHadoop.SSHadoopCmd;
 
-public class HadoopInstall extends JFrame {
+public class Deploy extends JFrame {
 	private static final long serialVersionUID = 1230711203L;
 	
 	private enum tabOrder { INSTALL, UNINSTALL, ABOUT };
@@ -91,7 +91,7 @@ public class HadoopInstall extends JFrame {
 	// -1:setting 0:started 1~3:step1~3
 	private int InstallState = -1;
 
-	public HadoopInstall() {
+	public Deploy() {
 		init();
 	}
 
@@ -508,7 +508,7 @@ public class HadoopInstall extends JFrame {
 		if (arg0.getID() == WindowEvent.WINDOW_CLOSING && InstallState != -1) {
 			int tmp = JOptionPane
 					.showConfirmDialog(
-							HadoopInstall.this,
+							Deploy.this,
 							"It may cause unrecoverable error of your cluster installation at this time.\nExit anyway?",
 							"Confirm", JOptionPane.YES_NO_OPTION);
 			if (tmp == JOptionPane.YES_OPTION) {
@@ -640,7 +640,7 @@ public class HadoopInstall extends JFrame {
 					}
 					int r = JOptionPane
 							.showConfirmDialog(
-									HadoopInstall.this,
+									Deploy.this,
 									"CloudDOE - Deploy Wizard will change settings of your cluster computer. \nContinue to install?",
 									"Confirm", JOptionPane.YES_NO_OPTION);
 					if (r == JOptionPane.NO_OPTION) {
@@ -671,7 +671,7 @@ public class HadoopInstall extends JFrame {
 	public static void main(String[] args) {
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				HadoopInstall tmp = new HadoopInstall();
+				Deploy tmp = new Deploy();
 				tmp.DrawFrame.start();
 				tmp.UnistallPanel.DrawingPanel.start();
 			}

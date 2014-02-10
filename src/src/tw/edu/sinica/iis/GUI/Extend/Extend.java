@@ -19,7 +19,7 @@ import tw.edu.sinica.iis.SSHadoop.SSHSession;
 import tw.edu.sinica.iis.SSHadoop.SSHSftp;
 import tw.edu.sinica.iis.SSHadoop.SSHadoopCmd;
 
-public class PluginRepo extends JFrame{
+public class Extend extends JFrame{
 
 	private static final long serialVersionUID = 19384237534L;
 	
@@ -41,7 +41,7 @@ public class PluginRepo extends JFrame{
 	public static String Username;
 	public static String Password;
 	
-	public PluginRepo(){
+	public Extend(){
 		super("CloudDOE - Extend Wizard");
 		initial();
 	}
@@ -93,7 +93,7 @@ public class PluginRepo extends JFrame{
 				Username = lPanel.USNTF.getText();
 				Password = new String(lPanel.PSWTF.getPassword());
 				
-				final WorkingDialog connDialog = new WorkingDialog(PluginRepo.this, true, "Connecting");
+				final WorkingDialog connDialog = new WorkingDialog(Extend.this, true, "Connecting");
 				new Thread(new Runnable() {
 					@Override
 					public void run() {
@@ -111,8 +111,8 @@ public class PluginRepo extends JFrame{
 							}
 							cl.show(mPanel, "WEB");
 							
-							windowSize = PluginRepo.this.getSize();
-							PluginRepo.this.setSize(webSize);
+							windowSize = Extend.this.getSize();
+							Extend.this.setSize(webSize);
 						} else {
 							JOptionPane.showMessageDialog(null,
 									"Login failed.");
@@ -165,12 +165,12 @@ public class PluginRepo extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				closeHadoop();
-				PluginRepo.this.setSize(windowSize);
+				Extend.this.setSize(windowSize);
 				cl.show(mPanel, "LOGIN");
 			}
 		});
 		
-		wPanel.registerAction("app", new JFXAction(PluginRepo.this));
+		wPanel.registerAction("app", new JFXAction(Extend.this));
 		
 		return wPanel;
 	}
@@ -217,7 +217,7 @@ public class PluginRepo extends JFrame{
 	}
 	
 	public static void main(String[] args) {
-		PluginRepo window = new PluginRepo();
+		Extend window = new Extend();
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.pack();
 		window.setVisible(true);

@@ -101,9 +101,9 @@ public class MonitorPanel extends JPanel implements Runnable{
 	
 	public boolean getMonitorData(){
 		// TODO: need refinement
-		String testCmd = PluginRepo.HadoopCmd.PPILog(logFilePath, 30);
+		String testCmd = Extend.HadoopCmd.PPILog(logFilePath, 30);
 		System.out.println(testCmd);
-		Callable<String> channel = new SSHExec(PluginRepo.HadoopSession.getSession(), testCmd);
+		Callable<String> channel = new SSHExec(Extend.HadoopSession.getSession(), testCmd);
 
 		String log = "";
 		try {
@@ -120,8 +120,8 @@ public class MonitorPanel extends JPanel implements Runnable{
 	
 	public boolean isFinished(){
 		// TODO: need refinement
-		String testCmd = PluginRepo.HadoopCmd.PPIStatus("checkpid.sh", pidFilePath);
-		Callable<String> channel = new SSHExec(PluginRepo.HadoopSession.getSession(), testCmd);
+		String testCmd = Extend.HadoopCmd.PPIStatus("checkpid.sh", pidFilePath);
+		Callable<String> channel = new SSHExec(Extend.HadoopSession.getSession(), testCmd);
 
 		try {
 			String log = channel.call();
