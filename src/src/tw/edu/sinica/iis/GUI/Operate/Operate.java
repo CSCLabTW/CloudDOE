@@ -388,9 +388,11 @@ public class Operate extends JPanel {
 									StatusChange(JOB_WORKING);
 									startThread();
 									String[] paras = job_paras_label.split(";");
-									for (int i = 0; i < paras.length; i++) {
-										rPanel.ParameterText[i]
-												.setText(paras[i]);
+									if (rPanel.ParameterText != null) {
+										for (int i = 0; i < paras.length; i++) {
+											rPanel.ParameterText[i]
+													.setText(paras[i]);
+										}
 									}
 								}
 								statusMSG("Connected!");

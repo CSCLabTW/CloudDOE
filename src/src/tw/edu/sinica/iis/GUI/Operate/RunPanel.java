@@ -29,9 +29,9 @@ public class RunPanel extends JPanel {
 
 	private static final long serialVersionUID = 4224485357881142712L;
 	private static final String confExt = ".xml";
-	
+
 	public static final String SELECTOR_DEFAULT = "";
-	
+
 	public static int default_w = 400;
 	public static int default_h = 400;
 
@@ -59,7 +59,7 @@ public class RunPanel extends JPanel {
 		super();
 		init(default_w, default_h);
 	}
-	
+
 	public RunPanel(final String confXML) {
 		super();
 		programConf = confXML;
@@ -135,8 +135,7 @@ public class RunPanel extends JPanel {
 
 		this.add(ButtonPanel);
 
-		JLabel step_tip = new JLabel(
-				"Step 3. Run program and download results");
+		JLabel step_tip = new JLabel("Step 3. Run program and download results");
 		step_tip.setHorizontalAlignment(SwingConstants.LEFT);
 		step_tip.setForeground(Color.BLUE);
 		step_tip.setFont(new Font(step_tip.getFont().getFontName(), step_tip
@@ -161,17 +160,19 @@ public class RunPanel extends JPanel {
 		});
 
 		programHelper = new JButton("Help");
-		
+
 		programSelector = new JComboBox<String>();
 		programSelector.addItem(SELECTOR_DEFAULT);
 
-		for (String item : files) {
-			programSelector.addItem(item.replace(confExt, ""));
-			if(programConf != null && programConf.equals(item)) {
-				programSelector.setSelectedItem(item.replace(confExt, ""));
+		if (files != null) {
+			for (String item : files) {
+				programSelector.addItem(item.replace(confExt, ""));
+				if (programConf != null && programConf.equals(item)) {
+					programSelector.setSelectedItem(item.replace(confExt, ""));
+				}
 			}
 		}
-		
+
 		programSelector.addItemListener(new ItemListener() {
 
 			@Override
@@ -196,9 +197,9 @@ public class RunPanel extends JPanel {
 
 		parameterPanel.removeAll();
 		xmlConfigParser.removeAll();
-		
+
 		if (xmlConfigParser.load(xmlPath + File.separator + programConf)) {
-			
+
 			int pn = xmlConfigParser.parameterItems.size();
 
 			ParameterLabel = new JLabel[pn];
