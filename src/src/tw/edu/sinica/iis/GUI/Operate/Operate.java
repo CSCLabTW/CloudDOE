@@ -695,9 +695,9 @@ public class Operate extends JPanel {
 				try {
 					if (Status == JOB_WORKING) {
 						// Cancel
-						int r = JOptionPane.showConfirmDialog(
-								Operate.this, "Cancel this running job?",
-								"WARNING", JOptionPane.YES_NO_OPTION);
+						int r = JOptionPane.showConfirmDialog(Operate.this,
+								"Cancel this running job?", "WARNING",
+								JOptionPane.YES_NO_OPTION);
 						if (r == JOptionPane.NO_OPTION) {
 							return;
 						}
@@ -707,8 +707,7 @@ public class Operate extends JPanel {
 						}
 					} else {
 						// Clear
-						int r = JOptionPane.showConfirmDialog(
-								Operate.this,
+						int r = JOptionPane.showConfirmDialog(Operate.this,
 								"Clear result and input data?", "WARNING",
 								JOptionPane.YES_NO_OPTION);
 						if (r == JOptionPane.NO_OPTION) {
@@ -976,9 +975,11 @@ public class Operate extends JPanel {
 	}
 
 	public boolean ResultDownload(JFileChooser fc) {
+		if (job_result == null || "".equals(job_result)) {
+			return false;
+		}
+
 		try {
-			if (job_result == null || "".equals(job_result))
-				return false;
 			Callable<String> channel = new SSHExec(HadoopSession.getSession(),
 					genDownloadCmd());
 			FutureTask<String> futureTask = new FutureTask<String>(channel);
@@ -997,6 +998,7 @@ public class Operate extends JPanel {
 			sftp.initSftp();
 			sftp.sftpDownload(UID + "/" + job_result, fc.getSelectedFile()
 					.getPath());
+			
 			return true;
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -1022,6 +1024,7 @@ public class Operate extends JPanel {
 				break;
 			}
 		}
+		
 		job_id = "";
 		job_result = "";
 		job_paras_label = "";
@@ -1050,9 +1053,11 @@ public class Operate extends JPanel {
 				break;
 			}
 		}
+		
 		while (fileList.size() > 0) {
 			fileList.removeFirst();
 		}
+		
 		uPanel.TableData.fireTableDataChanged();
 		return true;
 	}
@@ -1072,7 +1077,6 @@ public class Operate extends JPanel {
 
 		while (true) {
 			if (futureTask.isDone()) {
-
 				break;
 			}
 		}
