@@ -6,7 +6,7 @@
 		<version>20140205</version>
 		<author>Wei-Chun Chung</author>
 		<lastupd>2014/02/11</lastupd>
-		<helpurl>https://github.com/ice91/ReadStackCorrector</helpurl>
+		<website>https://github.com/ice91/ReadStackCorrector</website>
 		<argformat>$input $output $work $value</argformat>
 	</program>
 	<parameters>

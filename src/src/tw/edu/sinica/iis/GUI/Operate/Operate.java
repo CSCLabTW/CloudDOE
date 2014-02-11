@@ -600,9 +600,9 @@ public class Operate extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String information = "Program help information is not avalable.";
-				if (!rPanel.xmlConfigParser.programInfo.helpurl.equals("")) {
+				if (!rPanel.xmlConfigParser.programInfo.website.equals("")) {
 					information = "Program help information is avaliable at \n"
-							+ rPanel.xmlConfigParser.programInfo.helpurl;
+							+ rPanel.xmlConfigParser.programInfo.website;
 				}
 
 				JOptionPane.showMessageDialog(Operate.this, information,

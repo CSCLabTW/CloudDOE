@@ -35,7 +35,7 @@ public class XMLConfigParser {
 		public String name;
 		public String jarfile;
 		public String lastupd;
-		public String helpurl;
+		public String website;
 		public String argformat;
 
 		public ProgramInfo() {
@@ -43,16 +43,16 @@ public class XMLConfigParser {
 		}
 
 		public ProgramInfo(String name, String jarfile, String lastupd,
-				String helpurl, String argformat) {
-			set(name, jarfile, lastupd, helpurl, argformat);
+				String website, String argformat) {
+			set(name, jarfile, lastupd, website, argformat);
 		}
 
 		public void set(String name, String jarfile, String lastupd,
-				String helpurl, String argformat) {
+				String website, String argformat) {
 			this.name = name;
 			this.jarfile = jarfile;
 			this.lastupd = lastupd;
-			this.helpurl = helpurl;
+			this.website = website;
 			this.argformat = argformat;
 		}
 
@@ -63,7 +63,7 @@ public class XMLConfigParser {
 		@Override
 		public String toString() {
 			return "name=" + name + ", jarfile=" + jarfile + ", lastupd="
-					+ lastupd + ", helpurl=" + helpurl + ", argformat="
+					+ lastupd + ", website=" + website + ", argformat="
 					+ argformat;
 		}
 	}
@@ -153,7 +153,7 @@ public class XMLConfigParser {
 			programInfo.set(info.elementTextTrim("name"),
 					info.elementTextTrim("jarfile"),
 					info.elementTextTrim("lastupd"),
-					info.elementTextTrim("helpurl"),
+					info.elementTextTrim("website"),
 					info.elementTextTrim("argformat"));
 
 			List<?> list = doc.selectNodes("//p:parameters/p:parameter");

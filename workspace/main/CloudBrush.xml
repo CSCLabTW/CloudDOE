@@ -6,7 +6,7 @@
 		<version>20121228</version>
 		<author>Chien-Chih Chen</author>
 		<lastupd>2014/02/11</lastupd>
-		<helpurl>https://github.com/ice91/CloudBrush</helpurl>
+		<website>https://github.com/ice91/CloudBrush</website>
 		<argformat>$input $output $work $value $value</argformat>
 	</program>
 	<parameters>
