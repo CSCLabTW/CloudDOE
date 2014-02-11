@@ -3,7 +3,9 @@
 	<program>
 		<name>CloudBrush</name>
 		<jarfile>CloudBrush.jar</jarfile>
-		<lastupd>2013/10/01</lastupd>
+		<version>20121228</version>
+		<author>Chien-Chih Chen</author>
+		<lastupd>2014/02/11</lastupd>
 		<helpurl>https://github.com/ice91/CloudBrush</helpurl>
 		<argformat>$input $output $work $value $value</argformat>
 	</program>

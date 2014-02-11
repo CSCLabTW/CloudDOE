@@ -3,7 +3,9 @@
 	<program>
 		<name>CloudBurst</name>
 		<jarfile>CloudBurst.jar</jarfile>
-		<lastupd>2014/02/06</lastupd>
+		<version>1.1.0</version>
+		<author>Michael Schatz</author>
+		<lastupd>2014/02/11</lastupd>
 		<helpurl>http://sourceforge.net/projects/cloudburst-bio/</helpurl>
 		<argformat>$input $input $output $value &gt;&amp; $work/burst.log</argformat>
 	</program>
