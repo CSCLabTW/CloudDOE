@@ -93,7 +93,6 @@ public class Operate extends JPanel {
 	public String Password;
 
 	public String job_id;
-	public String job_result;
 
 	public String job_paras_label;
 	public String job_prog_load;
@@ -165,7 +164,6 @@ public class Operate extends JPanel {
 		Password = "";
 
 		job_id = prop.getProperty(JOB_ID, "");
-		job_result = prop.getProperty(JOB_RESULT, "");
 		job_paras_label = prop.getProperty(JOB_PARAS, "");
 		job_prog_load = prop.getProperty(LOAD_PROG, "");
 	}
@@ -177,10 +175,9 @@ public class Operate extends JPanel {
 		prop.setProperty(DEF_PORT, "");
 		prop.setProperty(DEF_USERNAME, "");
 		prop.setProperty(JOB_ID, "");
-		prop.setProperty(JOB_RESULT, "");
 		prop.setProperty(JOB_PARAS, "");
 		prop.setProperty(LOAD_PROG, "");
-		
+
 		saveProperties(false);
 	}
 
@@ -191,10 +188,9 @@ public class Operate extends JPanel {
 		prop.setProperty(DEF_PORT, Port);
 		prop.setProperty(DEF_USERNAME, ID);
 		prop.setProperty(JOB_ID, job_id);
-		prop.setProperty(JOB_RESULT, job_result);
 		prop.setProperty(JOB_PARAS, job_paras_label);
 		prop.setProperty(LOAD_PROG, job_prog_load);
-		
+
 		saveProperties(false);
 	}
 
@@ -927,7 +923,6 @@ public class Operate extends JPanel {
 		job_prog_load = rPanel.programConf;
 
 		job_paras_label = rPanel.xmlConfigParser.genParamValList(';');
-		job_result = paramType.OUTPUT.toString().toLowerCase();
 
 		String runCmd = HadoopCmd.touch(job_prog_load.replace(".xml", ".pid"))
 				+ ";"
@@ -946,7 +941,7 @@ public class Operate extends JPanel {
 		Thread thread = new Thread(futureTask);
 		thread.start();
 
-		String jobId = UID + "/" + job_result;
+		String jobId = UID + "/" + paramType.OUTPUT.toString().toLowerCase();
 		while (true) {
 			if (futureTask.isDone()) {
 
@@ -962,11 +957,13 @@ public class Operate extends JPanel {
 
 		for (DownloadItem d : rPanel.xmlConfigParser.downloadItems) {
 			if (d.method == downloadType.GET) {
-				rst += HadoopCmd.getHdp(job_result + "/" + d.src, job_result
-						+ "/" + d.dst);
+				rst += HadoopCmd.getHdp(paramType.OUTPUT.toString()
+						.toLowerCase() + "/" + d.src, paramType.OUTPUT
+						.toString().toLowerCase() + "/" + d.dst);
 			} else if (d.method == downloadType.GETMERGE) {
-				rst += HadoopCmd.getMergeRstHdp(job_result + "/" + d.src,
-						job_result + "/" + d.dst);
+				rst += HadoopCmd.getMergeRstHdp(paramType.OUTPUT.toString()
+						.toLowerCase() + "/" + d.src, paramType.OUTPUT
+						.toString().toLowerCase() + "/" + d.dst);
 			}
 
 			rst += ";";
@@ -976,7 +973,7 @@ public class Operate extends JPanel {
 	}
 
 	public boolean ResultDownload(JFileChooser fc) {
-		if (job_result == null || "".equals(job_result)) {
+		if (!rPanel.getAndCheckParameter()) {
 			return false;
 		}
 
@@ -997,8 +994,9 @@ public class Operate extends JPanel {
 			SSHSftp sftp = new SSHSftp(ID, Ip);
 			sftp.setSSHPass(Password);
 			sftp.initSftp();
-			sftp.sftpDownload(UID + "/" + job_result, fc.getSelectedFile()
-					.getPath());
+			sftp.sftpDownload(UID + "/"
+					+ paramType.OUTPUT.toString().toLowerCase(), fc
+					.getSelectedFile().getPath());
 
 			return true;
 		} catch (Exception e) {
@@ -1009,12 +1007,13 @@ public class Operate extends JPanel {
 	}
 
 	public boolean ClearJob() {
-
-		if (job_result == null || "".equals(job_result)) {
+		if (!rPanel.getAndCheckParameter()) {
 			return false;
 		}
+		
 		Callable<String> channel = new SSHExec(HadoopSession.getSession(),
-				HadoopCmd.rmrHdp(job_result + "*"));
+				HadoopCmd.rmrHdp(paramType.OUTPUT.toString().toLowerCase()
+						+ "*"));
 		FutureTask<String> futureTask = new FutureTask<String>(channel);
 
 		Thread thread = new Thread(futureTask);
@@ -1027,7 +1026,6 @@ public class Operate extends JPanel {
 		}
 
 		job_id = "";
-		job_result = "";
 		job_paras_label = "";
 		job_prog_load = "";
 
@@ -1132,7 +1130,8 @@ public class Operate extends JPanel {
 			Callable<String> channel2 = new SSHExec(HadoopSession.getSession(),
 					HadoopCmd.ls(job_prog_load.replace(".xml", ".pid"))
 							+ ";echo -n ';';"
-							+ HadoopCmd.lsHdp(job_result
+							+ HadoopCmd.lsHdp(paramType.OUTPUT.toString()
+									.toLowerCase()
 									+ "/"
 									+ rPanel.xmlConfigParser.downloadItems
 											.get(0).src));
