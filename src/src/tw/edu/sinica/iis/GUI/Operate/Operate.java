@@ -81,8 +81,6 @@ public class Operate extends JPanel {
 	public final static String JOB_ID = "JOB_ID";
 	public final static String JOB_RESULT = "JOB_RESULT";
 	public final static String JOB_PARAS = "JOB_PARAS";
-
-	public final static String HDFS_FILES = "HDFS_FILES";
 	public final static String LOAD_PROG = "LOAD_PROG";
 
 	public final static String SPECIALCMD = "export HADOOP_HOME=/opt/hadoop; source /etc/profile; export PATH=$PATH:$HADOOP_HOME/bin";
@@ -156,17 +154,21 @@ public class Operate extends JPanel {
 
 		job_prog_load = PropertyUtility.readValue(PROPERTYNAME, LOAD_PROG) == null ? ""
 				: PropertyUtility.readValue(PROPERTYNAME, LOAD_PROG);
+	}
 
-		String RemoteFiles = PropertyUtility
-				.readValue(PROPERTYNAME, HDFS_FILES);
+	public void resetProperties() {
 
-		fileList = new LinkedList<String>();
-		if (RemoteFiles != null && !"".equals(RemoteFiles)) {
-			String[] sp = RemoteFiles.split(";");
-			for (int i = 0; i < sp.length; i++) {
-				fileList.add(sp[i]);
-			}
-		}
+		PropertyUtility.writeProperties(PROPERTYNAME, INITIALED, "no");
+
+		PropertyUtility.writeProperties(PROPERTYNAME, DEF_IP, "");
+		PropertyUtility.writeProperties(PROPERTYNAME, DEF_PORT, "");
+		PropertyUtility.writeProperties(PROPERTYNAME, DEF_USERNAME, "");
+
+		PropertyUtility.writeProperties(PROPERTYNAME, JOB_ID, "");
+		PropertyUtility.writeProperties(PROPERTYNAME, JOB_RESULT, "");
+		PropertyUtility.writeProperties(PROPERTYNAME, JOB_PARAS, "");
+
+		PropertyUtility.writeProperties(PROPERTYNAME, LOAD_PROG, "");
 	}
 
 	public void updateProperties() {
@@ -183,12 +185,6 @@ public class Operate extends JPanel {
 				job_paras_label);
 
 		PropertyUtility.writeProperties(PROPERTYNAME, LOAD_PROG, job_prog_load);
-
-		String RemoteFiles = "";
-		for (int i = 0; i < fileList.size(); i++) {
-			RemoteFiles += fileList.get(i) + ";";
-		}
-		PropertyUtility.writeProperties(PROPERTYNAME, HDFS_FILES, RemoteFiles);
 	}
 
 	// -----------------------------------------
@@ -296,6 +292,8 @@ public class Operate extends JPanel {
 
 		HadoopSession = new SSHSession();
 
+		fileList = new LinkedList<String>();
+
 		Tabs = new JTabbedPane();
 
 		cPanel = new ConnectPanel();
@@ -325,8 +323,8 @@ public class Operate extends JPanel {
 		}
 
 		ConnectPanelSetting();
-		RunPanelSetting();
 		UploadPanelSetting();
+		RunPanelSetting();
 	}
 
 	public void ConnectPanelSetting() {
@@ -348,7 +346,8 @@ public class Operate extends JPanel {
 										Operate.this,
 										"Warning!\nYou're trying to login into another Hadoop cluster with\n an existed connection settings. All the settings will\n be erased when you click OK.");
 						if (ans == JOptionPane.OK_OPTION) {
-							initialPropertyFile();
+							identifyUID();
+							resetProperties();
 							readProperties();
 						} else {
 							return;
@@ -380,7 +379,7 @@ public class Operate extends JPanel {
 						@Override
 						public void run() {
 							if (connectHadoop(Ip, Port, ID, Password)) {
-
+								refreshFileList();
 								updateProperties();
 								if ("".equals(job_id)) {
 									StatusChange(JOB_READY);
@@ -838,11 +837,11 @@ public class Operate extends JPanel {
 
 		while (true) {
 			if (futureTask.isDone()) {
+				refreshFileList();
 				break;
 			}
 		}
 
-		refreshFileList();
 		return true;
 	}
 
@@ -886,9 +885,7 @@ public class Operate extends JPanel {
 
 		while (true) {
 			if (futureTask.isDone()) {
-				for (int i = fileList.size() - 1; i >= 0; i--) {
-					fileList.remove(i);
-				}
+				fileList.clear();
 
 				try {
 					String[] result = futureTask.get().split("\n");
@@ -902,11 +899,12 @@ public class Operate extends JPanel {
 					e.printStackTrace();
 				}
 
+				updateProperties();
+				uPanel.TableData.fireTableDataChanged();
+
 				break;
 			}
 		}
-		updateProperties();
-		uPanel.TableData.fireTableDataChanged();
 
 		return true;
 	}
@@ -1048,9 +1046,7 @@ public class Operate extends JPanel {
 			}
 		}
 
-		while (fileList.size() > 0) {
-			fileList.removeFirst();
-		}
+		fileList.clear();
 
 		uPanel.TableData.fireTableDataChanged();
 		return true;
