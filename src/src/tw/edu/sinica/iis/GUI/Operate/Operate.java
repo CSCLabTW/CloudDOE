@@ -904,7 +904,6 @@ public class Operate extends JPanel {
 					e.printStackTrace();
 				}
 
-				updateProperties();
 				uPanel.TableData.fireTableDataChanged();
 
 				break;
