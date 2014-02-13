@@ -3,7 +3,7 @@
 	<program>
 		<name>WordCount Streaming</name>
 		<streaming>true</streaming>
-		<jarfile>/opt/hadoop/contrib/streaming/hadoop-streaming-0.20.203.0.jar</jarfile>
+		<jarfile>$HADOOP_HOME/contrib/streaming/hadoop-streaming-0.20.203.0.jar</jarfile>
 		<version>20140213</version>
 		<author>Hadoop Team</author>
 		<lastupd>2014/02/13</lastupd>
