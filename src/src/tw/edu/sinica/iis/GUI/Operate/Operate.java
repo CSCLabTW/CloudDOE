@@ -85,7 +85,7 @@ public class Operate extends JPanel {
 	public final static String HDFS_FILES = "HDFS_FILES";
 	public final static String LOAD_PROG = "LOAD_PROG";
 
-	public final static String SPECIALCMD = "source /etc/profile; export PATH=$PATH:/opt/hadoop/bin";
+	public final static String SPECIALCMD = "export HADOOP_HOME=/opt/hadoop; source /etc/profile; export PATH=$PATH:$HADOOP_HOME/bin";
 
 	public String UID;
 
