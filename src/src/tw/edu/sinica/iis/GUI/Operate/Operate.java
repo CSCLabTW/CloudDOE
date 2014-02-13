@@ -5,7 +5,12 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.LinkedList;
+import java.util.Properties;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
@@ -36,6 +41,8 @@ public class Operate extends JPanel {
 
 	private static final long serialVersionUID = -1666416040585522565L;
 
+	private Properties prop;
+
 	public JFrame parent;
 
 	public JTabbedPane Tabs;
@@ -61,7 +68,8 @@ public class Operate extends JPanel {
 		NOT_CONNECTED, JOB_READY, JOB_WORKING, JOB_FINISHED
 	}
 
-	public final static String PROPERTYNAME = "setting.prop";
+	public final static String PROPERTYFILE = "clouddoe.properties";
+
 	public final static String INITIALED = "INITIALED";
 	public final static String DEF_IP = "DEF_IP";
 	public final static String DEF_PORT = "DEF_PORT";
@@ -77,7 +85,7 @@ public class Operate extends JPanel {
 
 	public String UID;
 
-	public String initialed;
+	public String initial;
 
 	public String Ip;
 	public String Port;
@@ -96,88 +104,99 @@ public class Operate extends JPanel {
 		super();
 		parent = p;
 
-		identifyUID();
+		initProperties();
 		readProperties();
 		init();
 
 		StatusChange(jobStatus.NOT_CONNECTED);
 	}
 
-	// ----------properties-------------------
+	private boolean saveProperties(final boolean initial) {
+		try {
+			FileWriter fw = new FileWriter(PROPERTYFILE);
+			if (!initial) {
+				prop.store(fw, "CloudDOE Properties");
+			}
+			fw.close();
 
-	public void initialPropertyFile() {
-		String un = System.getProperty("user.name") == null ? "unknown"
-				: System.getProperty("user.name");
-		UID = System.currentTimeMillis() + "_" + un;
-		String defPro = "UID=" + UID + "\r\n" + INITIALED + "=no";
-		TextExtractor.textToFileUTF8(new File("").getAbsolutePath()
-				+ File.separator + PROPERTYNAME, defPro);
+			return true;
+		} catch (IOException e1) {
+		}
+
+		return false;
 	}
 
-	public void identifyUID() {
-		UID = PropertyUtility.readValue(PROPERTYNAME, "UID");
-		if (UID == null) {
-			// property rebuilt
-			initialPropertyFile();
+	public void initProperties() {
+		if (prop == null) {
+			prop = new Properties();
+		} else {
+			prop.clear();
+		}
+
+		try {
+			prop.load(new FileInputStream(PROPERTYFILE));
+		} catch (FileNotFoundException e) {
+			saveProperties(true);
+		} catch (IOException e) {
+		}
+
+		UID = prop.getProperty("UID", "");
+		if (UID.equals("")) {
+			String user = System.getProperty("user.name");
+			if (user == null || user.equals("")) {
+				user = "unknown";
+			}
+
+			UID = System.currentTimeMillis() + "_" + user;
+
+			prop.setProperty("UID", UID);
+			prop.setProperty(INITIALED, "no");
+
+			saveProperties(false);
 		}
 	}
 
 	public void readProperties() {
-		initialed = PropertyUtility.readValue(PROPERTYNAME, INITIALED) == null ? ""
-				: PropertyUtility.readValue(PROPERTYNAME, INITIALED);
+		initial = prop.getProperty(INITIALED, "");
 
-		Ip = PropertyUtility.readValue(PROPERTYNAME, DEF_IP) == null ? ""
-				: PropertyUtility.readValue(PROPERTYNAME, DEF_IP);
-		Port = PropertyUtility.readValue(PROPERTYNAME, DEF_PORT) == null ? "22"
-				: PropertyUtility.readValue(PROPERTYNAME, DEF_PORT);
-		ID = PropertyUtility.readValue(PROPERTYNAME, DEF_USERNAME) == null ? ""
-				: PropertyUtility.readValue(PROPERTYNAME, DEF_USERNAME);
+		Ip = prop.getProperty(DEF_IP, "");
+		Port = prop.getProperty(DEF_PORT, "22");
+		ID = prop.getProperty(DEF_USERNAME, "");
 		Password = "";
 
-		job_id = PropertyUtility.readValue(PROPERTYNAME, JOB_ID) == null ? ""
-				: PropertyUtility.readValue(PROPERTYNAME, JOB_ID);
-		job_result = PropertyUtility.readValue(PROPERTYNAME, JOB_RESULT) == null ? ""
-				: PropertyUtility.readValue(PROPERTYNAME, JOB_RESULT);
-
-		job_paras_label = PropertyUtility.readValue(PROPERTYNAME, JOB_PARAS) == null ? ""
-				: PropertyUtility.readValue(PROPERTYNAME, JOB_PARAS);
-
-		job_prog_load = PropertyUtility.readValue(PROPERTYNAME, LOAD_PROG) == null ? ""
-				: PropertyUtility.readValue(PROPERTYNAME, LOAD_PROG);
+		job_id = prop.getProperty(JOB_ID, "");
+		job_result = prop.getProperty(JOB_RESULT, "");
+		job_paras_label = prop.getProperty(JOB_PARAS, "");
+		job_prog_load = prop.getProperty(LOAD_PROG, "");
 	}
 
 	public void resetProperties() {
+		prop.setProperty(INITIALED, "no");
 
-		PropertyUtility.writeProperties(PROPERTYNAME, INITIALED, "no");
-
-		PropertyUtility.writeProperties(PROPERTYNAME, DEF_IP, "");
-		PropertyUtility.writeProperties(PROPERTYNAME, DEF_PORT, "");
-		PropertyUtility.writeProperties(PROPERTYNAME, DEF_USERNAME, "");
-
-		PropertyUtility.writeProperties(PROPERTYNAME, JOB_ID, "");
-		PropertyUtility.writeProperties(PROPERTYNAME, JOB_RESULT, "");
-		PropertyUtility.writeProperties(PROPERTYNAME, JOB_PARAS, "");
-
-		PropertyUtility.writeProperties(PROPERTYNAME, LOAD_PROG, "");
+		prop.setProperty(DEF_IP, "");
+		prop.setProperty(DEF_PORT, "");
+		prop.setProperty(DEF_USERNAME, "");
+		prop.setProperty(JOB_ID, "");
+		prop.setProperty(JOB_RESULT, "");
+		prop.setProperty(JOB_PARAS, "");
+		prop.setProperty(LOAD_PROG, "");
+		
+		saveProperties(false);
 	}
 
 	public void updateProperties() {
+		prop.setProperty(INITIALED, initial);
 
-		PropertyUtility.writeProperties(PROPERTYNAME, INITIALED, initialed);
-
-		PropertyUtility.writeProperties(PROPERTYNAME, DEF_IP, Ip);
-		PropertyUtility.writeProperties(PROPERTYNAME, DEF_PORT, Port);
-		PropertyUtility.writeProperties(PROPERTYNAME, DEF_USERNAME, ID);
-
-		PropertyUtility.writeProperties(PROPERTYNAME, JOB_ID, job_id);
-		PropertyUtility.writeProperties(PROPERTYNAME, JOB_RESULT, job_result);
-		PropertyUtility.writeProperties(PROPERTYNAME, JOB_PARAS,
-				job_paras_label);
-
-		PropertyUtility.writeProperties(PROPERTYNAME, LOAD_PROG, job_prog_load);
+		prop.setProperty(DEF_IP, Ip);
+		prop.setProperty(DEF_PORT, Port);
+		prop.setProperty(DEF_USERNAME, ID);
+		prop.setProperty(JOB_ID, job_id);
+		prop.setProperty(JOB_RESULT, job_result);
+		prop.setProperty(JOB_PARAS, job_paras_label);
+		prop.setProperty(LOAD_PROG, job_prog_load);
+		
+		saveProperties(false);
 	}
-
-	// -----------------------------------------
 
 	public void StatusChange(final jobStatus jobs) {
 		switch (jobs) {
@@ -336,7 +355,7 @@ public class Operate extends JPanel {
 										Operate.this,
 										"Warning!\nYou're trying to login into another Hadoop cluster with\n an existed connection settings. All the settings will\n be erased when you click OK.");
 						if (ans == JOptionPane.OK_OPTION) {
-							identifyUID();
+							initProperties();
 							resetProperties();
 							readProperties();
 						} else {
@@ -350,7 +369,7 @@ public class Operate extends JPanel {
 					ID = cPanel.IDText.getText();
 					Password = new String(cPanel.PasswordText.getPassword());
 
-					if ("no".endsWith(initialed)) {
+					if ("no".endsWith(initial)) {
 						progressDialog = new WorkingDialog(parent, true,
 								"Initializing");
 					} else {
@@ -772,7 +791,7 @@ public class Operate extends JPanel {
 				HadoopCmd.setUserBase(UID);
 				HadoopCmd.setServerSpecialCmd(SPECIALCMD);
 
-				if ("no".endsWith(initialed)) {
+				if ("no".endsWith(initial)) {
 					HDFSInitial();
 				}
 
@@ -793,7 +812,7 @@ public class Operate extends JPanel {
 		sftp.sftpUpload(new File("workspace" + File.separator + "main")
 				.getAbsolutePath(), UID + "/main");
 
-		initialed = "done";
+		initial = "yes";
 		updateProperties();
 		return true;
 	}
