@@ -52,38 +52,28 @@ public class Operate extends JPanel {
 
 	public JDialog selectDialog;
 
-	public int Status;
-
-	// ----------Hadoop--------------
 	public SSHSession HadoopSession;
 	public SSHadoopCmd HadoopCmd;
 
-	// -------monitor-thread----------------
 	public MonitorThread mThread;
-	public static int per = 0;
 
-	// --------status---------------------
-	public final static int NOT_CONNECTED = 0;
-	public final static int JOB_READY = 1;
-	public final static int JOB_WORKING = 2;
-	public final static int JOB_FINISHED = 3;
+	public static enum jobStatus {
+		NOT_CONNECTED, JOB_READY, JOB_WORKING, JOB_FINISHED
+	}
 
-	// --------saved in properties--------
 	public final static String PROPERTYNAME = "setting.prop";
-
 	public final static String INITIALED = "INITIALED";
-
 	public final static String DEF_IP = "DEF_IP";
 	public final static String DEF_PORT = "DEF_PORT";
 	public final static String DEF_USERNAME = "DEF_USERNAME";
-	public final static String DEF_PASSWORD = "HDFDEF_PASSWORDS_FILES";
-
 	public final static String JOB_ID = "JOB_ID";
 	public final static String JOB_RESULT = "JOB_RESULT";
 	public final static String JOB_PARAS = "JOB_PARAS";
 	public final static String LOAD_PROG = "LOAD_PROG";
 
 	public final static String SPECIALCMD = "export HADOOP_HOME=/opt/hadoop; source /etc/profile; export PATH=$PATH:$HADOOP_HOME/bin";
+
+	public jobStatus Status;
 
 	public String UID;
 
@@ -110,7 +100,7 @@ public class Operate extends JPanel {
 		readProperties();
 		init();
 
-		StatusChange(NOT_CONNECTED);
+		StatusChange(jobStatus.NOT_CONNECTED);
 	}
 
 	// ----------properties-------------------
@@ -189,8 +179,8 @@ public class Operate extends JPanel {
 
 	// -----------------------------------------
 
-	public void StatusChange(int st) {
-		switch (st) {
+	public void StatusChange(final jobStatus jobs) {
+		switch (jobs) {
 		case NOT_CONNECTED:
 			Tabs.setEnabledAt(1, false);
 			Tabs.setEnabledAt(2, false);
@@ -203,7 +193,7 @@ public class Operate extends JPanel {
 			cPanel.loadButton.setEnabled(true);
 			cPanel.connectButton.setText("Connect");
 
-			Status = NOT_CONNECTED;
+			Status = jobStatus.NOT_CONNECTED;
 			break;
 		case JOB_WORKING:
 			Tabs.setEnabledAt(1, false);
@@ -227,7 +217,7 @@ public class Operate extends JPanel {
 			rPanel.WorkRun.setEnabled(false);
 			rPanel.ResultClear.setEnabled(true);
 			rPanel.ResultClear.setText("Cancel");
-			Status = JOB_WORKING;
+			Status = jobStatus.JOB_WORKING;
 			break;
 		case JOB_FINISHED:
 			Tabs.setEnabledAt(1, false);
@@ -250,7 +240,7 @@ public class Operate extends JPanel {
 			rPanel.ResultClear.setEnabled(true);
 			rPanel.WorkRun.setEnabled(true);
 			rPanel.ResultClear.setText("Reset");
-			Status = JOB_FINISHED;
+			Status = jobStatus.JOB_FINISHED;
 			break;
 		case JOB_READY:
 			Tabs.setEnabledAt(1, true);
@@ -274,7 +264,7 @@ public class Operate extends JPanel {
 			rPanel.ResultClear.setText("Reset");
 			rPanel.WorkRun.setEnabled(true);
 			rPanel.HadoopBar.setString("Server Ready");
-			Status = JOB_READY;
+			Status = jobStatus.JOB_READY;
 			break;
 		}
 	}
@@ -337,7 +327,7 @@ public class Operate extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if (Status == NOT_CONNECTED) {
+				if (Status == jobStatus.NOT_CONNECTED) {
 
 					// check ip changed
 					if (Ip.length() > 1 && !Ip.equals(cPanel.ipText.getText())) {
@@ -382,9 +372,9 @@ public class Operate extends JPanel {
 								refreshFileList();
 								updateProperties();
 								if ("".equals(job_id)) {
-									StatusChange(JOB_READY);
+									StatusChange(jobStatus.JOB_READY);
 								} else {
-									StatusChange(JOB_WORKING);
+									StatusChange(jobStatus.JOB_WORKING);
 									startThread();
 									String[] paras = job_paras_label.split(";");
 									if (rPanel.ParameterText != null) {
@@ -395,7 +385,7 @@ public class Operate extends JPanel {
 									}
 								}
 								statusMSG("Connected!");
-								if (Status == JOB_WORKING) {
+								if (Status == jobStatus.JOB_WORKING) {
 									Tabs.setSelectedIndex(2);
 								} else {
 									Tabs.setSelectedIndex(1);
@@ -411,7 +401,7 @@ public class Operate extends JPanel {
 
 				} else {
 					if (disconnect()) {
-						StatusChange(NOT_CONNECTED);
+						StatusChange(jobStatus.NOT_CONNECTED);
 						statusMSG("Disconnected!");
 					}
 				}
@@ -641,7 +631,7 @@ public class Operate extends JPanel {
 				job_id = RunJob();
 				if (job_id != null) {
 					updateProperties();
-					StatusChange(JOB_WORKING);
+					StatusChange(jobStatus.JOB_WORKING);
 					startThread();
 				} else {
 					job_id = "";
@@ -694,7 +684,7 @@ public class Operate extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-					if (Status == JOB_WORKING) {
+					if (Status == jobStatus.JOB_WORKING) {
 						// Cancel
 						int r = JOptionPane.showConfirmDialog(Operate.this,
 								"Cancel this running job?", "WARNING",
@@ -729,14 +719,14 @@ public class Operate extends JPanel {
 							public void run() {
 								if (ClearJob()) {
 									ClearDataDir();
-									if (Status == JOB_FINISHED) {
+									if (Status == jobStatus.JOB_FINISHED) {
 										updateProperties();
 
 										rPanel.programSelector
 												.setSelectedItem(RunPanel.SELECTOR_DEFAULT);
 										rPanel.HadoopTotalBar.setValue(0);
 										rPanel.HadoopBar.setValue(0);
-										StatusChange(JOB_READY);
+										StatusChange(jobStatus.JOB_READY);
 
 										statusMSG("Resetted.");
 									} else {
@@ -1095,12 +1085,12 @@ public class Operate extends JPanel {
 	}
 
 	public void ThreadOver() {
-		StatusChange(JOB_FINISHED);
+		StatusChange(jobStatus.JOB_FINISHED);
 		statusMSG("Job Finished.");
 	}
 
 	public void JobError() {
-		StatusChange(JOB_FINISHED);
+		StatusChange(jobStatus.JOB_FINISHED);
 		rPanel.ResultDownload.setEnabled(false);
 		statusMSG("Job Ended with Error.");
 	}
