@@ -70,7 +70,7 @@ public class Operate extends JPanel {
 
 	public final static String PROPERTYFILE = "clouddoe.properties";
 
-	public final static String INITIALED = "INITIALED";
+	public final static String INITIAL = "INITIAL";
 	public final static String DEF_IP = "DEF_IP";
 	public final static String DEF_PORT = "DEF_PORT";
 	public final static String DEF_USERNAME = "DEF_USERNAME";
@@ -85,7 +85,7 @@ public class Operate extends JPanel {
 
 	public String UID;
 
-	public String initial;
+	public boolean initialled;
 
 	public String Ip;
 	public String Port;
@@ -150,14 +150,14 @@ public class Operate extends JPanel {
 			UID = System.currentTimeMillis() + "_" + user;
 
 			prop.setProperty("UID", UID);
-			prop.setProperty(INITIALED, "no");
+			prop.setProperty(INITIAL, "no");
 
 			saveProperties(false);
 		}
 	}
 
 	public void readProperties() {
-		initial = prop.getProperty(INITIALED, "");
+		initialled = Boolean.parseBoolean(prop.getProperty(INITIAL, "false"));
 
 		Ip = prop.getProperty(DEF_IP, "");
 		Port = prop.getProperty(DEF_PORT, "22");
@@ -171,7 +171,7 @@ public class Operate extends JPanel {
 	}
 
 	public void resetProperties() {
-		prop.setProperty(INITIALED, "no");
+		prop.setProperty(INITIAL, "false");
 
 		prop.setProperty(DEF_IP, "");
 		prop.setProperty(DEF_PORT, "");
@@ -185,7 +185,7 @@ public class Operate extends JPanel {
 	}
 
 	public void updateProperties() {
-		prop.setProperty(INITIALED, initial);
+		prop.setProperty(INITIAL, String.valueOf(initialled));
 
 		prop.setProperty(DEF_IP, Ip);
 		prop.setProperty(DEF_PORT, Port);
@@ -369,7 +369,7 @@ public class Operate extends JPanel {
 					ID = cPanel.IDText.getText();
 					Password = new String(cPanel.PasswordText.getPassword());
 
-					if ("no".endsWith(initial)) {
+					if (!initialled) {
 						progressDialog = new WorkingDialog(parent, true,
 								"Initializing");
 					} else {
@@ -791,7 +791,7 @@ public class Operate extends JPanel {
 				HadoopCmd.setUserBase(UID);
 				HadoopCmd.setServerSpecialCmd(SPECIALCMD);
 
-				if ("no".endsWith(initial)) {
+				if (!initialled) {
 					HDFSInitial();
 				}
 
@@ -812,7 +812,7 @@ public class Operate extends JPanel {
 		sftp.sftpUpload(new File("workspace" + File.separator + "main")
 				.getAbsolutePath(), UID + "/main");
 
-		initial = "yes";
+		initialled = true;
 		updateProperties();
 		return true;
 	}
