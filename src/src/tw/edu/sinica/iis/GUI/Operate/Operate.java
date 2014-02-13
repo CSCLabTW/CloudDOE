@@ -1010,7 +1010,7 @@ public class Operate extends JPanel {
 		if (!rPanel.getAndCheckParameter()) {
 			return false;
 		}
-		
+
 		Callable<String> channel = new SSHExec(HadoopSession.getSession(),
 				HadoopCmd.rmrHdp(paramType.OUTPUT.toString().toLowerCase()
 						+ "*"));
@@ -1112,8 +1112,6 @@ public class Operate extends JPanel {
 		statusMSG("Job Ended with Error.");
 	}
 
-	// --------------------inner------------------
-
 	public class MonitorThread extends Thread {
 
 		public String monitorName = paramType.WORK.toString().toLowerCase();
@@ -1127,14 +1125,16 @@ public class Operate extends JPanel {
 		public OperateStatus isJobDone() {
 			OperateStatus opStatus = OperateStatus.DEFAULT;
 
-			Callable<String> channel2 = new SSHExec(HadoopSession.getSession(),
+			Callable<String> channel2 = new SSHExec(
+					HadoopSession.getSession(),
 					HadoopCmd.ls(job_prog_load.replace(".xml", ".pid"))
 							+ ";echo -n ';';"
 							+ HadoopCmd.lsHdp(paramType.OUTPUT.toString()
 									.toLowerCase()
 									+ "/"
-									+ rPanel.xmlConfigParser.downloadItems
-											.get(0).src));
+									+ rPanel.xmlConfigParser
+											.getSingleParam(paramType.OUTPUT).value
+									+ "/_SUCCESS"));
 
 			FutureTask<String> futureTask2 = new FutureTask<String>(channel2);
 
