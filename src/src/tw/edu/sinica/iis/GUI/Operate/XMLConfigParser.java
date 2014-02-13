@@ -20,13 +20,13 @@ public class XMLConfigParser {
 	protected List<DownloadItem> downloadItems;
 
 	protected enum paramType {
-		VALUE, INPUT, OUTPUT, WORK
+		VALUE, INPUT, OUTPUT, WORK, MAPPER, REDUCER, FILE
 	};
 
 	protected enum logType {
 		SHORT, DETAIL
 	};
-	
+
 	protected enum downloadType {
 		GET, GETMERGE
 	};
@@ -37,34 +37,36 @@ public class XMLConfigParser {
 		public String lastupd;
 		public String website;
 		public String argformat;
+		public boolean streaming;
 
 		public ProgramInfo() {
-			set("", "", "", "", "");
+			set("", "", "", "", "", "");
 		}
 
 		public ProgramInfo(String name, String jarfile, String lastupd,
-				String website, String argformat) {
-			set(name, jarfile, lastupd, website, argformat);
+				String website, String argformat, String streaming) {
+			set(name, jarfile, lastupd, website, argformat, streaming);
 		}
 
 		public void set(String name, String jarfile, String lastupd,
-				String website, String argformat) {
+				String website, String argformat, String streaming) {
 			this.name = name;
 			this.jarfile = jarfile;
 			this.lastupd = lastupd;
 			this.website = website;
 			this.argformat = argformat;
+			this.streaming = Boolean.parseBoolean(streaming);
 		}
 
 		public void clear() {
-			set("", "", "", "", "");
+			set("", "", "", "", "", "");
 		}
 
 		@Override
 		public String toString() {
 			return "name=" + name + ", jarfile=" + jarfile + ", lastupd="
 					+ lastupd + ", website=" + website + ", argformat="
-					+ argformat;
+					+ argformat + ", streaming=" + streaming;
 		}
 	}
 
@@ -154,7 +156,8 @@ public class XMLConfigParser {
 					info.elementTextTrim("jarfile"),
 					info.elementTextTrim("lastupd"),
 					info.elementTextTrim("website"),
-					info.elementTextTrim("argformat"));
+					info.elementTextTrim("argformat"),
+					info.elementTextTrim("streaming"));
 
 			List<?> list = doc.selectNodes("//p:parameters/p:parameter");
 			for (Iterator<?> iter = list.iterator(); iter.hasNext();) {
@@ -210,23 +213,48 @@ public class XMLConfigParser {
 		return list.toString();
 	}
 
-	public String genProgramArgs(final String prefix) {
+	public String genJarPath(final String prefix, final String workpath) {
+		String jarPath = "";
+
+		if (!programInfo.streaming) {
+			jarPath = prefix + "/" + workpath + "/" + programInfo.jarfile;
+		} else {
+			jarPath = programInfo.jarfile;
+		}
+
+		return jarPath;
+	}
+
+	public String genProgramArgs(final String prefix, final String workpath) {
 		String args = programInfo.argformat;
 
 		for (ParameterItem p : parameterItems) {
 			String strArg = p.arg + " ";
 
-			if (p.type != paramType.VALUE) {
+			switch (p.type) {
+			case INPUT:
+			case OUTPUT:
+			case WORK:
 				strArg += prefix + "/" + p.type.toString().toLowerCase();
+				break;
+
+			case MAPPER:
+			case REDUCER:
+			case FILE:
+				strArg += prefix + "/" + workpath;
+				break;
+
+			default:
+				break;
 			}
 
-			if(!p.value.equals("")) {
+			if (!p.value.equals("")) {
 				if (p.type != paramType.VALUE) {
 					strArg += "/";
 				}
 				strArg += p.value;
 			}
-			
+
 			args = args.replaceFirst("\\$" + p.type.toString().toLowerCase(),
 					strArg);
 		}
@@ -243,15 +271,15 @@ public class XMLConfigParser {
 
 		return null;
 	}
-	
+
 	public LogItem getLog(final logType type) {
 		for (LogItem l : logItems) {
 			if (l.type == type) {
 				return l;
 			}
 		}
-		
-		if(logItems.size() > 0) {
+
+		if (logItems.size() > 0) {
 			return logItems.get(0);
 		}
 
@@ -271,13 +299,14 @@ public class XMLConfigParser {
 		for (LogItem l : logItems) {
 			System.out.println(l);
 		}
-		
+
 		for (DownloadItem d : downloadItems) {
 			System.out.println(d);
 		}
 
 		System.out.println("vals:\"" + genParamValList(';') + "\"");
-		System.out.println("args:\"" + genProgramArgs("UID") + "\"");
+		System.out.println("path:\"" + genJarPath("UID", "main") + "\"");
+		System.out.println("args:\"" + genProgramArgs("UID", "main") + "\"");
 	}
 
 	protected void finalize() throws Throwable {

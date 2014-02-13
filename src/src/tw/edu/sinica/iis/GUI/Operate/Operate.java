@@ -927,10 +927,10 @@ public class Operate extends JPanel {
 				+ HadoopCmd
 						.mkdir(paramType.WORK.toString().toLowerCase(), true)
 				+ ";"
-				+ HadoopCmd.jarHdp(UID + "/main/"
-						+ rPanel.xmlConfigParser.programInfo.jarfile, "",
-						rPanel.xmlConfigParser.genProgramArgs(UID)) + ";"
-				+ HadoopCmd.rm(job_prog_load.replace(".xml", ".pid"));
+				+ HadoopCmd.jarHdp(
+						rPanel.xmlConfigParser.genJarPath(UID, "main"), "",
+						rPanel.xmlConfigParser.genProgramArgs(UID, "main"))
+				+ ";" + HadoopCmd.rm(job_prog_load.replace(".xml", ".pid"));
 
 		Callable<String> channel = new SSHRun(HadoopSession.getSession(),
 				runCmd);
