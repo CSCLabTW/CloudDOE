@@ -931,7 +931,8 @@ public class Operate extends JPanel {
 						.mkdir(paramType.WORK.toString().toLowerCase(), true)
 				+ ";"
 				+ HadoopCmd.jarHdp(
-						rPanel.xmlConfigParser.genJarPath(UID, "main"), "",
+						rPanel.xmlConfigParser.genJarPath(UID, "main"),
+						rPanel.xmlConfigParser.genClassName(),
 						rPanel.xmlConfigParser.genProgramArgs(UID, "main"))
 				+ ";" + HadoopCmd.rm(job_prog_load.replace(".xml", ".pid"));
 
