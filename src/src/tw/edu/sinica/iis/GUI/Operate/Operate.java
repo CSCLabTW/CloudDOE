@@ -1226,7 +1226,7 @@ public class Operate extends JPanel {
 
 			OperateStatus opStatus = OperateStatus.DEFAULT;
 
-			while ((opStatus = isJobDone()) == OperateStatus.DEFAULT) {
+			do {
 
 				String[] jNameID = { "", "", "" };
 				while (true) {
@@ -1285,7 +1285,8 @@ public class Operate extends JPanel {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-			}
+			} while ((opStatus = isJobDone()) == OperateStatus.DEFAULT);
+
 			rPanel.HadoopTotalBar.setValue(100);
 			rPanel.HadoopBar.setValue(100);
 
