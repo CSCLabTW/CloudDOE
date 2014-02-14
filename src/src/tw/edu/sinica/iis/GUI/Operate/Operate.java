@@ -26,7 +26,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 
 import tw.edu.sinica.iis.GUI.Operate.XMLConfigParser.DownloadItem;
-import tw.edu.sinica.iis.GUI.Operate.XMLConfigParser.downloadType;
 import tw.edu.sinica.iis.GUI.Operate.XMLConfigParser.logType;
 import tw.edu.sinica.iis.GUI.Operate.XMLConfigParser.paramType;
 import tw.edu.sinica.iis.SSHadoop.SSHRun;
@@ -956,11 +955,11 @@ public class Operate extends JPanel {
 		String rst = "";
 
 		for (DownloadItem d : rPanel.xmlConfigParser.downloadItems) {
-			if (d.method == downloadType.GET) {
+			if (!d.merge) {
 				rst += HadoopCmd.getHdp(paramType.OUTPUT.toString()
 						.toLowerCase() + "/" + d.src, paramType.OUTPUT
 						.toString().toLowerCase() + "/" + d.dst);
-			} else if (d.method == downloadType.GETMERGE) {
+			} else {
 				rst += HadoopCmd.getMergeRstHdp(paramType.OUTPUT.toString()
 						.toLowerCase() + "/" + d.src, paramType.OUTPUT
 						.toString().toLowerCase() + "/" + d.dst);

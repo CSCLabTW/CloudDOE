@@ -27,10 +27,6 @@ public class XMLConfigParser {
 		SHORT, DETAIL
 	};
 
-	protected enum downloadType {
-		GET, GETMERGE
-	};
-
 	protected class ProgramInfo {
 		public String name;
 		public String jarfile;
@@ -109,19 +105,19 @@ public class XMLConfigParser {
 	}
 
 	protected class DownloadItem {
-		public downloadType method;
 		public String src;
 		public String dst;
+		public boolean merge;
 
-		public DownloadItem(String method, String src, String dst) {
-			this.method = downloadType.valueOf(method.toUpperCase());
+		public DownloadItem(String src, String dst, String merge) {
 			this.src = src;
 			this.dst = dst;
+			this.merge = Boolean.parseBoolean(merge);
 		}
 
 		@Override
 		public String toString() {
-			return "method=" + method + ", src=" + src + ", dst=" + dst;
+			return "src=" + src + ", dst=" + dst + ", merge=" + merge;
 		}
 	}
 
@@ -185,9 +181,8 @@ public class XMLConfigParser {
 				Element element = (Element) iter.next();
 				downloadItems
 						.add(new DownloadItem(
-								element.elementTextTrim("method"), element
-										.elementTextTrim("src"), element
-										.elementTextTrim("dst")));
+								element.elementTextTrim("src"), element
+										.elementTextTrim("dst"), element.elementTextTrim("merge")));
 			}
 			list.clear();
 
