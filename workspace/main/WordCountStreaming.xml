@@ -6,7 +6,7 @@
 		<jarfile>$HADOOP_HOME</jarfile>
 		<version>20140213</version>
 		<author>Hadoop Team</author>
-		<lastupd>2014/02/13</lastupd>
+		<lastupd>2014/02/14</lastupd>
 		<website>http://wiki.apache.org/hadoop/WordCount</website>
 		<argformat>$input $output $mapper $reducer $file $file &gt;&amp; $work/wcstream.log</argformat>
 	</program>
@@ -69,9 +69,9 @@
 	</logs>
 	<downloads>
 		<download>
-			<method>getmerge</method>
 			<src>/WCStream</src>
 			<dst>result</dst>
+			<merge>true</merge>
 		</download>
 	</downloads>
 </CloudDOE>

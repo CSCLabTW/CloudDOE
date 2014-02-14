@@ -5,7 +5,7 @@
 		<jarfile>CloudBrush.jar</jarfile>
 		<version>20121228</version>
 		<author>Chien-Chih Chen</author>
-		<lastupd>2014/02/11</lastupd>
+		<lastupd>2014/02/14</lastupd>
 		<website>https://github.com/ice91/CloudBrush</website>
 		<argformat>$input $output $work $value $value</argformat>
 	</program>
@@ -58,14 +58,13 @@
 	</logs>
 	<downloads>
 		<download>
-			<method>get</method>
 			<src>/CloudBrush.jpeg/stats.jpg</src>
 			<dst>stats.jpg</dst>
 		</download>
 		<download>
-			<method>getmerge</method>
 			<src>/CloudBrush</src>
 			<dst>output.fasta</dst>
+			<merge>true</merge>
 		</download>
 	</downloads>
 </CloudDOE>

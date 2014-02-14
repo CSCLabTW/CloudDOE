@@ -54,7 +54,6 @@
 	</logs>
 	<downloads>
 		<download>
-			<method>get</method>
 			<src>/CloudBurst</src>
 			<dst>results</dst>
 		</download>

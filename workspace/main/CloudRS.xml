@@ -5,7 +5,7 @@
 		<jarfile>CloudRS.jar</jarfile>
 		<version>20140205</version>
 		<author>Wei-Chun Chung</author>
-		<lastupd>2014/02/11</lastupd>
+		<lastupd>2014/02/14</lastupd>
 		<website>https://github.com/ice91/ReadStackCorrector</website>
 		<argformat>$input $output $work $value</argformat>
 	</program>
@@ -51,9 +51,9 @@
 	</logs>
 	<downloads>
 		<download>
-			<method>getmerge</method>
 			<src>CloudRS_file</src>
 			<dst>output.fastq</dst>
+			<merge>true</merge>
 		</download>
 	</downloads>
 </CloudDOE>
