@@ -219,7 +219,7 @@ public class XMLConfigParser {
 		if (!programInfo.streaming) {
 			jarPath = prefix + "/" + workpath + "/" + programInfo.jarfile;
 		} else {
-			jarPath = programInfo.jarfile;
+			jarPath = programInfo.jarfile + "/contrib/streaming/hadoop-streaming-*.jar";
 		}
 
 		return jarPath;
