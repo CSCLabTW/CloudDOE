@@ -1,7 +1,14 @@
 The directory to place (sample) data for Operate usage.
 
-Sample data, i.e., ref.br and qry.br, of CloudBurst is
-retrieved from its website. The ref.br is renamed from
-s_suis.br and the qry.br is renamed from 100k.br.
-CloudBurst website:
-http://sourceforge.net/projects/cloudburst-bio/
+1. Sample data of CloudBurst is downloaded from its website.
+
+   File: ref.br, qry.br (renamed from s_suis.br and 100k.br)
+   Website: http://sourceforge.net/projects/cloudburst-bio/
+
+2. Sample data of CloudBrush is obtained from its author.
+   File: 10000.sfq
+   Website: https://github.com/ice91/CloudBrush
+
+3. Sample data of CloudRS is obtained from its author.
+   File: 100k_RS.sfq
+    Website: https://github.com/ice91/ReadStackCorrector
