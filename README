@@ -1,20 +1,25 @@
 CloudDOE
 =====
 
-CloudDOE is a user friendly software to Deploy-Operate-Extend Hadoop clouds and
-bioinformatics tools for big NGS (Next-Generation-Sequencing) data analysis.
-Users are guided by three graphical Java wizards: 
+CloudDOE is a user friendly software package to deploy, operate and extend a
+MapReduce-based bioinformatics environment, which is collectively denoted as a
+CloudDOE Cloud. A CloudDOE Cloud consists of a Hadoop MapReduce computing
+framework and specific bioinformatics data analysis tools, e.g., CloudBurst,
+CloudBrush, and CloudRS.
 
-1. Depoly wizard provides an easier way to help users configure and deploy their
-own Hadoop MapReduce cloud computing framework. This program will install Java
-run-time environment and Hadoop platform within 3 steps, and start the Hadoop
-services automatically.
+CloudDOE is distributed under Apache License 2.0. It consists of a set of BASH
+scripts and binary files, and three Java wizards:
 
-2. Operate wizard is a simple, clean and user-friendly User Interface. This
-program aims to provide an easier way to help users to run CloudBrush, a de novo
-genome assembler using MapRedue framework, with your Hadoop cluster. Users can
-use the straight-forward operations to handle your experiments.
+1. Deploy wizard provides easy deployment of the Hadoop MapReduce computing
+framework for an administrator. This wizard installs JRE 1.6 and Hadoop version
+0.20.203, and also starts the Hadoop services automatically.
 
-3. Extend wizard provides an easier way to help users extend the functionalities
-of their own cloud computing framework. This program allow users to select and
-install recommend applications automatically.
+2. Operate wizard aims at providing users with choices and execution of the
+supported MapReduced-based bioinformatics applications from its dashboard.
+
+3. Extend wizard allows a CloudDOE Cloud administrator to extend the
+functionalities by maintaining software information of the dashboard, which may
+used by the Operate wizard.
+
+For more informaion, please visit the project website at:
+http://clouddoe.iis.sinica.edu.tw/
