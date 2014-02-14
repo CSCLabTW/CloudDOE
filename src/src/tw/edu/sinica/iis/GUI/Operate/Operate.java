@@ -65,16 +65,17 @@ public class Operate extends JPanel {
 	public MonitorThread mThread;
 
 	public static enum jobStatus {
-		NOT_CONNECTED, JOB_READY, JOB_WORKING, JOB_FINISHED
+		NOT_CONNECTED, JOB_READY, JOB_WORKING, JOB_FINISHED, JOB_CANCELLED
 	}
 
 	public final static String PROPERTYFILE = "clouddoe.properties";
 
 	public final static String INITIAL = "INITIAL";
+	public final static String STATUS = "STATUS";
+
 	public final static String DEF_IP = "DEF_IP";
 	public final static String DEF_PORT = "DEF_PORT";
 	public final static String DEF_USERNAME = "DEF_USERNAME";
-	public final static String JOB_ID = "JOB_ID";
 	public final static String JOB_RESULT = "JOB_RESULT";
 	public final static String JOB_PARAS = "JOB_PARAS";
 	public final static String LOAD_PROG = "LOAD_PROG";
@@ -82,6 +83,7 @@ public class Operate extends JPanel {
 	public final static String SPECIALCMD = "export HADOOP_HOME=/opt/hadoop; source /etc/profile; export PATH=$PATH:$HADOOP_HOME/bin";
 
 	public jobStatus Status;
+	public jobStatus savedStatus;
 
 	public String UID;
 
@@ -91,8 +93,6 @@ public class Operate extends JPanel {
 	public String Port;
 	public String ID;
 	public String Password;
-
-	public String job_id;
 
 	public String job_paras_label;
 	public String job_prog_load;
@@ -157,24 +157,25 @@ public class Operate extends JPanel {
 
 	public void readProperties() {
 		initialled = Boolean.parseBoolean(prop.getProperty(INITIAL, "false"));
+		savedStatus = jobStatus.valueOf(prop.getProperty(STATUS,
+				jobStatus.JOB_READY.toString()));
 
 		Ip = prop.getProperty(DEF_IP, "");
 		Port = prop.getProperty(DEF_PORT, "22");
 		ID = prop.getProperty(DEF_USERNAME, "");
 		Password = "";
 
-		job_id = prop.getProperty(JOB_ID, "");
 		job_paras_label = prop.getProperty(JOB_PARAS, "");
 		job_prog_load = prop.getProperty(LOAD_PROG, "");
 	}
 
 	public void resetProperties() {
 		prop.setProperty(INITIAL, "false");
+		prop.setProperty(STATUS, jobStatus.JOB_READY.toString());
 
 		prop.setProperty(DEF_IP, "");
 		prop.setProperty(DEF_PORT, "");
 		prop.setProperty(DEF_USERNAME, "");
-		prop.setProperty(JOB_ID, "");
 		prop.setProperty(JOB_PARAS, "");
 		prop.setProperty(LOAD_PROG, "");
 
@@ -183,11 +184,11 @@ public class Operate extends JPanel {
 
 	public void updateProperties() {
 		prop.setProperty(INITIAL, String.valueOf(initialled));
+		prop.setProperty(STATUS, savedStatus.toString());
 
 		prop.setProperty(DEF_IP, Ip);
 		prop.setProperty(DEF_PORT, Port);
 		prop.setProperty(DEF_USERNAME, ID);
-		prop.setProperty(JOB_ID, job_id);
 		prop.setProperty(JOB_PARAS, job_paras_label);
 		prop.setProperty(LOAD_PROG, job_prog_load);
 
@@ -200,7 +201,7 @@ public class Operate extends JPanel {
 			Tabs.setEnabledAt(1, false);
 			Tabs.setEnabledAt(2, false);
 
-			boolean job_complete = "".equals(job_id);
+			boolean job_complete = savedStatus.equals(jobStatus.JOB_READY);
 			cPanel.ipText.setEditable(job_complete);
 			cPanel.portText.setEditable(job_complete);
 			cPanel.IDText.setEditable(job_complete);
@@ -280,6 +281,8 @@ public class Operate extends JPanel {
 			rPanel.WorkRun.setEnabled(true);
 			rPanel.HadoopBar.setString("Server Ready");
 			Status = jobStatus.JOB_READY;
+			break;
+		default:
 			break;
 		}
 	}
@@ -386,7 +389,7 @@ public class Operate extends JPanel {
 							if (connectHadoop(Ip, Port, ID, Password)) {
 								refreshFileList();
 								updateProperties();
-								if ("".equals(job_id)) {
+								if (savedStatus == jobStatus.JOB_READY) {
 									StatusChange(jobStatus.JOB_READY);
 								} else {
 									StatusChange(jobStatus.JOB_WORKING);
@@ -618,7 +621,7 @@ public class Operate extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if (job_id.length() > 0) {
+				if (savedStatus != jobStatus.JOB_READY) {
 					int r = JOptionPane
 							.showConfirmDialog(
 									Operate.this,
@@ -643,13 +646,13 @@ public class Operate extends JPanel {
 				}
 
 				rPanel.HadoopBar.setString("Running");
-				job_id = RunJob();
-				if (job_id != null) {
+				savedStatus = RunJob();
+				if (savedStatus != null) {
 					updateProperties();
 					StatusChange(jobStatus.JOB_WORKING);
 					startThread();
 				} else {
-					job_id = "";
+					savedStatus = jobStatus.JOB_READY;
 					JOptionPane.showMessageDialog(null, "Job failed");
 					JobError();
 				}
@@ -913,7 +916,7 @@ public class Operate extends JPanel {
 		return true;
 	}
 
-	public String RunJob() {
+	public jobStatus RunJob() {
 
 		if (!rPanel.getAndCheckParameter()) {
 			return null;
@@ -940,15 +943,13 @@ public class Operate extends JPanel {
 		Thread thread = new Thread(futureTask);
 		thread.start();
 
-		String jobId = UID + "/" + paramType.OUTPUT.toString().toLowerCase();
 		while (true) {
 			if (futureTask.isDone()) {
-
 				break;
 			}
 		}
 
-		return jobId;
+		return jobStatus.JOB_WORKING;
 	}
 
 	private String genDownloadCmd() {
@@ -1024,7 +1025,8 @@ public class Operate extends JPanel {
 			}
 		}
 
-		job_id = "";
+		savedStatus = jobStatus.JOB_READY;
+
 		job_paras_label = "";
 		job_prog_load = "";
 
@@ -1059,10 +1061,10 @@ public class Operate extends JPanel {
 	}
 
 	public boolean CancelJob() {
-
-		if (job_id == null || "cancel".equals(job_id)) {
+		if (savedStatus == null || savedStatus == jobStatus.JOB_CANCELLED) {
 			return false;
 		}
+
 		Callable<String> channel = new SSHExec(HadoopSession.getSession(),
 				HadoopCmd.rm(job_prog_load.replace(".xml", ".pid")) + ";"
 						+ HadoopCmd.CBKillJob(UID));
@@ -1077,7 +1079,7 @@ public class Operate extends JPanel {
 			}
 		}
 		rPanel.HadoopBar.setString("Waiting for terminate");
-		job_id = "cancel";
+		savedStatus = jobStatus.JOB_CANCELLED;
 		updateProperties();
 
 		return true;
@@ -1241,7 +1243,7 @@ public class Operate extends JPanel {
 					if (jNameID[2] != null) {
 
 						double[] res = getJobProcess(jNameID[2]);
-						if ("cancel".equals(job_id)) {
+						if (savedStatus == jobStatus.JOB_CANCELLED) {
 							rPanel.HadoopBar.setString("Waiting for terminate");
 							rPanel.ResultClear.setEnabled(false);
 						} else {
@@ -1253,7 +1255,7 @@ public class Operate extends JPanel {
 						int total_per = (int) ((res[0] + res[1]) / 2);
 						rPanel.HadoopBar.setValue(total_per);
 						if (total_per >= 100 || total_per < 0) {
-							if ("cancel".equals(job_id)) {
+							if (savedStatus == jobStatus.JOB_CANCELLED) {
 								rPanel.HadoopTotalBar.setValue(100);
 								rPanel.HadoopBar.setValue(100);
 								rPanel.HadoopBar.setString("Job canceled");
