@@ -24,6 +24,7 @@
 package tw.edu.sinica.iis.GUI.Operate;
 
 import java.awt.BorderLayout;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -32,7 +33,10 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URI;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -625,18 +629,70 @@ public class Operate extends JPanel {
 	}
 
 	public void RunPanelSetting() {
+		final String notAvalible = "N/A";
+		final String goWeb = "Go to Website";
+		final String newLine = "\n";
+
 		rPanel.programHelper.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String information = "Program help information is not avalable.";
-				if (!rPanel.xmlConfigParser.programInfo.website.equals("")) {
-					information = "Program help information is avaliable at \n"
-							+ rPanel.xmlConfigParser.programInfo.website;
+				List<String> options = new ArrayList<String>();
+				StringBuilder information = new StringBuilder();
+
+				options.add("OK");
+				options.remove(goWeb);
+				
+				information.append("Author: ");
+				if (!rPanel.xmlConfigParser.programInfo.author.equals("")) {
+					information
+							.append(rPanel.xmlConfigParser.programInfo.author);
+				} else {
+					information.append(notAvalible);
 				}
 
-				JOptionPane.showMessageDialog(Operate.this, information,
-						"Information", JOptionPane.INFORMATION_MESSAGE);
+				information.append(newLine).append("Version: ");
+				if (!rPanel.xmlConfigParser.programInfo.version.equals("")) {
+					information
+							.append(rPanel.xmlConfigParser.programInfo.version);
+				} else {
+					information.append(notAvalible);
+				}
+
+				information.append(newLine).append("Last update: ");
+				if (!rPanel.xmlConfigParser.programInfo.lastupd.equals("")) {
+					information
+							.append(rPanel.xmlConfigParser.programInfo.lastupd);
+				} else {
+					information.append(notAvalible);
+				}
+
+				information.append(newLine).append("Website: ");
+				if (!rPanel.xmlConfigParser.programInfo.website.equals("")) {
+					information
+							.append(rPanel.xmlConfigParser.programInfo.website);
+					
+					options.add(goWeb);
+				} else {
+					information.append(notAvalible);
+				}
+
+				int rst = JOptionPane.showOptionDialog(Operate.this,
+						information.toString(), "Program help information",
+						JOptionPane.DEFAULT_OPTION,
+						JOptionPane.INFORMATION_MESSAGE, null, options.toArray(),
+						null);
+				
+				if(options.size() > 0 && rst == 1) {
+					if (Desktop.isDesktopSupported()) {
+						try {
+							Desktop.getDesktop().browse(new URI(rPanel.xmlConfigParser.programInfo.website));
+						} catch (Exception e1) {
+						}
+					} else {
+						/* TODO: error handling */
+					}
+				}
 			}
 		});
 
