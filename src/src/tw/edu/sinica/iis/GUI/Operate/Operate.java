@@ -49,6 +49,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 
 import tw.edu.sinica.iis.GUI.Operate.XMLConfigParser.DownloadItem;
+import tw.edu.sinica.iis.GUI.Operate.XMLConfigParser.ParameterItem;
 import tw.edu.sinica.iis.GUI.Operate.XMLConfigParser.logType;
 import tw.edu.sinica.iis.GUI.Operate.XMLConfigParser.paramType;
 import tw.edu.sinica.iis.SSHadoop.SSHRun;
@@ -665,6 +666,17 @@ public class Operate extends JPanel {
 				if (!rPanel.getAndCheckParameter()) {
 					JOptionPane.showMessageDialog(null, "Format error!");
 					return;
+				}
+
+				for (ParameterItem p : rPanel.xmlConfigParser.parameterItems) {
+					if (p.type == paramType.INPUT) {
+						String paramValue = p.value.replaceFirst("/", "").trim();
+						if (!paramValue.equals("") && !fileList.contains(paramValue)) {
+							JOptionPane.showMessageDialog(null, "Input file and parameter are mismatched!");
+							Tabs.setSelectedIndex(1);
+							return;
+						}
+					}
 				}
 
 				rPanel.HadoopBar.setString("Running");
