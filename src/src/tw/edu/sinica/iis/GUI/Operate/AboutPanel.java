@@ -101,7 +101,7 @@ public class AboutPanel extends JPanel {
 		line2.setBounds(paddingLeft, paddingTop, 380, 20);
 		line2.setForeground(Color.BLUE);
 		line2.setFont(tmpFont2);
-		line2.setText("A desktop GUI tool for connecting to Hadoop clusters");
+		line2.setText("A desktop GUI tool for connecting to a Hadoop Cloud");
 		this.add(line2);
 		paddingTop += line2.getHeight();
 
@@ -109,17 +109,9 @@ public class AboutPanel extends JPanel {
 		line3.setBounds(paddingLeft, paddingTop, 380, 20);
 		line3.setForeground(Color.BLUE);
 		line3.setFont(tmpFont2);
-		line3.setText("and running DNA assembly using CloudBrush in");
+		line3.setText("and running supported bioinformatics MapReduce applciations.");
 		this.add(line3);
 		paddingTop += line3.getHeight();
-
-		JLabel line4 = new JLabel();
-		line4.setBounds(paddingLeft, paddingTop, 380, 20);
-		line4.setForeground(Color.BLUE);
-		line4.setFont(tmpFont2);
-		line4.setText("MapReduce cloud computing framework.");
-		this.add(line4);
-		paddingTop += line4.getHeight();
 
 		Font tmpFont3 = new Font(GUIVer.getFont().getName(), GUIVer.getFont()
 				.getStyle(), 12);
