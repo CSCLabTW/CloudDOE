@@ -54,27 +54,32 @@ public class XMLConfigParser {
 		public String name;
 		public String jarfile;
 		public String clsname;
+		public String version;
+		public String author;
 		public String lastupd;
 		public String website;
 		public String argformat;
 		public boolean streaming;
 
 		public ProgramInfo() {
-			set("", "", "", "", "", "", "");
+			set("", "", "", "", "", "", "", "", "");
 		}
 
 		public ProgramInfo(String name, String jarfile, String clsname,
-				String lastupd, String website, String argformat,
-				String streaming) {
-			set(name, jarfile, clsname, lastupd, website, argformat, streaming);
+				String version, String author, String lastupd, String website,
+				String argformat, String streaming) {
+			set(name, jarfile, clsname, version, author, lastupd, website,
+					argformat, streaming);
 		}
 
 		public void set(String name, String jarfile, String clsname,
-				String lastupd, String website, String argformat,
-				String streaming) {
+				String version, String author, String lastupd, String website,
+				String argformat, String streaming) {
 			this.name = name;
 			this.jarfile = jarfile;
 			this.clsname = clsname;
+			this.version = version;
+			this.author = author;
 			this.lastupd = lastupd;
 			this.website = website;
 			this.argformat = argformat;
@@ -82,13 +87,14 @@ public class XMLConfigParser {
 		}
 
 		public void clear() {
-			set("", "", "", "", "", "", "");
+			set("", "", "", "", "", "", "", "", "");
 		}
 
 		@Override
 		public String toString() {
 			return "name=" + name + ", jarfile=" + jarfile + ", clsname="
-					+ clsname + ", lastupd=" + lastupd + ", website=" + website
+					+ clsname + ", version=" + version + ", author=" + author
+					+ ", lastupd=" + lastupd + ", website=" + website
 					+ ", argformat=" + argformat + ", streaming=" + streaming;
 		}
 	}
@@ -178,6 +184,8 @@ public class XMLConfigParser {
 			programInfo.set(info.elementTextTrim("name"),
 					info.elementTextTrim("jarfile"),
 					info.elementTextTrim("clsname"),
+					info.elementTextTrim("version"),
+					info.elementTextTrim("author"),
 					info.elementTextTrim("lastupd"),
 					info.elementTextTrim("website"),
 					info.elementTextTrim("argformat"),
