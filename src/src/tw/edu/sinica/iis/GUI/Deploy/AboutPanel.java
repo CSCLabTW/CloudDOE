@@ -101,7 +101,7 @@ public class AboutPanel extends JPanel {
 		line2.setBounds(paddingLeft, paddingTop, 380, 20);
 		line2.setForeground(Color.BLUE);
 		line2.setFont(tmpFont2);
-		line2.setText("A Graphic User Interface wizard to configure and deploy");
+		line2.setText("A wizard designed to aid a system administrator to");
 		this.add(line2);
 		paddingTop += line2.getHeight();
 		
@@ -109,7 +109,7 @@ public class AboutPanel extends JPanel {
 		line3.setBounds(paddingLeft, paddingTop, 380, 20);
 		line3.setForeground(Color.BLUE);
 		line3.setFont(tmpFont2);
-		line3.setText("your Hadoop MapReduce cloud computing framework.");
+		line3.setText("deploy a Hadoop MapReduce computing framework.");
 		this.add(line3);
 		paddingTop += line3.getHeight();
 
