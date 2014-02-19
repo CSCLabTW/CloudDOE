@@ -1266,7 +1266,7 @@ public class Operate extends JPanel {
 			while (true) {
 				if (futureTask3.isDone()) {
 					try {
-						toolNameAndJobId = utils.getCBStepAndJobId(futureTask3
+						toolNameAndJobId = utils.getOPStepAndJobId(futureTask3
 								.get());
 					} catch (InterruptedException e) {
 						e.printStackTrace();
@@ -1332,15 +1332,12 @@ public class Operate extends JPanel {
 					}
 
 					if (jNameID[2] != null) {
-
 						double[] res = getJobProcess(jNameID[2]);
 						if (savedStatus == jobStatus.JOB_CANCELLED) {
 							rPanel.HadoopBar.setString("Waiting for terminate");
 							rPanel.ResultClear.setEnabled(false);
 						} else {
-							rPanel.HadoopBar.setString("Running ");
-							rPanel.HadoopBar.setString(rPanel.HadoopBar
-									.getString() + jNameID[0]);
+							rPanel.HadoopBar.setString("Running " + jNameID[0]);
 						}
 
 						int total_per = (int) ((res[0] + res[1]) / 2);
@@ -1356,6 +1353,7 @@ public class Operate extends JPanel {
 
 							break;
 						}
+						
 						try {
 							sleep(10000);
 						} catch (Exception e) {
@@ -1371,6 +1369,7 @@ public class Operate extends JPanel {
 					}
 
 				}
+				
 				try {
 					sleep(5000);
 				} catch (Exception e) {

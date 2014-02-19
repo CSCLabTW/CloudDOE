@@ -78,7 +78,7 @@ public class SSHadoopUtils {
 		return OperateStatus.DEFAULT;
 	}
 
-	public String[] getCBStepAndJobId(final String status) {
+	public String[] getOPStepAndJobId(final String status) {
 		String toolName = "";
 		String toolStep = "";
 		String jobId = "";
@@ -108,6 +108,11 @@ public class SSHadoopUtils {
 				jobId = matJobId.group(2).trim();
 			}
 		}
+		
+		if(toolName.equals("")) {
+			toolName = jobId;
+		}
+		
 		return (new String[] { toolName, toolStep, jobId });
 	}
 }
