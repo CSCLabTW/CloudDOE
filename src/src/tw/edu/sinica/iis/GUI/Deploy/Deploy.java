@@ -239,6 +239,9 @@ public class Deploy extends JFrame {
 						.getText());
 				sftp.setSSHPass(BPanel.tPassword.getText());
 				sftp.initSftp();
+				
+				getInstallArea().setText(
+						"This step may take several minutes. Please wait...");
 
 				if (sftp.sftpUpload(new File("workspace/").getAbsolutePath(),
 						"workspace/")) {
