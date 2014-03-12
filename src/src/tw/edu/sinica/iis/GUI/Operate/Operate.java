@@ -263,7 +263,7 @@ public class Operate extends JPanel {
 			Status = jobStatus.JOB_WORKING;
 			break;
 		case JOB_FINISHED:
-			Tabs.setEnabledAt(1, false);
+			Tabs.setEnabledAt(1, true);
 			Tabs.setEnabledAt(2, true);
 
 			cPanel.ipText.setEditable(false);
@@ -282,7 +282,7 @@ public class Operate extends JPanel {
 			rPanel.ResultDownload.setEnabled(true);
 			rPanel.ResultClear.setEnabled(true);
 			rPanel.WorkRun.setEnabled(true);
-			rPanel.ResultClear.setText("Reset");
+			rPanel.ResultClear.setText("Purge");
 			Status = jobStatus.JOB_FINISHED;
 			break;
 		case JOB_READY:
@@ -304,7 +304,7 @@ public class Operate extends JPanel {
 			}
 			rPanel.ResultDownload.setEnabled(false);
 			rPanel.ResultClear.setEnabled(false);
-			rPanel.ResultClear.setText("Reset");
+			rPanel.ResultClear.setText("Purge");
 			rPanel.WorkRun.setEnabled(true);
 			rPanel.HadoopBar.setString("Server Ready");
 			Status = jobStatus.JOB_READY;
@@ -704,7 +704,7 @@ public class Operate extends JPanel {
 					int r = JOptionPane
 							.showConfirmDialog(
 									Operate.this,
-									"Previous results will be cleared before next run, contine?",
+									"Previous results will be purged before this run, continue?",
 									"WARNING", JOptionPane.YES_NO_OPTION);
 					if (r == JOptionPane.NO_OPTION) {
 						return;
@@ -807,15 +807,15 @@ public class Operate extends JPanel {
 					} else {
 						// Clear
 						int r = JOptionPane.showConfirmDialog(Operate.this,
-								"Clear result and input data?", "WARNING",
+								"Purge experimental results and input data?", "WARNING",
 								JOptionPane.YES_NO_OPTION);
 						if (r == JOptionPane.NO_OPTION) {
 							return;
 						}
 
-						statusMSG("Resetting.");
+						statusMSG("Purging.");
 						progressDialog = new WorkingDialog(parent, true,
-								"Resetting");
+								"Purging");
 						new Thread(new Runnable() {
 							@Override
 							public void run() {
@@ -836,11 +836,11 @@ public class Operate extends JPanel {
 										rPanel.HadoopBar.setValue(0);
 										StatusChange(jobStatus.JOB_READY);
 
-										statusMSG("Resetted.");
+										statusMSG("Purged.");
 									} else {
 										JOptionPane.showMessageDialog(null,
-												"Reset Failed.");
-										statusMSG("Reset Failed.");
+												"Purge Failed.");
+										statusMSG("Purge Failed.");
 									}
 									progressDialog.dispose();
 									Tabs.setSelectedIndex(1);

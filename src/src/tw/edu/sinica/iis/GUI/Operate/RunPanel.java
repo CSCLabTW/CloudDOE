@@ -279,7 +279,7 @@ public class RunPanel extends JPanel {
 
 	public JButton getResultClear() {
 		if (ResultClear == null) {
-			ResultClear = new JButton("Reset");
+			ResultClear = new JButton("Purge");
 		}
 		return ResultClear;
 	}
