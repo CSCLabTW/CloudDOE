@@ -313,7 +313,7 @@ public class NodeConfigPanel extends JPanel {
 	public boolean generateXML() {
 		try {
 			Utils.genXMLDN(TableContent.getRowCount() + 1);
-			Utils.genXMLNN();
+			Utils.genXMLNN(TableContent.getRowCount() + 1);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;

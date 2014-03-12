@@ -45,10 +45,10 @@ public class Utils {
 		genDNmapred();
 	}
 
-	public static void genXMLNN() {
+	public static void genXMLNN(final int DNs) {
 		genPartialEnv();
 		genNNcore();
-		genNNhdfs();
+		genNNhdfs(DNs);
 		genNNmapred();
 	}
 	
@@ -195,7 +195,7 @@ public class Utils {
 		return true;
 	}
 
-	private static boolean genNNhdfs() {
+	private static boolean genNNhdfs(final int DNs) {
 		try {
 			String filePath = genFilePath("NN", "hdfs-site.xml");
 
@@ -209,7 +209,7 @@ public class Utils {
 			bw.write("<configuration>" + ENDLINE);
 			bw.write("  <property>" + ENDLINE);
 			bw.write("    <name>dfs.replication</name>" + ENDLINE);
-			bw.write("    <value>1</value>" + ENDLINE);
+			bw.write("    <value>" + DNs + "</value>" + ENDLINE);
 			bw.write("  </property>" + ENDLINE);
 			bw.write("</configuration>" + ENDLINE);
 			bw.close();
