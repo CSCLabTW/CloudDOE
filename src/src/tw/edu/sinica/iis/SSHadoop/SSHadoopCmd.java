@@ -175,10 +175,6 @@ public class SSHadoopCmd {
 				+ " >" + logFile;
 	}
 
-	public String OCIStatus(final String shellScript, final String pidFilePath) {
-		return "cd " + binaryLocation + "; " + cmd.sh + " ./" + shellScript + " " + pidFilePath;
-	}
-
 	public String OCILog(final String logFile, final int tailLineCnt) {
 		String count = "";
 		if (tailLineCnt > 0) {

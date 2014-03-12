@@ -403,11 +403,10 @@ public class UninstallTabPanel extends JPanel implements ActionListener {
 					getLogArea().setText(
 							"Fetching uninstallation progress messages...");
 
-					long sleepTime = 500;
+					long sleepTime = 5000;
 					do {
 						sleep(sleepTime);
 						replaceLog();
-						sleepTime = 5000;
 					} while (!checkFinish());
 
 					setState(threadState.CLEANUP);
@@ -422,13 +421,12 @@ public class UninstallTabPanel extends JPanel implements ActionListener {
 	}
 
 	public boolean checkFinish() {
-		String testCmd = HadoopCmd.OCIStatus("checkpid.sh", PIDFILENAME);
 		Callable<String> channel = new SSHExec(HadoopSession.getSession(),
-				testCmd);
+				HadoopCmd.ls(PIDFILENAME));
 
 		try {
 			String log = channel.call();
-			if ("end\n".equals(log)) {
+			if ("".equals(log.trim())) {
 				return true;
 			}
 		} catch (Exception e) {
