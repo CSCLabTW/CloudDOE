@@ -132,7 +132,7 @@ echo "---- [Stage 4] ----"
 ./40_start_hadoop.sh "$HADOOP_DIR"
 
 ### Finish Installation ###
-echo "---- [Congrats] Please check http://$NN_PUB:50070 and http://$NN_PUB:50030 for cluster status ----"
+echo "---- [Complete] Your Hadoop Cloud deployment is completed ----"
 sleep 5
 
 rm $PID_FILE; exit

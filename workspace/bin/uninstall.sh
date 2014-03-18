@@ -105,7 +105,7 @@ echo "---- [Stage 1 at $NN_IP] ----";
 # Data in NN will be removed from GUI
 
 ### Finish Installation ###
-echo "---- [Congrats] Your Hadoop cluster is successfully removed ----"
+echo "---- [Complete] Your Hadoop Cloud undeployment is completed ----"
 sleep 5
 rm $PID_FILE; exit
 

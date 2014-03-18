@@ -30,7 +30,7 @@ else
 		echo  "---- [ERROR 4] $1 permission error! ----"; exit
 	fi
 
-        echo "---- [4] Start Hadoop Cluster ----";
+        echo "---- [4] Start Hadoop Cloud ----";
         if [ ! -d /var/hadoop/hadoop-$(id -u -n)/dfs/name ]; then
                 echo "---- [4.1] Formating Namenode... ----"
                 if [ -e $1/bin/yarn ]; then
@@ -48,7 +48,7 @@ else
         else
             $1/bin/start-dfs.sh
         fi
-        echo "---- [4.3] Starting MapReduce Framework... ----"
+        echo "---- [4.3] Starting MapReduce/YARN... ----"
         if [ -e $1/bin/yarn ]; then
             $1/sbin/start-yarn.sh
         else

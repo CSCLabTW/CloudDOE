@@ -30,9 +30,9 @@ else
 		echo  "---- [ERROR 4] $1 permission error! ----"; exit
 	fi
 
-        echo "---- [4] Stop Hadoop Cluster ----";
+        echo "---- [4] Stop Hadoop Cloud ----";
 
-        echo "---- [4.3] Stoping MapReduce Framework... ----"
+        echo "---- [4.3] Stoping MapReduce/YARN ... ----"
         if [ -e $1/bin/yarn ]; then
             $1/sbin/stop-yarn.sh
         else
