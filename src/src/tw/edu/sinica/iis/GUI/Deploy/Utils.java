@@ -38,20 +38,16 @@ public class Utils {
 	public static String configPath = "workspace" + File.separator + "config"
 			+ File.separator;
 
-	public static void genXMLDN(final int DNs) {
-		genPartialEnv();
-		genDNcore();
-		genDNhdfs(DNs);
-		genDNmapred();
+	public static void genPartialEnv() {
+		genPartialHadoopEnv();
 	}
 
-	public static void genXMLNN(final int DNs) {
-		genPartialEnv();
-		genNNcore();
-		genNNhdfs(DNs);
-		genNNmapred();
+	public static void genXML(final String nodeType, final int DNs) {
+		genXMLCore(nodeType);
+		genXMLHdfs(nodeType, DNs);
+		genXMLMapred(nodeType);
 	}
-	
+
 	private static String genFilePath(final String dir, final String file) {
 		return configPath + File.separator + dir + File.separator + file;
 	}
@@ -65,7 +61,7 @@ public class Utils {
 		}
 	}
 
-	private static boolean genPartialEnv() {
+	private static boolean genPartialHadoopEnv() {
 		try {
 			String filePath = genFilePath("common", "hadoop-env.sh");
 
@@ -74,7 +70,6 @@ public class Utils {
 			BufferedWriter bw = new BufferedWriter(new FileWriter(filePath));
 			bw.write("export JAVA_HOME=" + ENDLINE);
 			bw.write("export HADOOP_HOME=\"/opt/hadoop\"" + ENDLINE);
-			bw.write("export HADOOP_CONF_DIR=\"/opt/hadoop/conf\"" + ENDLINE);
 			bw.write("export HADOOP_SSH_OPTS=\"-o StrictHostKeyChecking=no\""
 					+ ENDLINE);
 			bw.close();
@@ -85,27 +80,29 @@ public class Utils {
 		return true;
 	}
 
-	private static boolean genDNcore() {
+	private static boolean genXMLCore(final String nodeType) {
 		try {
-			String filePath = genFilePath("DN", "core-site.xml");
+			String filePath = genFilePath(nodeType, "core-site.xml");
 
 			chkAndCreateSavePath(filePath);
 
 			BufferedWriter bw = new BufferedWriter(new FileWriter(filePath));
 			bw.write("<?xml version=\"1.0\"?>" + ENDLINE);
-			bw
-					.write("<?xml-stylesheet type=\"text/xsl\" href=\"configuration.xsl\"?>"
-							+ ENDLINE);
+			bw.write("<?xml-stylesheet type=\"text/xsl\" href=\"configuration.xsl\"?>"
+					+ ENDLINE);
 			bw.write("<configuration>" + ENDLINE);
+			
 			bw.write("  <property>" + ENDLINE);
 			bw.write("    <name>fs.default.name</name>" + ENDLINE);
 			bw.write("    <value>hdfs://hadoop:9000</value>" + ENDLINE);
 			bw.write("  </property>" + ENDLINE);
+			
 			bw.write("  <property>" + ENDLINE);
 			bw.write("    <name>hadoop.tmp.dir</name>" + ENDLINE);
 			bw.write("    <value>/var/hadoop/hadoop-${user.name}</value>"
 					+ ENDLINE);
 			bw.write("  </property>" + ENDLINE);
+			
 			bw.write("</configuration>" + ENDLINE);
 			bw.close();
 		} catch (Exception e) {
@@ -115,102 +112,23 @@ public class Utils {
 		return true;
 	}
 
-	private static boolean genDNhdfs(final int DNs) {
+	private static boolean genXMLHdfs(final String nodeType, final int DNs) {
 		try {
-			String filePath = genFilePath("DN", "hdfs-site.xml");
+			String filePath = genFilePath(nodeType, "hdfs-site.xml");
 
 			chkAndCreateSavePath(filePath);
 
 			BufferedWriter bw = new BufferedWriter(new FileWriter(filePath));
 			bw.write("<?xml version=\"1.0\"?>" + ENDLINE);
-			bw
-					.write("<?xml-stylesheet type=\"text/xsl\" href=\"configuration.xsl\"?>"
-							+ ENDLINE);
-			bw.write("<configuration>" + ENDLINE);
-			bw.write("  <property>" + ENDLINE);
-			bw.write("    <name>dfs.replication</name>" + ENDLINE);
-			bw.write("    <value>" + DNs + "</value>" + ENDLINE);
-			bw.write("  </property>" + ENDLINE);
-			bw.write("</configuration>" + ENDLINE);
-			bw.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
-		return true;
-	}
-
-	private static boolean genDNmapred() {
-		try {
-			String filePath = genFilePath("DN", "mapred-site.xml");
-
-			chkAndCreateSavePath(filePath);
-
-			BufferedWriter bw = new BufferedWriter(new FileWriter(filePath));
-			bw.write("<?xml version=\"1.0\"?>" + ENDLINE);
-			bw
-					.write("<?xml-stylesheet type=\"text/xsl\" href=\"configuration.xsl\"?>"
-							+ ENDLINE);
-			bw.write("<configuration>" + ENDLINE);
-			bw.write("  <property>" + ENDLINE);
-			bw.write("    <name>mapred.job.tracker</name>" + ENDLINE);
-			bw.write("    <value>hadoop:9001</value>" + ENDLINE);
-			bw.write("  </property>" + ENDLINE);
-			bw.write("</configuration>" + ENDLINE);
-			bw.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
-		return true;
-	}
-
-	private static boolean genNNcore() {
-		try {
-			String filePath = genFilePath("NN", "core-site.xml");
-
-			chkAndCreateSavePath(filePath);
-
-			BufferedWriter bw = new BufferedWriter(new FileWriter(filePath));
-			bw.write("<?xml version=\"1.0\"?>" + ENDLINE);
-			bw
-					.write("<?xml-stylesheet type=\"text/xsl\" href=\"configuration.xsl\"?>"
-							+ ENDLINE);
-			bw.write("<configuration>" + ENDLINE);
-			bw.write("  <property>" + ENDLINE);
-			bw.write("    <name>fs.default.name</name>" + ENDLINE);
-			bw.write("    <value>hdfs://hadoop:9000</value>" + ENDLINE);
-			bw.write("  </property>" + ENDLINE);
-			bw.write("  <property>" + ENDLINE);
-			bw.write("    <name>hadoop.tmp.dir</name>" + ENDLINE);
-			bw.write("    <value>/var/hadoop/hadoop-${user.name}</value>"
+			bw.write("<?xml-stylesheet type=\"text/xsl\" href=\"configuration.xsl\"?>"
 					+ ENDLINE);
-			bw.write("  </property>" + ENDLINE);
-			bw.write("</configuration>" + ENDLINE);
-			bw.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
-		return true;
-	}
-
-	private static boolean genNNhdfs(final int DNs) {
-		try {
-			String filePath = genFilePath("NN", "hdfs-site.xml");
-
-			chkAndCreateSavePath(filePath);
-
-			BufferedWriter bw = new BufferedWriter(new FileWriter(filePath));
-			bw.write("<?xml version=\"1.0\"?>" + ENDLINE);
-			bw
-					.write("<?xml-stylesheet type=\"text/xsl\" href=\"configuration.xsl\"?>"
-							+ ENDLINE);
 			bw.write("<configuration>" + ENDLINE);
+			
 			bw.write("  <property>" + ENDLINE);
 			bw.write("    <name>dfs.replication</name>" + ENDLINE);
 			bw.write("    <value>" + DNs + "</value>" + ENDLINE);
 			bw.write("  </property>" + ENDLINE);
+			
 			bw.write("</configuration>" + ENDLINE);
 			bw.close();
 		} catch (Exception e) {
@@ -220,22 +138,23 @@ public class Utils {
 		return true;
 	}
 
-	private static boolean genNNmapred() {
+	private static boolean genXMLMapred(final String nodeType) {
 		try {
-			String filePath = genFilePath("NN", "mapred-site.xml");
+			String filePath = genFilePath(nodeType, "mapred-site.xml");
 
 			chkAndCreateSavePath(filePath);
 
 			BufferedWriter bw = new BufferedWriter(new FileWriter(filePath));
 			bw.write("<?xml version=\"1.0\"?>" + ENDLINE);
-			bw
-					.write("<?xml-stylesheet type=\"text/xsl\" href=\"configuration.xsl\"?>"
-							+ ENDLINE);
+			bw.write("<?xml-stylesheet type=\"text/xsl\" href=\"configuration.xsl\"?>"
+					+ ENDLINE);
 			bw.write("<configuration>" + ENDLINE);
+			
 			bw.write("  <property>" + ENDLINE);
 			bw.write("    <name>mapred.job.tracker</name>" + ENDLINE);
 			bw.write("    <value>hadoop:9001</value>" + ENDLINE);
 			bw.write("  </property>" + ENDLINE);
+			
 			bw.write("</configuration>" + ENDLINE);
 			bw.close();
 		} catch (Exception e) {
@@ -245,15 +164,16 @@ public class Utils {
 		return true;
 	}
 
-	public static boolean saveNodeFiles(final LinkedList<NodeStructure> content, final String file){
+	public static boolean saveNodeFiles(
+			final LinkedList<NodeStructure> content, final String file) {
 		String NNFile = genFilePath("common", file);
-		
+
 		chkAndCreateSavePath(NNFile);
-		
+
 		boolean genFinish = true;
-		
+
 		StringBuilder NNs = new StringBuilder();
-		
+
 		for (int i = 0; i < content.size(); i++) {
 			String serverLine = content.get(i).IP + WORDSPLIT
 					+ content.get(i).User + WORDSPLIT + content.get(i).Password
@@ -263,7 +183,7 @@ public class Utils {
 				NNs.append(serverLine);
 			}
 		}
-		
+
 		BufferedWriter bw = null;
 
 		try {
@@ -274,16 +194,16 @@ public class Utils {
 			genFinish = false;
 			e.printStackTrace();
 		}
-		
+
 		return genFinish;
 	}
-	
+
 	public static boolean saveHostFiles(final LinkedList<NodeStructure> content) {
 		String HostFile = genFilePath("common", "hosts");
-		String NNFile   = genFilePath("common", "NN");
-		String DNFile   = genFilePath("common", "DN");
-		String MSFile   = genFilePath("common", "masters");
-		String SLFile   = genFilePath("common", "slaves");
+		String NNFile = genFilePath("common", "NN");
+		String DNFile = genFilePath("common", "DN");
+		String MSFile = genFilePath("common", "masters");
+		String SLFile = genFilePath("common", "slaves");
 
 		chkAndCreateSavePath(HostFile);
 		chkAndCreateSavePath(NNFile);
@@ -373,8 +293,9 @@ public class Utils {
 
 		return genFinish;
 	}
-	
-	public static LinkedList<NodeStructure> loadNodeFiles(final String fileName, final boolean isMaster) {
+
+	public static LinkedList<NodeStructure> loadNodeFiles(
+			final String fileName, final boolean isMaster) {
 		String nodeFile = genFilePath("common", fileName);
 
 		LinkedList<NodeStructure> res = new LinkedList<NodeStructure>();
@@ -401,22 +322,21 @@ public class Utils {
 
 	public static LinkedList<NodeStructure> loadHostFiles() {
 		LinkedList<NodeStructure> res = loadNodeFiles("NN", true);
-		if(res.size() == 0) {
+		if (res.size() == 0) {
 			res = loadNodeFiles("NP", true);
-		}
-		else {
+		} else {
 			LinkedList<NodeStructure> resNP = loadNodeFiles("NP", true);
-			
-			if(resNP.size() > 0) {
+
+			if (resNP.size() > 0) {
 				res.get(0).User = resNP.get(0).User;
 				res.get(0).Password = resNP.get(0).Password;
 			}
-			
+
 			resNP.clear();
 		}
-		
+
 		res.addAll(loadNodeFiles("DN", false));
-		
+
 		return res;
 	}
 
