@@ -331,7 +331,7 @@ public class Deploy extends JFrame {
 	}
 
 	public void startStep4Thread() {
-		JOptionPane.showMessageDialog(null, "Installation Finished.");
+		JOptionPane.showMessageDialog(null, "Installation progress completed.");
 		setState(-1);
 	}
 

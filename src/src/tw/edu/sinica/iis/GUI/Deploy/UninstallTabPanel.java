@@ -477,7 +477,7 @@ public class UninstallTabPanel extends JPanel implements ActionListener {
 	}
 
 	public void startFinishThread() {
-		JOptionPane.showMessageDialog(null, "Uninstallation Finished.");
+		JOptionPane.showMessageDialog(null, "Uninstallation progress completed.");
 		setState(threadState.IDLE);
 	}
 
