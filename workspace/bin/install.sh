@@ -131,8 +131,12 @@ done
 echo "---- [Stage 4] ----"
 ./40_start_hadoop.sh "$HADOOP_DIR"
 
+### Stage 5: Check service status ###
+echo "---- [Stage 5] ----"
+./50_service_status.sh "$HADOOP_DIR" "$NN_PUB"
+
 ### Finish Installation ###
-echo "---- [Complete] Your Hadoop Cloud deployment is completed ----"
+echo "---- [Complete] Hadoop Cloud deployment is completed ----"
 sleep 5
 
 rm $PID_FILE; exit
