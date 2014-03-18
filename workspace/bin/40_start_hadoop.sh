@@ -33,15 +33,27 @@ else
         echo "---- [4] Start Hadoop Cluster ----";
         if [ ! -d /var/hadoop/hadoop-$(id -u -n)/dfs/name ]; then
                 echo "---- [4.1] Formating Namenode... ----"
-                $1/bin/hadoop namenode -format
+                if [ -e $1/bin/yarn ]; then
+                    $1/bin/hdfs namenode -format
+                else
+                    $1/bin/hadoop namenode -format
+                fi
         else
                 echo "---- [4.1] Namenode is formatted. Skip... ----"
         fi
 
         echo "---- [4.2] Starting DFS... ----"
-        $1/bin/start-dfs.sh
+        if [ -e $1/bin/yarn ]; then
+            $1/sbin/start-dfs.sh
+        else
+            $1/bin/start-dfs.sh
+        fi
         echo "---- [4.3] Starting MapReduce Framework... ----"
-        $1/bin/start-mapred.sh	
+        if [ -e $1/bin/yarn ]; then
+            $1/sbin/start-yarn.sh
+        else
+            $1/bin/start-mapred.sh
+        fi
 fi
 
 # vim: ai ts=2 sw=2 et sts=2 ft=sh

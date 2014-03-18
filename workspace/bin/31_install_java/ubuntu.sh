@@ -25,6 +25,7 @@ echo "---- [3.1] Install Java environment  ----"
 
 echo "---- [3.1.1] Update JAVA_HOME config ----"
 sed -i -e 's/JAVA_HOME.*/JAVA_HOME=\"\/usr\/lib\/jvm\/java-6-oracle\"/' ../config/common/hadoop-env.sh
+sed -i -e 's/JAVA_HOME.*/JAVA_HOME=\"\/usr\/lib\/jvm\/java-6-oracle\"/' ../config/common/yarn-env.sh
 
 if [ ! -x /usr/bin/java ]; then
 	echo "---- [3.1.2] Update system software settings. This may take a long time... ----"

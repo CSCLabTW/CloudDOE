@@ -24,15 +24,25 @@
 BACKUP_TIME=`date +%Y%m%d%H%m%S`
 
 updateFile() {
-	if [ ! -f $1/$3 ]; then
+	if [ ! -f $1/$3 ] && [ ! -f $1/$3.template ]; then
 		echo "---- [ERROR 3.3] $1/$3 does not exist! ----"; exit
 	else
 		echo "---- [3.3] Updating $1/$3... ----"
 		/bin/cp -f "$1/$3" "$1/$3.$BACKUP_TIME"
 		if [ $4 = true ]; then
-			/bin/cp -f "../config/$2/$3" "$1/$3"
+			if [ $5 = true ]; then
+				/bin/cp -f "../config/$2/$3.yarn" "$1/$3"
+			else
+				/bin/cp -f "../config/$2/$3" "$1/$3"
+			fi
 		else
-			cat "../config/$2/$3" >> "$1/$3"
+			if [ $5 = true ]; then
+				cat "$1/$3" >> "../config/$2/$3.yarn"
+				/bin/cp -f "../config/$2/$3.yarn" "$1/$3"
+			else
+				cat "$1/$3" >> "../config/$2/$3"
+				/bin/cp -f "../config/$2/$3" "$1/$3"
+			fi
 		fi
 	fi
 }
@@ -51,12 +61,22 @@ else
 	fi
 
 	echo "---- [3.3] Config Hadoop ----";
-	updateFile "$1/conf" "common" "hadoop-env.sh" false
-	updateFile "$1/conf" "common" "masters" true
-	updateFile "$1/conf" "common" "slaves" true
-	updateFile "$1/conf" "$2" "core-site.xml" true
-	updateFile "$1/conf" "$2" "hdfs-site.xml" true
-	updateFile "$1/conf" "$2" "mapred-site.xml" true
+	if [ -e $1/bin/yarn ]; then
+		updateFile "$1/etc/hadoop" "common" "hadoop-env.sh" false false
+		updateFile "$1/etc/hadoop" "common" "yarn-env.sh" false false
+		updateFile "$1/etc/hadoop" "common" "slaves" true false
+		updateFile "$1/etc/hadoop" "$2" "core-site.xml" true true
+		updateFile "$1/etc/hadoop" "$2" "hdfs-site.xml" true true
+		updateFile "$1/etc/hadoop" "$2" "yarn-site.xml" true false
+		updateFile "$1/etc/hadoop" "$2" "mapred-site.xml" true true
+	else
+		updateFile "$1/conf" "common" "hadoop-env.sh" false false
+		updateFile "$1/conf" "common" "masters" true false
+		updateFile "$1/conf" "common" "slaves" true false
+		updateFile "$1/conf" "$2" "core-site.xml" true false
+		updateFile "$1/conf" "$2" "hdfs-site.xml" true false
+		updateFile "$1/conf" "$2" "mapred-site.xml" true false
+	fi
 fi
 
 # vim: ai ts=2 sw=2 et sts=2 ft=sh

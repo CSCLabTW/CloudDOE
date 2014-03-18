@@ -33,9 +33,17 @@ else
         echo "---- [4] Stop Hadoop Cluster ----";
 
         echo "---- [4.3] Stoping MapReduce Framework... ----"
-        $1/bin/stop-mapred.sh
+        if [ -e $1/bin/yarn ]; then
+            $1/sbin/stop-yarn.sh
+        else
+            $1/bin/stop-mapred.sh
+        fi
         echo "---- [4.2] Stoping DFS... ----"
-        $1/bin/stop-dfs.sh
+        if [ -e $1/bin/yarn ]; then
+            $1/sbin/stop-dfs.sh
+        else
+            $1/bin/stop-dfs.sh
+        fi
 
 	# There is no 4.1 restore step
 fi
