@@ -40,12 +40,19 @@ public class Utils {
 
 	public static void genPartialEnv() {
 		genPartialHadoopEnv();
+		genPartialYARNEnv();
 	}
 
 	public static void genXML(final String nodeType, final int DNs) {
-		genXMLCore(nodeType);
-		genXMLHdfs(nodeType, DNs);
-		genXMLMapred(nodeType);
+		genXMLYarn(nodeType);
+
+		genXMLCore(nodeType, false);
+		genXMLHdfs(nodeType, DNs, false);
+		genXMLMapred(nodeType, false);
+
+		genXMLCore(nodeType, true);
+		genXMLHdfs(nodeType, DNs, true);
+		genXMLMapred(nodeType, true);
 	}
 
 	private static String genFilePath(final String dir, final String file) {
@@ -80,9 +87,25 @@ public class Utils {
 		return true;
 	}
 
-	private static boolean genXMLCore(final String nodeType) {
+	private static boolean genPartialYARNEnv() {
 		try {
-			String filePath = genFilePath(nodeType, "core-site.xml");
+			String filePath = genFilePath("common", "yarn-env.sh");
+
+			chkAndCreateSavePath(filePath);
+
+			BufferedWriter bw = new BufferedWriter(new FileWriter(filePath));
+			bw.write("export JAVA_HOME=" + ENDLINE);
+			bw.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+
+	private static boolean genXMLYarn(final String nodeType) {
+		try {
+			String filePath = genFilePath(nodeType, "yarn-site.xml");
 
 			chkAndCreateSavePath(filePath);
 
@@ -91,18 +114,65 @@ public class Utils {
 			bw.write("<?xml-stylesheet type=\"text/xsl\" href=\"configuration.xsl\"?>"
 					+ ENDLINE);
 			bw.write("<configuration>" + ENDLINE);
-			
+
 			bw.write("  <property>" + ENDLINE);
-			bw.write("    <name>fs.default.name</name>" + ENDLINE);
+			bw.write("    <name>yarn.resourcemanager.hostname</name>" + ENDLINE);
+			bw.write("    <value>hadoop</value>" + ENDLINE);
+			bw.write("  </property>" + ENDLINE);
+
+			bw.write("  <property>" + ENDLINE);
+			bw.write("    <name>yarn.nodemanager.aux-services</name>" + ENDLINE);
+			bw.write("    <value>mapreduce_shuffle</value>" + ENDLINE);
+			bw.write("  </property>" + ENDLINE);
+
+			bw.write("  <property>" + ENDLINE);
+			bw.write("    <name>yarn.nodemanager.aux-services.mapreduce.shuffle.class</name>"
+					+ ENDLINE);
+			bw.write("    <value>org.apache.hadoop.mapred.ShuffleHandler</value>"
+					+ ENDLINE);
+			bw.write("  </property>" + ENDLINE);
+
+			bw.write("</configuration>" + ENDLINE);
+			bw.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+
+	private static boolean genXMLCore(final String nodeType,
+			final boolean isYARN) {
+
+		try {
+			String filePath = genFilePath(nodeType, "core-site.xml");
+			if (isYARN) {
+				filePath = genFilePath(nodeType, "core-site.xml.yarn");
+			}
+
+			chkAndCreateSavePath(filePath);
+
+			BufferedWriter bw = new BufferedWriter(new FileWriter(filePath));
+			bw.write("<?xml version=\"1.0\"?>" + ENDLINE);
+			bw.write("<?xml-stylesheet type=\"text/xsl\" href=\"configuration.xsl\"?>"
+					+ ENDLINE);
+			bw.write("<configuration>" + ENDLINE);
+
+			bw.write("  <property>" + ENDLINE);
+			if (isYARN) {
+				bw.write("    <name>fs.defaultFS</name>" + ENDLINE);
+			} else {
+				bw.write("    <name>fs.default.name</name>" + ENDLINE);
+			}
 			bw.write("    <value>hdfs://hadoop:9000</value>" + ENDLINE);
 			bw.write("  </property>" + ENDLINE);
-			
+
 			bw.write("  <property>" + ENDLINE);
 			bw.write("    <name>hadoop.tmp.dir</name>" + ENDLINE);
 			bw.write("    <value>/var/hadoop/hadoop-${user.name}</value>"
 					+ ENDLINE);
 			bw.write("  </property>" + ENDLINE);
-			
+
 			bw.write("</configuration>" + ENDLINE);
 			bw.close();
 		} catch (Exception e) {
@@ -112,9 +182,14 @@ public class Utils {
 		return true;
 	}
 
-	private static boolean genXMLHdfs(final String nodeType, final int DNs) {
+	private static boolean genXMLHdfs(final String nodeType, final int DNs,
+			final boolean isYARN) {
+
 		try {
 			String filePath = genFilePath(nodeType, "hdfs-site.xml");
+			if (isYARN) {
+				filePath = genFilePath(nodeType, "hdfs-site.xml.yarn");
+			}
 
 			chkAndCreateSavePath(filePath);
 
@@ -123,12 +198,12 @@ public class Utils {
 			bw.write("<?xml-stylesheet type=\"text/xsl\" href=\"configuration.xsl\"?>"
 					+ ENDLINE);
 			bw.write("<configuration>" + ENDLINE);
-			
+
 			bw.write("  <property>" + ENDLINE);
 			bw.write("    <name>dfs.replication</name>" + ENDLINE);
 			bw.write("    <value>" + DNs + "</value>" + ENDLINE);
 			bw.write("  </property>" + ENDLINE);
-			
+
 			bw.write("</configuration>" + ENDLINE);
 			bw.close();
 		} catch (Exception e) {
@@ -138,9 +213,14 @@ public class Utils {
 		return true;
 	}
 
-	private static boolean genXMLMapred(final String nodeType) {
+	private static boolean genXMLMapred(final String nodeType,
+			final boolean isYARN) {
+
 		try {
 			String filePath = genFilePath(nodeType, "mapred-site.xml");
+			if (isYARN) {
+				filePath = genFilePath(nodeType, "mapred-site.xml.yarn");
+			}
 
 			chkAndCreateSavePath(filePath);
 
@@ -149,12 +229,19 @@ public class Utils {
 			bw.write("<?xml-stylesheet type=\"text/xsl\" href=\"configuration.xsl\"?>"
 					+ ENDLINE);
 			bw.write("<configuration>" + ENDLINE);
-			
-			bw.write("  <property>" + ENDLINE);
-			bw.write("    <name>mapred.job.tracker</name>" + ENDLINE);
-			bw.write("    <value>hadoop:9001</value>" + ENDLINE);
-			bw.write("  </property>" + ENDLINE);
-			
+
+			if (isYARN) {
+				bw.write("  <property>" + ENDLINE);
+				bw.write("    <name>mapreduce.framework.name</name>" + ENDLINE);
+				bw.write("    <value>yarn</value>" + ENDLINE);
+				bw.write("  </property>" + ENDLINE);
+			} else {
+				bw.write("  <property>" + ENDLINE);
+				bw.write("    <name>mapred.job.tracker</name>" + ENDLINE);
+				bw.write("    <value>hadoop:9001</value>" + ENDLINE);
+				bw.write("  </property>" + ENDLINE);
+			}
+
 			bw.write("</configuration>" + ENDLINE);
 			bw.close();
 		} catch (Exception e) {
