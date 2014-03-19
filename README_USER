@@ -1,0 +1,17 @@
+README FOR USERS
+=========================
+
+CloudDOE is an open source project and it is announced as Apache license 2.0. It
+installs Java runtime environment version 1.6 and deploys a Hadoop cloud with
+Apache Hadoop version 0.20.203.
+
+The following are steps to install and run CloudDOE.
+(1) Make sure Java runtime environment (JRE) version 1.6 or later are installed
+on the local computer that you are going to run CloudDOE. 
+(2) Download and decompress the latest CloudDOE binary archive into the local
+computer.
+(3) Run Deploy.jar located in the local directory of CloudDOE to deploy a Hadoop
+cloud on those Ubuntu Linux computers.
+(4) Run Operate.jar located in the local directory of CloudDOE for MapReduce
+programs, e.g., CloudBurst, CloudRS and CloudBrush.
+

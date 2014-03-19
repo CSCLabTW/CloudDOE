@@ -1,0 +1,15 @@
+README FOR DEVELOPERS
+=====================
+
+For interested developers, building CloudDOE from source code involves different
+requirements as follows.
+
+(1) Java development kit (JDK) and JavaFX runtime environment (jfxrt) are
+required. JDK version 1.7 or later is encouraged for better support of
+successfully building CloudDOE for users, since jfxrt is evolved in the JDK
+release. Otherwise, users should download the correct version of jfxrt package
+from Oracle and integrate the package into development environment manually.
+(2) Integrated development environment (IDE) tools, e.g., Eclipse, may be
+useful for building CloudDOE. Users can import source code into the IDE, or
+utilizing Java native command-line tools, i.e., javac and jar, to build
+CloudDOE.

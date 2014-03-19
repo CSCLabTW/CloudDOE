@@ -1,5 +1,5 @@
 CloudDOE
-=====
+========
 
 CloudDOE is a user friendly software package to deploy, operate and extend a
 MapReduce-based bioinformatics environment, which is collectively denoted as a
@@ -20,6 +20,9 @@ supported MapReduced-based bioinformatics applications from its dashboard.
 3. Extend wizard allows a CloudDOE Cloud administrator to extend the
 functionalities by maintaining software information of the dashboard, which may
 used by the Operate wizard.
+
+Users can read README_USER for prerequisites of CloudDOE. Developers need to read
+README_DEVELOPER before compiling and building CloudDOE.
 
 For more informaion, please visit the project website at:
 http://clouddoe.iis.sinica.edu.tw/
