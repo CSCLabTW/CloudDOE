@@ -1068,9 +1068,12 @@ public class Operate extends JPanel {
 
 		for (DownloadItem d : rPanel.xmlConfigParser.downloadItems) {
 			if (!d.merge) {
-				rst += HadoopCmd.getHdp(paramType.OUTPUT.toString()
-						.toLowerCase() + "/" + d.src, paramType.OUTPUT
-						.toString().toLowerCase() + "/" + d.dst);
+				rst += HadoopCmd.mkdir(paramType.OUTPUT.toString()
+						.toLowerCase() + "/", true)
+						+ ";"
+						+ HadoopCmd.getHdp(paramType.OUTPUT.toString()
+								.toLowerCase() + "/" + d.src, paramType.OUTPUT
+								.toString().toLowerCase() + "/" + d.dst);
 			} else {
 				rst += HadoopCmd.getMergeRstHdp(paramType.OUTPUT.toString()
 						.toLowerCase() + "/" + d.src, paramType.OUTPUT
