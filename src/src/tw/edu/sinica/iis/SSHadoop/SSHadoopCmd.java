@@ -53,6 +53,7 @@ public class SSHadoopCmd {
 		final static String ctl = "hadoop fs -copyToLocal ";
 
 		final static String getmerge = "hadoop fs -getmerge ";
+		final static String mkdir = "hadoop fs -mkdir ";
 
 		final static String jar = "hadoop jar ";
 
@@ -95,11 +96,11 @@ public class SSHadoopCmd {
 		}
 		return cmd.mkdir + recurMode + userBase + filePath;
 	}
-	
+
 	public String touch(final String filePath) {
 		return cmd.touch + userBase + filePath;
 	}
-	
+
 	public String rm(final String filePath) {
 		return cmd.rm + userBase + filePath;
 	}
@@ -148,6 +149,16 @@ public class SSHadoopCmd {
 				+ remoteRstDir + " " + userBase + localFile;
 	}
 
+	public String mkdirHdp(final String filePath, final String userName,
+			final boolean recursive) {
+		String recurMode = "";
+		if (recursive) {
+			recurMode = "-p ";
+		}
+		return serverSpecialCmd + "; " + hdpCmd.mkdir + recurMode + "/user/"
+				+ userName + "/" + userBase + filePath;
+	}
+
 	public String jarHdp(final String jarPath, final String jarClsName,
 			final String params) {
 		return serverSpecialCmd + "; " + hdpCmd.jar + " " + jarPath + " "
@@ -158,7 +169,8 @@ public class SSHadoopCmd {
 		return serverSpecialCmd + "; " + hdpCmd.job_status + " " + jobId;
 	}
 
-	public String CBStepAndId(final String workDir, final String logFile, final int tailLineCnt) {
+	public String CBStepAndId(final String workDir, final String logFile,
+			final int tailLineCnt) {
 		String count = "";
 		if (tailLineCnt > 0) {
 			count = "-n " + tailLineCnt + " ";
@@ -183,28 +195,29 @@ public class SSHadoopCmd {
 		return cmd.grep + " \"^\\(---- \\[\\).*\" " + logFile + " | "
 				+ cmd.tail + count;
 	}
-	
+
 	public String OCIClenup(final String location) {
-		return cmd.rm + " -rf " + location; 
+		return cmd.rm + " -rf " + location;
 	}
-	
-	public String PPIRun(final String installCmd, final String shellFile, final String logFile) {
-		return cmd.cd + binaryLocation + "; " +
-				cmd.rm + "plugins/* ;" +
-				cmd.wget + shellFile + " -P plugins/ ; " +
-				cmd.sh + " ./" + installCmd + " > " + logFile;
+
+	public String PPIRun(final String installCmd, final String shellFile,
+			final String logFile) {
+		return cmd.cd + binaryLocation + "; " + cmd.rm + "plugins/* ;"
+				+ cmd.wget + shellFile + " -P plugins/ ; " + cmd.sh + " ./"
+				+ installCmd + " > " + logFile;
 	}
-	
+
 	public String PPIStatus(final String shellScript, final String pidFilePath) {
-		return "cd " + binaryLocation + "; " + cmd.sh + " ./" + shellScript + " " + pidFilePath;
+		return "cd " + binaryLocation + "; " + cmd.sh + " ./" + shellScript
+				+ " " + pidFilePath;
 	}
-	
+
 	public String PPILog(final String logFile, final int tailLineCnt) {
 		String count = "";
 		if (tailLineCnt > 0) {
 			count = "-n " + tailLineCnt + " ";
 		}
-		return cmd.grep + " \"^[^\\r\\n]\" " + logFile + " | " +
-				cmd.tail + count;
+		return cmd.grep + " \"^[^\\r\\n]\" " + logFile + " | " + cmd.tail
+				+ count;
 	}
 }
