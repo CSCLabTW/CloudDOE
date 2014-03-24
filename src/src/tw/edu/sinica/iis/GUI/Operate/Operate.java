@@ -642,7 +642,7 @@ public class Operate extends JPanel {
 
 				options.add("OK");
 				options.remove(goWeb);
-				
+
 				information.append("Author: ");
 				if (!rPanel.xmlConfigParser.programInfo.author.equals("")) {
 					information
@@ -671,7 +671,7 @@ public class Operate extends JPanel {
 				if (!rPanel.xmlConfigParser.programInfo.website.equals("")) {
 					information
 							.append(rPanel.xmlConfigParser.programInfo.website);
-					
+
 					options.add(goWeb);
 				} else {
 					information.append(notAvalible);
@@ -680,13 +680,15 @@ public class Operate extends JPanel {
 				int rst = JOptionPane.showOptionDialog(Operate.this,
 						information.toString(), "Program help information",
 						JOptionPane.DEFAULT_OPTION,
-						JOptionPane.INFORMATION_MESSAGE, null, options.toArray(),
-						null);
-				
-				if(options.size() > 0 && rst == 1) {
+						JOptionPane.INFORMATION_MESSAGE, null,
+						options.toArray(), null);
+
+				if (options.size() > 0 && rst == 1) {
 					if (Desktop.isDesktopSupported()) {
 						try {
-							Desktop.getDesktop().browse(new URI(rPanel.xmlConfigParser.programInfo.website));
+							Desktop.getDesktop()
+									.browse(new URI(
+											rPanel.xmlConfigParser.programInfo.website));
 						} catch (Exception e1) {
 						}
 					} else {
@@ -726,9 +728,12 @@ public class Operate extends JPanel {
 
 				for (ParameterItem p : rPanel.xmlConfigParser.parameterItems) {
 					if (p.type == paramType.INPUT) {
-						String paramValue = p.value.replaceFirst("/", "").trim();
-						if (!paramValue.equals("") && !fileList.contains(paramValue)) {
-							JOptionPane.showMessageDialog(null, "Input file and parameter are mismatched!");
+						String paramValue = p.value.replaceFirst("/", "")
+								.trim();
+						if (!paramValue.equals("")
+								&& !fileList.contains(paramValue)) {
+							JOptionPane.showMessageDialog(null,
+									"Input file and parameter are mismatched!");
 							Tabs.setSelectedIndex(1);
 							return;
 						}
@@ -807,8 +812,8 @@ public class Operate extends JPanel {
 					} else {
 						// Clear
 						int r = JOptionPane.showConfirmDialog(Operate.this,
-								"Purge experimental results and input data?", "WARNING",
-								JOptionPane.YES_NO_OPTION);
+								"Purge experimental results and input data?",
+								"WARNING", JOptionPane.YES_NO_OPTION);
 						if (r == JOptionPane.NO_OPTION) {
 							return;
 						}
@@ -901,9 +906,24 @@ public class Operate extends JPanel {
 		sftp.sftpUpload(new File("workspace" + File.separator + "main")
 				.getAbsolutePath(), UID + "/main");
 
-		initialled = true;
-		updateProperties();
-		return true;
+		Callable<String> channel = new SSHExec(HadoopSession.getSession(),
+				HadoopCmd.mkdirHdp(paramType.INPUT.toString().toLowerCase()
+						+ "/", ID, true));
+		FutureTask<String> futureTask = new FutureTask<String>(channel);
+
+		Thread thread = new Thread(futureTask);
+		thread.start();
+
+		while (true) {
+			if (futureTask.isDone()) {
+				initialled = true;
+				updateProperties();
+
+				break;
+			}
+		}
+
+		return initialled;
 	}
 
 	public boolean disconnect() {
@@ -1353,7 +1373,7 @@ public class Operate extends JPanel {
 
 							break;
 						}
-						
+
 						try {
 							sleep(10000);
 						} catch (Exception e) {
@@ -1369,7 +1389,7 @@ public class Operate extends JPanel {
 					}
 
 				}
-				
+
 				try {
 					sleep(5000);
 				} catch (Exception e) {
