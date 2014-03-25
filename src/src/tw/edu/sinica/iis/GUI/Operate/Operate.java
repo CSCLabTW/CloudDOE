@@ -1156,7 +1156,7 @@ public class Operate extends JPanel {
 	public boolean ClearDataDir() {
 		Callable<String> channel = new SSHExec(HadoopSession.getSession(),
 				HadoopCmd
-						.rmrHdp(paramType.INPUT.toString().toLowerCase() + "/"));
+						.rmrHdp(paramType.INPUT.toString().toLowerCase() + "/*"));
 		FutureTask<String> futureTask = new FutureTask<String>(channel);
 
 		Thread thread = new Thread(futureTask);
