@@ -4,10 +4,10 @@
 		<name>CloudRS</name>
 		<jarfile>CloudRS.jar</jarfile>
 		<version>20140205</version>
-		<author>Wei-Chun Chung</author>
-		<lastupd>2014/02/14</lastupd>
+		<author>Wei-Chun Chung et al.</author>
+		<lastupd>2014/03/25</lastupd>
 		<website>https://github.com/ice91/ReadStackCorrector</website>
-		<argformat>$input $output $work $value</argformat>
+		<argformat>$input $output $work $value -mocomp off -outcomp off</argformat>
 	</program>
 	<parameters>
 		<parameter>
