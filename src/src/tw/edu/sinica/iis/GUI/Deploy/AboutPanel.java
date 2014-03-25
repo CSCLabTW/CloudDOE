@@ -43,7 +43,7 @@ public class AboutPanel extends JPanel {
 
 	private static final long serialVersionUID = 2846384582123517L;
 
-	private static final String versionStr = "CloudDOE - Deploy Wizard (v1.5.20140318)";
+	private static final String versionStr = "CloudDOE - Deploy Wizard (v1.5.20140325)";
 	
 	public int default_w = 580;
 	public int default_h = 230;
