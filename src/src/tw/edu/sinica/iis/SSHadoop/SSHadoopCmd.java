@@ -162,7 +162,7 @@ public class SSHadoopCmd {
 	public String jarHdp(final String jarPath, final String jarClsName,
 			final String params) {
 		return serverSpecialCmd + "; " + hdpCmd.jar + " " + jarPath + " "
-				+ jarClsName + " " + params + " 2>&1";
+				+ jarClsName + " " + params;
 	}
 
 	public String jobStatusHdp(final String jobId) {
