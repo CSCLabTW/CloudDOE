@@ -22,8 +22,8 @@
 #      http://clouddoe.iis.sinica.edu.tw/
 #
 HADOOP_WWW="http://archive.apache.org/dist"
-HADOOP_VER="hadoop-0.20.203.0"
-HADOOP_TAR="rc1.tar.gz"
+HADOOP_VER="hadoop-1.2.1"
+HADOOP_TAR=".tar.gz"
 TMP_DIR="/tmp"
 
 if [ $# -lt 1 ]; then
